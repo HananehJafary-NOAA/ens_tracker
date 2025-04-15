@@ -544,7 +544,7 @@ numvitrecs=`cat ${DATA}/vitals.${atcfout}.${PDY}${cyc} | wc -l`
 
 if [ ${numvitrecs} -gt 0 ]
 then
-  export pgm=supvit_g2
+  export pgm=supvit
   . prep_step
 
   # Input file
@@ -556,7 +556,7 @@ then
   msg="$pgm start for $atcfout at ${cyc}z"
   postmsg "$jlogfile" "$msg"
 
-  ${EXECens_tracker}/supvit_g2 <${DATA}/suv_input.${atcfout}.${PDY}${cyc}
+  ${EXECens_tracker}/supvit <${DATA}/suv_input.${atcfout}.${PDY}${cyc}
   suvrcc=$?
 
   if [ ${suvrcc} -eq 0 ]
@@ -572,7 +572,7 @@ then
     echo "!!! model= ${atcfout}, forecast initial time = ${PDY}${cyc}"
     echo " "
     set -x
-    err_exit "FAILED ${jobid} - ERROR RUNNING supvit_g2 IN TRACKER SCRIPT- ABNORMAL EXIT"
+    err_exit "FAILED ${jobid} - ERROR RUNNING supvit IN TRACKER SCRIPT- ABNORMAL EXIT"
   fi
 
 else
@@ -978,17 +978,17 @@ then
       # Output file
       export FORT51=${DATA}/${cmodel}.${PDY}${cyc}.z.f${fhour}
 
-      ${EXECens_tracker}/vint_g1.x <${namelist}
+      ${EXECens_tracker}/vint.x <${namelist}
       rcc=$?
 
       if [ $rcc -ne 0 ]; then
         set +x
         echo " "
-        echo "FATAL ERROR in call to vint_g1.x for GPH at fhour= $fhour"
+        echo "FATAL ERROR in call to vint.x for GPH at fhour= $fhour"
         echo "rcc= $rcc      EXITING.... "
         echo " "
         set -x
-        err_exit "FAILED ${jobid} -vint_g1.x-  for GPH AT LINE $LINENO - ABNORMAL EXIT"
+        err_exit "FAILED ${jobid} -vint.x-  for GPH AT LINE $LINENO - ABNORMAL EXIT"
       fi
 
 #     ----------------------------------------------------
@@ -1009,17 +1009,17 @@ then
       # Output file
       export FORT51=${DATA}/${cmodel}.${PDY}${cyc}.t.f${fhour}
 
-      ${EXECens_tracker}/vint_g1.x <${namelist}
+      ${EXECens_tracker}/vint.x <${namelist}
       rcc=$?
 
       if [ $rcc -ne 0 ]; then
         set +x
         echo " "
-        echo "FATAL ERROR in call to vint_g1.x for T at fhour= $fhour"
+        echo "FATAL ERROR in call to vint.x for T at fhour= $fhour"
         echo "rcc= $rcc      EXITING.... "
         echo " "
         set -x
-        err_exit "FAILED ${jobid} -vint_g1.x-  for T AT LINE $LINENO - ABNORMAL EXIT"
+        err_exit "FAILED ${jobid} -vint.x-  for T AT LINE $LINENO - ABNORMAL EXIT"
       fi
 
 #     ----------------------------------------------------
@@ -1042,17 +1042,17 @@ then
       # Output file
       export FORT51=${DATA}/${cmodel}_tave.${PDY}${cyc}.f${fhour}
 
-      ${EXECens_tracker}/tave_g1.x <${namelist}
+      ${EXECens_tracker}/tave.x <${namelist}
       rcc=$?
 
       if [ $rcc -ne 0 ]; then
         set +x
         echo " "
-        echo "FATAL ERROR in call to tave_g1.x at fhour= $fhour"
+        echo "FATAL ERROR in call to tave.x at fhour= $fhour"
         echo "rcc= $rcc      EXITING.... "
         echo " "
         set -x
-        err_exit "FAILED ${jobid} -tave_g1.x-  AT LINE $LINENO - ABNORMAL EXIT"
+        err_exit "FAILED ${jobid} -tave.x-  AT LINE $LINENO - ABNORMAL EXIT"
       fi
 
       tavefile=${DATA}/${cmodel}_tave.${PDY}${cyc}.f${fhour}
@@ -1195,17 +1195,17 @@ then
       # Output file
       export FORT51=${DATA}/${cmodel}.${PDY}${cyc}.z.f${fhour}
 
-      ${EXECens_tracker}/vint_g1.x <${namelist}
+      ${EXECens_tracker}/vint.x <${namelist}
       rcc=$?
 
       if [ $rcc -ne 0 ]; then
         set +x
         echo " "
-        echo "FATAL ERROR in call to vint_g1.x for GPH at fhour= $fhour"
+        echo "FATAL ERROR in call to vint.x for GPH at fhour= $fhour"
         echo "rcc= $rcc      EXITING.... "
         echo " "
         set -x
-        err_exit "FAILED ${jobid} -vint_g1.x-  for GPH AT LINE $LINENO - ABNORMAL EXIT"
+        err_exit "FAILED ${jobid} -vint.x-  for GPH AT LINE $LINENO - ABNORMAL EXIT"
       fi
 
 #     ----------------------------------------------------
@@ -1225,17 +1225,17 @@ then
       # Output file
       export FORT51=${DATA}/${cmodel}.${PDY}${cyc}.t.f${fhour}
 
-      ${EXECens_tracker}/vint_g1.x <${namelist}
+      ${EXECens_tracker}/vint.x <${namelist}
       rcc=$?
 
       if [ $rcc -ne 0 ]; then
         set +x
         echo " "
-        echo "FATAL ERROR in call to vint_g1.x for T at fhour= $fhour"
+        echo "FATAL ERROR in call to vint.x for T at fhour= $fhour"
         echo "rcc= $rcc      EXITING.... "
         echo " "
         set -x
-        err_exit "FAILED ${jobid} -vint_g1.x-  for T AT LINE $LINENO - ABNORMAL EXIT"
+        err_exit "FAILED ${jobid} -vint.x-  for T AT LINE $LINENO - ABNORMAL EXIT"
       fi
 
 #     ----------------------------------------------------
@@ -1258,17 +1258,17 @@ then
       # Output file
       export FORT51=${DATA}/${cmodel}_tave.${PDY}${cyc}.f${fhour}
 
-      ${EXECens_tracker}/tave_g1.x <${namelist}
+      ${EXECens_tracker}/tave.x <${namelist}
       rcc=$?
 
       if [ $rcc -ne 0 ]; then
         set +x
 	echo " "
-	echo "FATAL ERROR in call to tave_g1.x at fhour= $fhour"
+	echo "FATAL ERROR in call to tave.x at fhour= $fhour"
 	echo "rcc= $rcc      EXITING.... "
 	echo " "
 	set -x
-	err_exit "FAILED ${jobid} -tave_g1.x-  AT LINE $LINENO - ABNORMAL EXIT"
+	err_exit "FAILED ${jobid} -tave.x-  AT LINE $LINENO - ABNORMAL EXIT"
       fi
 
       tavefile=${DATA}/${cmodel}_tave.${PDY}${cyc}.f${fhour}
@@ -1368,7 +1368,7 @@ echo "          wait_max_wait=1800,"                             >>${namelist}
 echo "          wait_sleeptime=5,"                               >>${namelist}
 echo "          per_fcst_command=''/"                            >>${namelist}
 
-export pgm=gettrk_gen_g1
+export pgm=gettrk
 . prep_step
 
 export FORT11=${gribfile}
@@ -1461,7 +1461,7 @@ set -x
 
 ulimit -c unlimited
 
-${EXECens_tracker}/gettrk_gen_g1 <${namelist}
+${EXECens_tracker}/gettrk <${namelist}
 gettrk_rcc=$?
 
 set +x
@@ -1494,11 +1494,11 @@ if [ ${gettrk_rcc} -eq 0 ]; then
 else
   set +x
   echo " "
-  echo "FATAL ERROR:  An error occurred while running gettrk_gen_g1, "
+  echo "FATAL ERROR:  An error occurred while running gettrk, "
   echo "!!! which is the program that actually gets the track."
-  echo "!!! Return code from gettrk_gen_g1 = ${gettrk_rcc}"
+  echo "!!! Return code from gettrk = ${gettrk_rcc}"
   echo "!!! model= ${atcfout}, forecast initial time = ${PDY}${cyc}"
   echo " "
   set -x
-  err_exit "FAILED ${jobid} - ERROR RUNNING gettrk_gen_g1 IN TRACKER SCRIPT- ABNORMAL EXIT"
+  err_exit "FAILED ${jobid} - ERROR RUNNING gettrk IN TRACKER SCRIPT- ABNORMAL EXIT"
 fi

@@ -513,7 +513,7 @@ awk '
 
 mv ${DATA}/vitals.${atcfout}.${PDY}${cyc}.y4 ${DATA}/vitals.${atcfout}.${PDY}${cyc}
 
-export pgm=supvit_g1
+export pgm=supvit
 . prep_step
 
 # Input file
@@ -525,7 +525,7 @@ export FORT51=${DATA}/vitals.upd.${atcfout}.${PDY}${cyc}
 msg="$pgm start for $atcfout at ${cyc}z"
 postmsg "$jlogfile" "$msg"
 
-${EXECens_tracker}/supvit_g1 <${DATA}/suv_input.${atcfout}.${PDY}${cyc}
+${EXECens_tracker}/supvit <${DATA}/suv_input.${atcfout}.${PDY}${cyc}
 suvrcc=$?
 
 if [ ${suvrcc} -eq 0 ]
@@ -541,7 +541,7 @@ else
   echo "!!! model= ${atcfout}, forecast initial time = ${PDY}${cyc}"
   echo " "
   set -x
-  err_exit "FAILED ${jobid} - ERROR RUNNING supvit_g1 IN TRACKER SCRIPT- ABNORMAL EXIT"
+  err_exit "FAILED ${jobid} - ERROR RUNNING supvit IN TRACKER SCRIPT- ABNORMAL EXIT"
 fi
 
 #------------------------------------------------------------------#
@@ -983,7 +983,7 @@ done
 echo    "${fh[64]:-99}/"                                          >>${namelist}
 echo    "&atcfinfo atcfnum=${atcfnum},atcfname='${ATCFNAME}'/"    >>${namelist}
 
-export pgm=gettrk_g1
+export pgm=gettrk
 . prep_step
 
 # Input files
@@ -1001,7 +1001,7 @@ export FORT64=${DATA}/trak.${atcfout}.atcfunix.${PDY}${cyc}
 msg="$pgm start for $atcfout at ${cyc}z"
 postmsg "$jlogfile" "$msg"
 
-${EXECens_tracker}/gettrk_g1 <${namelist}
+${EXECens_tracker}/gettrk <${namelist}
 gettrk_rcc=$?
 
 if [ ${gettrk_rcc} -ne 0 ]; then
@@ -1013,7 +1013,7 @@ if [ ${gettrk_rcc} -ne 0 ]; then
   echo "!!! model= ${atcfout}, forecast initial time = ${PDY}${cyc}"
   echo " "
   set -x
-  err_exit "FAILED ${jobid} - ERROR RUNNING gettrk_g1 IN TRACKER SCRIPT- ABNORMAL EXIT"
+  err_exit "FAILED ${jobid} - ERROR RUNNING gettrk IN TRACKER SCRIPT- ABNORMAL EXIT"
 fi
 
 set +x
