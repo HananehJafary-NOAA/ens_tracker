@@ -1,7 +1,6 @@
 #=======================================================================
 #$$$ CMAKEFILE DOCUMENTATION BLOCK
-# Hana Jafary
-# Originated by: Biju Thomas
+# Created by: Biju Thomas
 # Email: hananeh.jafary@noaa.gov
 #=======================================================================
 

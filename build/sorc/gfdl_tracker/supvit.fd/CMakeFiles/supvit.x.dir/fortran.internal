@@ -1,0 +1,7 @@
+# The fortran modules provided by this target.
+provides
+ date_checks.mod
+ def_vitals.mod
+ inparms.mod
+ set_max_parms.mod
+ trig_vals.mod

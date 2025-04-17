@@ -1,0 +1,4 @@
+# The fortran modules provided by this target.
+provides
+ def_vitals.mod
+ define_atcfunix_rec.mod

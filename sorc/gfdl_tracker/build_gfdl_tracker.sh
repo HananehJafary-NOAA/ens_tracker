@@ -1,0 +1,57 @@
+#!/bin/sh
+
+set -eux
+source ./machine-setup.sh > /dev/null 2>&1
+
+Supports Debug or Release modes for the build
+BUILD_MODE=${BUILD_MODE:-Release}
+
+cwd=$(pwd)
+
+if [ "${BUILD_MODE}" = Release ]; then
+  export BUILD_TYPE=RELEASE
+else
+   export BUILD_TYPE=DEBUG
+fi
+
+module use ../../modulefiles
+module load $target
+module list
+
+
+if [ $target = hera ]; then
+  export FC=ifort
+  export F90=ifort
+  export CC=icc
+elif [ $target = orion ]; then
+  export FC=ifort
+  export F90=ifort
+  export CC=icc
+elif [ $target = hercules ]; then
+  export FC=ifort
+  export F90=ifort
+  export CC=icc
+elif [ $target = jet ]; then
+  export FC=ifort
+  export F90=ifort
+  export CC=icc
+elif [ $target = wcoss2 ] ; then
+  export FC=ftn
+  export F90=ftn
+  export CC=icc
+else
+  echo "Unknown machine = $target"
+  exit 1
+fi
+
+cd ../..
+echo $(pwd)
+cd build
+
+cmake .. -DCMAKE_Fortran_COMPILER=ifort -DCMAKE_C_COMPILER=icc -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+make -j 8 VERBOSE=1
+make install
+
+cd ../..
+
+exit

@@ -1,0 +1,29 @@
+# The fortran modules provided by this target.
+provides
+ access_subroutines.mod
+ atcf.mod
+ contours.mod
+ def_vitals.mod
+ error_parms.mod
+ gen_vitals.mod
+ genesis_diags.mod
+ gfilename_info.mod
+ grid_bounds.mod
+ inparms.mod
+ level_parms.mod
+ module_waitfor.mod
+ netcdf_parms.mod
+ phase.mod
+ radii.mod
+ read_parms.mod
+ set_max_parms.mod
+ shear_diags.mod
+ sst_diags.mod
+ structure.mod
+ tracked_parms.mod
+ tracking_parm_prefs.mod
+ trig_vals.mod
+ trkrparms.mod
+ verbose_output.mod
+ vortex_tilt_diags.mod
+ waitfor_parms.mod

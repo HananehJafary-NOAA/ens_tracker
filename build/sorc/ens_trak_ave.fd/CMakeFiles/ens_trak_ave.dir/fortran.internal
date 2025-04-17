@@ -1,0 +1,7 @@
+# The fortran modules provided by this target.
+provides
+ define_atcfunix_rec.mod
+ ensinfo.mod
+ grid_bounds.mod
+ maxparms.mod
+ trig_vals.mod
