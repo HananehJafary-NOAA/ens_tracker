@@ -140,8 +140,8 @@ user_wants_to_track_wcirc700='y'
 user_wants_to_track_gph850='y'                      
 user_wants_to_track_gph700='y'                      
 user_wants_to_track_mslp='y'                        
-user_wants_to_track_wcircsfc='n'                   
-user_wants_to_track_zetasfc='n'                     
+user_wants_to_track_wcircsfc='y'                   
+user_wants_to_track_zetasfc='y'                     
 user_wants_to_track_thick500850='n'                 
 user_wants_to_track_thick200850='n'                 
 user_wants_to_track_thick200500='n'                 
@@ -166,10 +166,10 @@ case ${cmodel} in
        atcfnum=72                                          ;
        atcffreq=$((vit_incr*100))                          ;
 
-       trkrwbd=0                                            ;
-       trkrebd=360                                            ;
-       trkrnbd=90                                            ;
-       trkrsbd=-90                                            ;
+       trkrwbd=260.0                                            ;
+       trkrebd=350.0                                            ;
+       trkrnbd=40.0                                            ;
+       trkrsbd=1.0                                            ;
        trkrtype='tracker'                                  ;
        mslpthresh=0.0015                                   ;
        use_backup_mslp_grad_check='y'                      ;
@@ -190,16 +190,28 @@ case ${cmodel} in
        g1_sfcwind_lev_typ=105                              ;
        g1_sfcwind_lev_val=10                               ;
 
-#       PHASEFLAG='n'                                      ;
-       PHASEFLAG='y'                                      ;
+       PHASEFLAG='n'                                      ;
+#       PHASEFLAG='y'                                      ;
        PHASE_SCHEME='both'                                ;
        WCORE_DEPTH=1.0                                    ;
 
        STRUCTFLAG='n'                                     ;
        IKEFLAG='n'                                        ;
-       atcfname="gdas"                                     ;
-       rundescr='xxxx'                                     ;
-       atcfdescr='xxxx'                                     ;
+       atcfname="gdas"                                    ;
+       rundescr='xxxx'                                    ;
+       atcfdescr='xxxx'                                   ;
+       sstflag='y'                                        ;
+       shear_calc_flag='y'                                ;
+       genflag='n'                                        ;
+       gen_read_rh_fields='n'                             ;
+       use_land_mask='n'                                  ;
+       read_separate_land_mask_file='n'                   ;
+       need_to_compute_rh_from_q='n'                      ;
+       smoothe_mslp_for_gen_scan='n'                      ;
+       depth_of_mslp_for_gen_scan=0.50                    ;
+       vortex_tilt_flag='y'                               ;
+       vortex_tilt_parm='zeta'                            ;
+       vortex_tilt_allow_thresh=1.0                       ;
        atcfout="gdas"                                      ;;
 
   gfs) set +x; echo " "                                    ;
@@ -221,10 +233,10 @@ case ${cmodel} in
        atcfnum=15                                          ;
        atcffreq=$((vit_incr*100))                          ;
 
-       trkrwbd=0                                            ;
-       trkrebd=360                                            ;
-       trkrnbd=90                                            ;
-       trkrsbd=-90                                            ;
+       trkrwbd=260.0                                            ;
+       trkrebd=350.0                                            ;
+       trkrnbd=40.0                                            ;
+       trkrsbd=1.0                                            ;
        trkrtype='tracker'                                  ;
        mslpthresh=0.0015                                   ;
        use_backup_mslp_grad_check='y'                      ; 
@@ -245,17 +257,28 @@ case ${cmodel} in
        g1_sfcwind_lev_typ=105                              ;
        g1_sfcwind_lev_val=10                               ;
 
-#       PHASEFLAG='n'                                      ;
-       PHASEFLAG='y'                                      ;
+       PHASEFLAG='n'                                      ;
+#       PHASEFLAG='y'                                      ;
        PHASE_SCHEME='both'                                ;
        WCORE_DEPTH=1.0                                    ;
   
        STRUCTFLAG='n'                                     ;
        IKEFLAG='n'                                        ;
-       atcfname="avno"                                     ;
+       atcfname="AVNT"                                     ;
        rundescr='xxxx'                                     ;
        atcfdescr='xxxx'                                     ;
-       atcfout="avno"                                      ;;
+       shear_calc_flag='y'                                ;
+       genflag='n'                                        ;
+       gen_read_rh_fields='n'                             ;
+       use_land_mask='n'                                  ;
+       read_separate_land_mask_file='n'                   ;
+       need_to_compute_rh_from_q='n'                      ;
+       smoothe_mslp_for_gen_scan='n'                      ;
+       depth_of_mslp_for_gen_scan=0.50                    ;
+       vortex_tilt_flag='y'                               ;
+       vortex_tilt_parm='zeta'                            ;
+       vortex_tilt_allow_thresh=1.0                       ;
+       atcfout="avnt"                                      ;;
 
   ens) set +x; echo " "                                    ;
        echo " ++ operational ensemble member ${pert} chosen";
@@ -281,10 +304,10 @@ case ${cmodel} in
        atcfnum=91                                          ;
        atcffreq=$((vit_incr*100))                          ;
 
-       trkrwbd=0                                            ;
-       trkrebd=360                                            ;
-       trkrnbd=90                                            ;
-       trkrsbd=-90                                            ;
+       trkrwbd=260.0                                            ;
+       trkrebd=350.0                                            ;
+       trkrnbd=40.0                                            ;
+       trkrsbd=1.0                                            ;
        trkrtype='tracker'                                  ;
        mslpthresh=0.0015                                   ;
        use_backup_mslp_grad_check='y'                      ;
@@ -317,6 +340,17 @@ case ${cmodel} in
        atcfname="a${pert_posneg}${pert_num}"               ;
        rundescr='xxxx'                                     ;
        atcfdescr='xxxx'                                     ;
+       shear_calc_flag='y'                                ;
+       genflag='n'                                        ;
+       gen_read_rh_fields='n'                             ;
+       use_land_mask='n'                                  ;
+       read_separate_land_mask_file='n'                   ;
+       need_to_compute_rh_from_q='n'                      ;
+       smoothe_mslp_for_gen_scan='n'                      ;
+       depth_of_mslp_for_gen_scan=0.50                    ;
+       vortex_tilt_flag='y'                               ;
+       vortex_tilt_parm='zeta'                            ;
+       vortex_tilt_allow_thresh=1.0                       ;
        atcfout="a${pert_posneg}${pert_num}"                ;;
 
   cmc) set +x; echo " "                                    ;
@@ -339,10 +373,10 @@ case ${cmodel} in
        atcfnum=39                                          ;
        atcffreq=$((vit_incr*100))                          ;
 
-       trkrwbd=0                                            ;
-       trkrebd=360                                            ;
-       trkrnbd=90                                            ;
-       trkrsbd=-90                                            ;
+       trkrwbd=260.0                                            ;
+       trkrebd=350.0                                            ;
+       trkrnbd=40.0                                            ;
+       trkrsbd=1.0                                            ;
        trkrtype='tracker'                                  ;
        mslpthresh=0.0015                                   ;
        use_backup_mslp_grad_check='y'                      ;
@@ -372,6 +406,17 @@ case ${cmodel} in
        atcfname="cmc "                                     ;
        rundescr='xxxx'                                     ;
        atcfdescr='xxxx'                                     ;
+       shear_calc_flag='y'                                ;
+       genflag='n'                                        ;
+       gen_read_rh_fields='n'                             ;
+       use_land_mask='n'                                  ;
+       read_separate_land_mask_file='n'                   ;
+       need_to_compute_rh_from_q='n'                      ;
+       smoothe_mslp_for_gen_scan='n'                      ;
+       depth_of_mslp_for_gen_scan=0.50                    ;
+       vortex_tilt_flag='y'                               ;
+       vortex_tilt_parm='zeta'                            ;
+       vortex_tilt_allow_thresh=1.0                       ;
        atcfout="cmc"                                      ;;
 
  cens) set +x; echo " "                                    ;
@@ -399,10 +444,10 @@ case ${cmodel} in
        atcfnum=91                                          ;
        atcffreq=$((vit_incr*100))                          ;
 
-       trkrwbd=0                                            ;
-       trkrebd=360                                            ;
-       trkrnbd=90                                            ;
-       trkrsbd=-90                                            ;
+       trkrwbd=260.0                                            ;
+       trkrebd=350.0                                            ;
+       trkrnbd=40.0                                            ;
+       trkrsbd=1.0                                            ;
        trkrtype='tracker'                                  ;
        mslpthresh=0.0015                                   ;
        use_backup_mslp_grad_check='y'                      ;
@@ -435,6 +480,17 @@ case ${cmodel} in
        atcfname="c${pert_posneg}${pert_num}"               ;
        rundescr='xxxx'                                     ;
        atcfdescr='xxxx'                                     ;
+       shear_calc_flag='y'                                ;
+       genflag='n'                                        ;
+       gen_read_rh_fields='n'                             ;
+       use_land_mask='n'                                  ;
+       read_separate_land_mask_file='n'                   ;
+       need_to_compute_rh_from_q='n'                      ;
+       smoothe_mslp_for_gen_scan='n'                      ;
+       depth_of_mslp_for_gen_scan=0.50                    ;
+       vortex_tilt_flag='y'                               ;
+       vortex_tilt_parm='zeta'                            ;
+       vortex_tilt_allow_thresh=1.0                       ;
        atcfout="c${pert_posneg}${pert_num}"                ;; 
 
   fens) set +x; echo " "                                   ;
@@ -461,10 +517,10 @@ case ${cmodel} in
        atcfnum=91                                          ;
        atcffreq=$((vit_incr*100))                          ;
 
-       trkrwbd=0                                            ;
-       trkrebd=360                                            ;
-       trkrnbd=90                                            ;
-       trkrsbd=-90                                            ;
+       trkrwbd=260.0                                            ;
+       trkrebd=350.0                                            ;
+       trkrnbd=40.0                                            ;
+       trkrsbd=1.0                                            ;
        trkrtype='tracker'                                  ;
        mslpthresh=0.0015                                   ;
        use_backup_mslp_grad_check='y'                      ;
@@ -497,6 +553,17 @@ case ${cmodel} in
        atcfname="n${pert_posneg}${pert_num}"               ;
        rundescr='xxxx'                                     ;
        atcfdescr='xxxx'                                     ;
+       shear_calc_flag='y'                                ;
+       genflag='n'                                        ;
+       gen_read_rh_fields='n'                             ;
+       use_land_mask='n'                                  ;
+       read_separate_land_mask_file='n'                   ;
+       need_to_compute_rh_from_q='n'                      ;
+       smoothe_mslp_for_gen_scan='n'                      ;
+       depth_of_mslp_for_gen_scan=0.50                    ;
+       vortex_tilt_flag='y'                               ;
+       vortex_tilt_parm='zeta'                            ;
+       vortex_tilt_allow_thresh=1.0                       ;
        atcfout="n${pert_posneg}${pert_num}"                ;;
 
   ngps) set +x; echo " "                                    ;
@@ -520,10 +587,10 @@ case ${cmodel} in
        atcfnum=29                                          ;
        atcffreq=$((vit_incr*100))                          ;
 
-       trkrwbd=0                                            ;
-       trkrebd=360                                            ;
-       trkrnbd=90                                            ;
-       trkrsbd=-90                                            ;
+       trkrwbd=260.0                                            ;
+       trkrebd=350.0                                            ;
+       trkrnbd=40.0                                            ;
+       trkrsbd=1.0                                            ;
        trkrtype='tracker'                                  ;
        mslpthresh=0.0015                                   ;
        use_backup_mslp_grad_check='y'                      ;
@@ -553,6 +620,17 @@ case ${cmodel} in
        atcfname="ngx "                                     ;
        rundescr='xxxx'                                     ;
        atcfdescr='xxxx'                                     ;
+       shear_calc_flag='y'                                ;
+       genflag='n'                                        ;
+       gen_read_rh_fields='n'                             ;
+       use_land_mask='n'                                  ;
+       read_separate_land_mask_file='n'                   ;
+       need_to_compute_rh_from_q='n'                      ;
+       smoothe_mslp_for_gen_scan='n'                      ;
+       depth_of_mslp_for_gen_scan=0.50                    ;
+       vortex_tilt_flag='y'                               ;
+       vortex_tilt_parm='zeta'                            ;
+       vortex_tilt_allow_thresh=1.0                       ;
        atcfout="ngx"                                      ;;
 
   *) msg="FATAL ERROR:  Model $cmodel is not recognized."  ;
@@ -563,40 +641,40 @@ esac
 
 if [ ${PHASEFLAG} = 'y' ]; then
   if [ ${cmodel} = "gfs" ]; then
-    PARMlist="(UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET|HGT:900|HGT:850|HGT:800|HGT:750|HGT:700|HGT:650|HGT:600|HGT:550|HGT:500|HGT:450|HGT:400|HGT:350|HGT:300|TMP:500|TMP:450|TMP:400|TMP:350|TMP:300)" 
+    PARMlist="(UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET|HGT:900|HGT:850|HGT:800|HGT:750|HGT:700|HGT:650|HGT:600|HGT:550|HGT:500|HGT:450|HGT:400|HGT:350|HGT:300|TMP:500|TMP:450|TMP:400|TMP:350|TMP:300|TMP:surface)" 
 
   elif [ ${cmodel} = "gdas" ]; then
-    PARMlist="(UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET|HGT:900|HGT:850|HGT:800|HGT:750|HGT:700|HGT:650|HGT:600|HGT:550|HGT:500|HGT:450|HGT:400|HGT:350|HGT:300|TMP:500|TMP:450|TMP:400|TMP:350|TMP:300)"
+    PARMlist="(UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET|HGT:900|HGT:850|HGT:800|HGT:750|HGT:700|HGT:650|HGT:600|HGT:550|HGT:500|HGT:450|HGT:400|HGT:350|HGT:300|TMP:500|TMP:450|TMP:400|TMP:350|TMP:300|TMP:surface)"
 
   elif [ ${cmodel} = "ens" ]; then
-    PARMlist="(UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET|HGT:900|HGT:850|HGT:800|HGT:750|HGT:700|HGT:650|HGT:600|HGT:550|HGT:500|HGT:450|HGT:400|HGT:350|HGT:300|TMP:500|TMP:450|TMP:400|TMP:350|TMP:300)"
+    PARMlist="(UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET|HGT:900|HGT:850|HGT:800|HGT:750|HGT:700|HGT:650|HGT:600|HGT:550|HGT:500|HGT:450|HGT:400|HGT:350|HGT:300|TMP:500|TMP:450|TMP:400|TMP:350|TMP:300|TMP:surface)"
 
   elif [ ${cmodel} = "cens" ]; then
-    PARMlist="(UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|PRMSL|HGT:925|HGT:850|HGT:700|HGT:500|HGT:300|TMP:500|TMP:250)"
+    PARMlist="(UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|PRMSL|HGT:925|HGT:850|HGT:700|HGT:500|HGT:300|TMP:500|TMP:250|TMP:surface)"
 
   elif [ ${cmodel} = "cmc" ]; then
-    PARMlist="(UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|PRMSL|HGT:925|HGT:850|HGT:700|HGT:500|HGT:250|TMP:500|TMP:250)"
+    PARMlist="(UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|PRMSL|HGT:925|HGT:850|HGT:700|HGT:500|HGT:250|TMP:500|TMP:250|TMP:surface)"
 
   elif [ ${cmodel} = "fens" ]; then
-    PARMlist="(UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|PRMSL|HGT:925|HGT:850|HGT:700|HGT:500|HGT:250|TMP:500|TMP:250)"
+    PARMlist="(UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|PRMSL|HGT:925|HGT:850|HGT:700|HGT:500|HGT:250|TMP:500|TMP:250|TMP:surface)"
 
   elif [ ${cmodel} = "ngps" ]; then
-    PARMlist="(UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|PRMSL|HGT:925|HGT:850|HGT:700|HGT:500|HGT:400|HGT:300|TMP:500|TMP:400|TMP:300)"
+    PARMlist="(UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|PRMSL|HGT:925|HGT:850|HGT:700|HGT:500|HGT:400|HGT:300|TMP:500|TMP:400|TMP:300|TMP:surface)"
 
   fi
 
-  wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 V:850 V:700 V:500 10U:sfc 10V:sfc MSL:sfc GH:300 GH:400 GH:500 GH:925 T:300 T:400 T:500"
+  wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 U:400 U:300 U:200 V:850 V:700 V:500 V:400 V:300 V:200 10U:sfc 10V:sfc MSL:sfc GH:300 GH:400 GH:500 GH:925 T:300 T:400 T:500 T:sfc"
 else
   if [ ${cmodel} = "gfs" ]; then
-    PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET)"
+    PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET|TMP:surface)"
   elif [ ${cmodel} = "gdas" ]; then
-    PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET)"
+    PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET|TMP:surface)"
   elif [ ${cmodel} = "ens" ]; then
-    PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET)"
+    PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET|TMP:surface)"
   else
-    PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|PRMSL)"
+    PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|UGRD:400|UGRD:300|UGRD:200|VGRD:850|VGRD:700|VGRD:500|VGRD:400|VGRD:300|VGRD:200|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|PRMSL|TMP:surface)"
   fi  
-  wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 V:850 V:700 V:500 10U:sfc 10V:sfc MSL:sfc"
+  wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 U:400 U:300 U:200 V:850 V:700 V:500 V:400 V:300 V:200 10U:sfc 10V:sfc MSL:sfc TMP:sfc"
 fi
 
 #---------------------------------------------------------------#
@@ -865,7 +943,7 @@ then
   msg="$pgm start for $atcfout at ${cyc}z"
   postmsg "$jlogfile" "$msg"
 
-  ${EXECens_tracker}/supvit <${TRKDATA}/suv_input.${atcfout}.${PDY}${cyc}
+  ${EXECens_tracker}/supvit.x <${TRKDATA}/suv_input.${atcfout}.${PDY}${cyc}
   suvrcc=$?
 
   if [ ${suvrcc} -eq 0 ]
@@ -1083,7 +1161,7 @@ num_gen_vits=0
 
 if [ ${num_gen_vits} -gt 0 ]
 then
-  export pgm=supvit_gen
+  export pgm=supvit
   . prep_step
 
   export FORT31=${TRKDATA}/genvitals.${cmodel}.${atcfout}.${PDY}${cyc}
@@ -1092,7 +1170,7 @@ then
   msg="$pgm start for $atcfout at ${cyc}z"
   postmsg "$jlogfile" "$msg"
 
-  ${EXECens_tracker}/supvit_gen <${TRKDATA}/sgv_input.${atcfout}.${PDY}${cyc}
+  ${EXECens_tracker}/supvit.x <${TRKDATA}/sgv_input.${atcfout}.${PDY}${cyc}
   sgvrcc=$?
 
   if [ ${sgvrcc} -eq 0 ]
@@ -1102,9 +1180,9 @@ then
   else
     set +x
     echo " "
-    echo "FATAL ERROR:  An error occurred while running supvit_gen, "
+    echo "FATAL ERROR:  An error occurred while running supvit, "
     echo "!!! which is the program that updates the genesis vitals file."
-    echo "!!! Return code from supvit_gen = ${sgvrcc}"
+    echo "!!! Return code from supvit = ${sgvrcc}"
     echo "!!! model= ${atcfout}, forecast initial time = ${PDY}${cyc}"
     echo " "
     set -x
@@ -2256,9 +2334,12 @@ else
   export atcfymdh=${scc}${syy}${smm}${sdd}${shh}
 fi
 
-#contour_interval=100.0
-#write_vit=n
-#want_oci=.TRUE.
+radii_pctile=95.0
+radii_free_pass_pctile=67.0
+radii_width_thresh=15.0
+contour_interval=100.0
+write_vit=n
+want_oci=.TRUE.
 
 echo "&datein inp%bcc=${scc},inp%byy=${syy},inp%bmm=${smm},"      >${namelist}
 echo "        inp%bdd=${sdd},inp%bhh=${shh},inp%model=${model}," >>${namelist}
@@ -2285,7 +2366,7 @@ echo "      trkrinfo%enable_timing=1,"                           >>${namelist}
 echo "      trkrinfo%contint=${contour_interval},"               >>${namelist}
 echo "      trkrinfo%want_oci=${want_oci},"                      >>${namelist}
 echo "      trkrinfo%out_vit='${write_vit}',"                    >>${namelist}
-echo "      trkrinfo%use_land_mask='${use_land_mask}',"          >>${namelist}
+echo "      trkrinfo%read_separate_land_mask='n',"          >>${namelist}
 echo "      trkrinfo%inp_data_type='${inp_data_type}',"          >>${namelist}
 echo "      trkrinfo%gribver=${gribver},"                        >>${namelist}
 echo "      trkrinfo%g2_jpdtn=${g2_jpdtn},"                      >>${namelist}
@@ -2300,6 +2381,9 @@ echo "           wcore_depth=${WCORE_DEPTH}/"                    >>${namelist}
 
 echo "&structinfo structflag='${STRUCTFLAG}',"                   >>${namelist}
 echo "            ikeflag='${IKEFLAG}'/"                         >>${namelist}
+echo "            radii_pctile=95.0,"                            >>${namelist}
+echo "            radii_free_pass_pctile=67.0,"                  >>${namelist}
+echo "            radii_width_thresh=15.0,"                      >>${namelist}
 
 echo "&fnameinfo  gmodname='${atcfname}',"                       >>${namelist}
 echo "            rundescr='${rundescr}',"                       >>${namelist}
@@ -2348,6 +2432,30 @@ echo "      netcdfinfo%time_name='${ncdf_time_name}',"             >>${namelist}
 echo "      netcdfinfo%lon_name='${ncdf_lon_name}',"               >>${namelist}
 echo "      netcdfinfo%lat_name='${ncdf_lat_name}',"               >>${namelist}
 echo "      netcdfinfo%time_units='${ncdf_time_units}'/"           >>${namelist}
+echo "      netcdfinfo%sstname='${ncdf_sstname}',"                 >>${namelist}
+echo "      netcdfinfo%q850name='${ncdf_q850name}',"               >>${namelist}
+echo "      netcdfinfo%rh1000name='${ncdf_rh1000name}',"           >>${namelist}
+echo "      netcdfinfo%rh925name='${ncdf_rh925name}',"             >>${namelist}
+echo "      netcdfinfo%rh800name='${ncdf_rh800name}',"             >>${namelist}
+echo "      netcdfinfo%rh750name='${ncdf_rh750name}',"             >>${namelist}
+echo "      netcdfinfo%rh700name='${ncdf_rh700name}',"             >>${namelist}
+echo "      netcdfinfo%rh650name='${ncdf_rh650name}',"             >>${namelist}
+echo "      netcdfinfo%rh600name='${ncdf_rh600name}',"             >>${namelist}
+echo "      netcdfinfo%spfh1000name='${ncdf_spfh1000name}',"       >>${namelist}
+echo "      netcdfinfo%spfh925name='${ncdf_spfh925name}',"         >>${namelist}
+echo "      netcdfinfo%spfh800name='${ncdf_spfh800name}',"         >>${namelist}
+echo "      netcdfinfo%spfh750name='${ncdf_spfh750name}',"         >>${namelist}
+echo "      netcdfinfo%spfh700name='${ncdf_spfh700name}',"         >>${namelist}
+echo "      netcdfinfo%spfh650name='${ncdf_spfh650name}',"         >>${namelist}
+echo "      netcdfinfo%spfh600name='${ncdf_spfh600name}',"         >>${namelist}
+echo "      netcdfinfo%temp1000name='${ncdf_temp1000name}',"       >>${namelist}
+echo "      netcdfinfo%temp925name='${ncdf_temp925name}',"         >>${namelist}
+echo "      netcdfinfo%temp800name='${ncdf_temp800name}',"         >>${namelist}
+echo "      netcdfinfo%temp750name='${ncdf_temp750name}',"         >>${namelist}
+echo "      netcdfinfo%temp700name='${ncdf_temp700name}',"         >>${namelist}
+echo "      netcdfinfo%temp650name='${ncdf_temp650name}',"         >>${namelist}
+echo "      netcdfinfo%temp600name='${ncdf_temp600name}',"         >>${namelist}
+echo "      netcdfinfo%omega500name='${ncdf_omega500name}'/"       >>${namelist}
 
 echo "&parmpreflist user_wants_to_track_zeta850='${user_wants_to_track_zeta850}'," >>${namelist}
 echo "      user_wants_to_track_zeta700='${user_wants_to_track_zeta700}',"         >>${namelist}
@@ -2362,7 +2470,17 @@ echo "      user_wants_to_track_thick500850='${user_wants_to_track_thick500850}'
 echo "      user_wants_to_track_thick200500='${user_wants_to_track_thick200500}'," >>${namelist}
 echo "      user_wants_to_track_thick200850='${user_wants_to_track_thick200850}'/" >>${namelist}
 
-echo "&verbose verb=3,verb_g2=0/"                                >>${namelist}
+echo "&verbose verb=3,verb_g2=1/"                                >>${namelist}
+echo "&sheardiaginfo shearflag='${shear_calc_flag}'/"                             >>${namelist}
+echo "&sstdiaginfo sstflag='${sstflag}'/"                                 >>${namelist}
+echo "&gendiaginfo genflag='${genflag}',"                                 >>${namelist}
+echo "      gen_read_rh_fields='${gen_read_rh_fields}',"                             >>${namelist}
+echo "      need_to_compute_rh_from_q='${need_to_compute_rh_from_q}',"                      >>${namelist}
+echo "      smoothe_mslp_for_gen_scan='${smoothe_mslp_for_gen_scan}',"                      >>${namelist}
+echo "      depth_of_mslp_for_gen_scan=${depth_of_mslp_for_gen_scan}/"                    >>${namelist}
+echo "&vortextiltinfo vortex_tilt_flag='${vortex_tilt_flag}',"                     >>${namelist}
+echo "      vortex_tilt_parm='${vortex_tilt_parm}',"                            >>${namelist}
+echo "      vortex_tilt_allow_thresh=${vortex_tilt_allow_thresh}/"                       >>${namelist}
 
 export pgm=gettrk
 . prep_step
@@ -2471,7 +2589,7 @@ echo "TIMING: Before call to gettrk at `date`"
 echo " "
 set -x
 
-${EXECens_tracker}/gettrk <${namelist}
+${EXECens_tracker}/gettrk.x <${namelist}
 
 gettrk_rcc=$?
 if [ ${gettrk_rcc} -ne 0 ]; then

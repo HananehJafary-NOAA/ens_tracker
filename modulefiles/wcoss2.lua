@@ -57,13 +57,13 @@ load(pathJoin("w3emc", w3emc_ver))
 sigio_ver=os.getenv("sigio_ver") or "2.3.2"
 load(pathJoin("sigio", sigio_ver))
 
-prod_util=os.getenv("prod_util_ver") or "2.1.1"
+prod_util=os.getenv("prod_util_ver") or "2.0.13"
 load(pathJoin("prod_util", prod_util_ver))
 
-wgrib2_ver=os.getenv("wgrib2_ver") or "2.0.8"
+wgrib2_ver=os.getenv("wgrib2_ver") or "2.0.7"
 load(pathJoin("wgrib2", wgrib2_ver))
 
-grib_util_ver=os.getenv("grib_util_ver") or "1.3.0"
+grib_util_ver=os.getenv("grib_util_ver") or "1.2.3"
 load(pathJoin("grib-util", grib_util_ver))
 
 setenv("CC", "cc")

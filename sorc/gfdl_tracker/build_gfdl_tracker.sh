@@ -15,32 +15,32 @@ else
 fi
 
 module use ../../modulefiles
-module load $target
+module load $clustername
 module list
 
 
-if [ $target = hera ]; then
+if [ $clustername = hera ]; then
   export FC=ifort
   export F90=ifort
   export CC=icc
-elif [ $target = orion ]; then
+elif [ $clustername = orion ]; then
   export FC=ifort
   export F90=ifort
   export CC=icc
-elif [ $target = hercules ]; then
+elif [ $clustername = hercules ]; then
   export FC=ifort
   export F90=ifort
   export CC=icc
-elif [ $target = jet ]; then
+elif [ $clustername = jet ]; then
   export FC=ifort
   export F90=ifort
   export CC=icc
-elif [ $target = wcoss2 ] ; then
+elif [ $clustername = wcoss2 ] ; then
   export FC=ftn
   export F90=ftn
   export CC=icc
 else
-  echo "Unknown machine = $target"
+  echo "Unknown machine = $clustername"
   exit 1
 fi
 

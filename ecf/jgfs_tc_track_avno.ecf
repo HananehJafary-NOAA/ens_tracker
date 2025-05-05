@@ -1,40 +1,32 @@
 #!/bin/bash
-#PBS -N ens_tracker_gfs_tc_track_avno_%CYC%
+#PBS -N ens_tracker_gfs_tc_track_avno_00
 #PBS -j oe
-#PBS -A %PROJ%-%PROJENVIR%
-#PBS -q %QUEUE%
+#PBS -A ENSTRACK-DEV
+#PBS -q dev_transfer
 #PBS -S /bin/bash
 #PBS -l select=1:ncpus=1:mem=4GB
 #PBS -l walltime=00:30:00
 #PBS -l debug=true
 
-export model=ens_tracker
-%include <head.h>
-%include <envir-p1.h>
-#
-export PACKAGEHOME=%PACKAGEHOME%
-export cyc=%CYC%
+#export model=ens_tracker
+#%include <head.h>
+#%include <envir-p1.h>
 
-module load PrgEnv-intel/$PrgEnv_intel_ver
-module load intel/$intel_ver
-module load craype/$craype_ver
-
-module load hdf5/$hdf5_ver
-module load netcdf/$netcdf_ver
-
-module load g2/$g2_ver
-module load jasper/$jasper_ver
-module load libpng/$libpng_ver
-module load zlib/$zlib_ver
-
-module load w3emc/$w3emc_ver
-module load bacio/$bacio_ver
-
-module load libjpeg/$libjpeg_ver
-module load grib_util/$grib_util_ver
-module load wgrib2/$wgrib2_ver
-
+module reset
+export clustername=wcoss2
+module use /lfs/h2/emc/ens/noscrub/hananeh.jafary/ens_update_src/modulefiles
+module load ${clustername}.lua
 module list
+
+export model=ens_tracker
+export cyc=00
+export envir=dev
+export job=gfs_avno_${cyc}
+export COMROOT=/lfs/h2/emc/ptmp/hananeh.jafary/com
+export DATAROOT=/lfs/h2/emc/ptmp/hananeh.jafary
+export KEEPDATA=YES
+
+export PACKAGEHOME=/lfs/h2/emc/ens/noscrub/hananeh.jafary/ens_update_src
 
 # CALL executable job script here
 ${PACKAGEHOME}/jobs/JGFS_TC_TRACK_AVNO
