@@ -14,32 +14,32 @@ else
   export BUILD_TYPE=DEBUG
 fi
 
-module use ../modulefiles
-module load $clustername
+module use /lfs/h2/emc/ens/noscrub/hananeh.jafary/ens_update_src/modulefiles
+module load $target.lua
 module list
 
-if [ $clustername = hera ]; then
+if [ $target = hera ]; then
   export FC=ifort
   export F90=ifort
   export CC=icc
-elif [ $clustername = orion ]; then
+elif [ $target = orion ]; then
   export FC=ifort
   export F90=ifort
   export CC=icc
-elif [ $clustername = hercules ]; then
+elif [ $target = hercules ]; then
   export FC=ifort
   export F90=ifort
   export CC=icc
-elif [ $clustername = jet ]; then
+elif [ $target = jet ]; then
   export FC=ifort
   export F90=ifort
   export CC=icc
-elif [ $clustername = wcoss2 ] ; then
+elif [ $target = wcoss2 ] ; then
   export FC=ftn
   export F90=ftn
   export CC=icc
 else
-  echo "Unknown machine = $clustername"
+  echo "Unknown machine = $target"
   exit 1
 fi
 

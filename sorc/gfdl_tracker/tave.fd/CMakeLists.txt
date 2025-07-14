@@ -6,7 +6,7 @@
 #=======================================================================
 
 set(fortran_srcs
-  tave.f)
+  tave_jiayi.f)
 
 set(exe_name tave.x) 
 set(exec_dir ${CMAKE_SOURCE_DIR}/exec)

@@ -3803,8 +3803,12 @@ c           knots (1.9427) is explained in output_atcf.
 
                 print *,'ctx inp%model= ',inp%model
 
-                if (inp%model == 1 .or. inp%model == 8 .or. 
-     &              inp%model == 22) then                
+c                if (inp%model == 1 .or. inp%model == 8 .or. 
+c     &              inp%model == 22) then                
+
+      if (inp%model == 1 .or. inp%model == 10 .or. inp%model == 7
+     &  .or. inp%model == 22 .or. inp%model == 16
+     &  .or. inp%model == 15 .or. inp%model == 8) then
 
                   ! For the vt=00h lead time, if the  tracker failed to 
                   ! locate a position, we are going to write out an
@@ -4189,9 +4193,9 @@ c          User wants us to run a command per forecast time
 
       enddo ifhloop
 c
-      call output_all (fixlon,fixlat,inp,maxstorm,ifhmax,ioaret)
-      call output_atcf (fixlon,fixlat,inp,xmaxwind,maxstorm,ifhmax
-     &                 ,ioaret)
+c      call output_all (fixlon,fixlat,inp,maxstorm,ifhmax,ioaret)
+c      call output_atcf (fixlon,fixlat,inp,xmaxwind,maxstorm,ifhmax
+c     &                 ,ioaret)
 c
   73  format ('fixpos  ',a4,'  fhr= ',i4,':',i2.2,'   Fix position=  '
      &       ,f7.2,'E  (',f6.2,'W)',2x,f7.2,'   Max Wind= ',i3,' kts')
@@ -4327,50 +4331,90 @@ C
 C     OUTPUT:
 C     iret     The return code from this subroutine
 
+c
       USE inparms
       USE verbose_output
 
       implicit none
-c
+
+c      interface
+c        subroutine get_environment_variable(name, value, status)
+c          character(*), intent(in)  :: name
+c          character(*), intent(out) :: value
+c          integer     , intent(out) :: status
+c        end subroutine get_environment_variable
+c      end interface
+
+c      use iso_fortran_env, only: get_environment_variable
+
       type (datecard) inp
 
       logical(1)  output_file_open
       logical(1)  file_open
       logical(4)  file_open4,file_open5
-      character fnameg*7,fnamei*7,fnameo*7
-      character fname_mask_g*7,fname_mask_i*7
+      character(len=255) :: fnameg, fnamei, fnameo
+c      character fnameg*7,fnamei*7,fnameo*7
       character opening_mask*1
       character(*) gfilename,ifilename
       character(120) gopen_g_file,gopen_i_file
-      integer  igoret,iioret,iooret,lugb,lugi,lout,iret,nlen1,nlen2
+      character(2) :: lugb_str, lugi_str, lout_str
+      integer igoret,iioret,iooret,lugb,lugi,lout,iret,nlen1,nlen2
 
-      iret=0
-
+      iret = 0
       igoret = 0
       iioret = 0
       iooret = 0
 
+      write(lugb_str,'(I2.2)') lugb
+      write(lugi_str,'(I2.2)') lugi
+      write(lout_str,'(I2.2)') lout
+
       if (inp%file_seq == 'onebig') then
-        fnameg(1:5) = "fort."
-        fnamei(1:5) = "fort."
-        write(fnameg(6:7),'(I2)') lugb
-        write(fnamei(6:7),'(I2)') lugi
+        ! Use environment variables like FORT11, FORT31, FORT51
+        call get_environment_variable("FORT"//lugb_str, fnameg)
+        if (len_trim(fnameg) == 0) then
+          write(fnameg,'(A,I2.2)') 'fort.', lugb
+          inquire(file=fnameg, exist=file_open4)
+          if (.not. file_open4) then
+            write(fnameg,'(A,I2.2)') 'FORT', lugb
+          endif
+        endif
+
+        call get_environment_variable("FORT"//lugi_str, fnamei)
+        if (len_trim(fnamei) == 0) then
+          write(fnamei,'(A,I2.2)') 'fort.', lugi
+          inquire(file=fnamei, exist=file_open5)
+          if (.not. file_open5) then
+            write(fnamei,'(A,I2.2)') 'FORT', lugi
+          endif
+        endif
+
         call baopenr (lugb,fnameg,igoret)
         call baopenr (lugi,fnamei,iioret)
+
+        print *, 'fnameg = ', fnameg
+        print *, 'fnamei = ', fnamei
+        print *, 'igoret = ', igoret
+        print *, 'iioret = ', iioret
+
         if (opening_mask /= 'y') then
-          ! If this is a regular call to open_grib_files (i.e., not
-          ! for opening the land-sea mask file), then open the 
-          ! output grib file unit.
-          fnameo(1:5) = "fort."
-          write(fnameo(6:7),'(I2)') lout
+          call get_environment_variable("FORT"//lout_str, fnameo)
+          if (len_trim(fnameo) == 0) then
+            write(fnameo,'(A,I2.2)') 'fort.', lout
+            inquire(file=fnameo, exist=file_open4)
+            if (.not. file_open4) then
+              write(fnameo,'(A,I2.2)') 'FORT', lout
+            endif
+          endif
           call baopenw (lout,fnameo,iooret)
         endif
+
       else
 
         if (opening_mask == 'y') then
           print *,' '
           print *,'!!! ERROR: In open_grib_files, opening_mask=y '
-          print *,'!!! which means that we are trying to open up an' 
+          print *,'!!! which means that we are trying to open up an'
           print *,'!!! additional land-sea mask file, however the'
           print *,'!!! inp%file_seq flag indicates that this is not'
           print *,'!!! a onebig file, and as of yet, the functionality'
@@ -4391,21 +4435,18 @@ c
         print *,'gopen_g_file= ',gopen_g_file
         print *,'gopen_i_file= ',gopen_i_file
 
-c        write (6,81) gopen_g_file,gopen_i_file
-c   81   format (1x,'tpm gopen_g_file= ...',a<nlen1>
-c     &         ,'...  gopen_i_file= ...',a<nlen2>,'...')
-
-        print *,'gopen_g_file= ',gopen_g_file,'....'
-        print *,'gopen_i_file= ',gopen_i_file,'....'
-
         call baopenr (lugb,gopen_g_file,igoret)
         call baopenr (lugi,gopen_i_file,iioret)
         inquire (unit=lout, opened=output_file_open)
-        if (output_file_open) then
-          iooret = 0
-        else
-          fnameo(1:5) = "fort."
-          write(fnameo(6:7),'(I2)') lout
+        if (.not. output_file_open) then
+          call get_environment_variable("FORT"//lout_str, fnameo)
+          if (len_trim(fnameo) == 0) then
+            write(fnameo,'(A,I2.2)') 'fort.', lout
+            inquire(file=fnameo, exist=file_open4)
+            if (.not. file_open4) then
+              write(fnameo,'(A,I2.2)') 'FORT', lout
+            endif
+          endif
           call baopenw (lout,fnameo,iooret)
         endif
       endif
@@ -4433,16 +4474,16 @@ c     &         ,'...  gopen_i_file= ...',a<nlen2>,'...')
         print *,'TEST gname  open_grib_files, gfile= '
      &        ,gopen_g_file,' is OPEN'
       else
-        print *,'TEST gname  open_grib_files, gfile= '
+        print *,'TEST gname open_grib_files, gfile= '
      &        ,gopen_g_file,' is CLOSED'
       endif
 
       inquire (file=gopen_i_file, opened=file_open5)
       if (file_open5) then
-        print *,'TEST iname  open_grib_files, ifile= '
+      print *,'TEST iname  open_grib_files, ifile= '
      &         ,gopen_i_file,' is OPEN'
       else
-        print *,'TEST iname  open_grib_files, ifile= '
+        print *,'TEST iname open_grib_files, ifile= '
      &         ,gopen_i_file,' is CLOSED'
       endif
 
@@ -4453,10 +4494,8 @@ c     &         ,'...  gopen_i_file= ...',a<nlen2>,'...')
       endif
 
       if (igoret /= 0 .or. iioret /= 0 .or. iooret /= 0) then
-
         if ( verb .ge. 1 ) then
           print *,' '
-
           if (opening_mask == 'y') then
             print *,'!!! ERROR in sub open_grib_files opening grib file'
             print *,'!!! or grib index file for LAND-SEA mask file.'
@@ -4465,10 +4504,10 @@ c     &         ,'...  gopen_i_file= ...',a<nlen2>,'...')
             print *,'!!! index file return code = iioret = ',iioret
           else
             print *,'!!! ERROR in sub open_grib_files opening grib file'
-            print *,'!!! or grib index file for most variables (i.e.,'
+            print *,'!!! or grib index file for most variables i.e.,'
             print *,'!!! NOT the land-sea mask file)'
             print *,'!!! baopen return codes:'
-            print *,'!!! grib  file return code = igoret = ',igoret
+            print *,'!!! grib file return code = igoret = ',igoret
             print *,'!!! index file return code = iioret = ',iioret
             print *,'!!! output file return code = iooret = ',iooret
           endif
@@ -4479,8 +4518,7 @@ c     &         ,'...  gopen_i_file= ...',a<nlen2>,'...')
       endif
 
       return
-      end
-c
+      end 
 c-----------------------------------------------------------------------
 c
 c-----------------------------------------------------------------------
@@ -10127,7 +10165,7 @@ c     need to mod it to get it in a 0-360 framework.
         case ('P','p');  basinid = 'SP'
         case ('S','s');  basinid = 'SI'
         case ('B','b');  basinid = 'BB'
-        case ('A','a');  basinid = 'AA'
+c        case ('A','a');  basinid = 'AA'
         case ('Q','q');  basinid = 'SL'
         case default;    basinid = 'HC'
       end select
@@ -13552,7 +13590,7 @@ c
       real      xmask(imax,jmax)
 c
       if (ifh == 1) then
-        call baopenw (77,"fort.77",igoret)
+        call baopenw (77,"FORT77",igoret)
         print *,'baopenw: igoret= ',igoret
 
         if (igoret /= 0) then
@@ -22623,9 +22661,12 @@ c                 valid data at the point (used for regional grids)
 c
       type (trackstuff) trkrinfo
       type (datecard) inp
-      type (gribfield) :: gfld
+      type (gribfield) :: gfld,prevfld,holdgfld
 c
       integer, parameter :: jf=40000000
+c      integer, parameter :: nreadparms=20
+c      integer, parameter :: nreadgenparms=23
+
       real, allocatable :: f(:)
       real :: dmin,dmax,firstval,lastval
       logical(1), allocatable :: lb(:)
@@ -22652,10 +22693,13 @@ c
       integer   iglevtyp(nreadparms),genlevtyp(nreadgenparms)
       integer   ig2_parm_cat(nreadparms),ig2_parm_num(nreadparms)
       integer   ig2_lev_val(nreadparms),ig2_lev_typ(nreadparms)
+      integer   ig2_lev_11_cmc(nreadparms)
+      integer   ig2_lev_val_cmc(nreadparms)
+      integer   ig2_lev_11_cmcd(nreadparms),ig2_lev_val_cmcd(nreadparms)
       integer   cpsig2_parm_cat(nreadcpsparms)
       integer   cpsig2_parm_num(nreadcpsparms)
-      integer   cpsig2_lev_typ(nreadcpsparms)
-      integer   cpsig2_lev_val(nreadcpsparms)
+      integer   cpsig2_lev_10(nlevs_cps)
+      integer   cpsig2_lev_11(nlevs_cps),cpsig2_lev_12(nlevs_cps)
       integer   gensig2_parm_cat(nreadgenparms)
       integer   gensig2_parm_num(nreadgenparms)
       integer   gensig2_lev_typ(nreadgenparms)
@@ -22713,8 +22757,8 @@ c      data igparm   /41,41,33,34,33,34,7,7,1,33,34,33,34,11,7,7,81/
      &              ,'gphgt','gphgt','mslp','ugrid','vgrid','ugrid'
      &              ,'vgrid','temp','gphgt','gphgt','lmask'
      &              ,'ugrid','vgrid','sst'/
-
-      data genparm   /51,7*52,7*51,7*11,39/
+      data genparm   /51,52,52,52,52,52,52,52
+     &              ,51,51,51,51,51,51,51,11,11,11,11,11,11,11,39/
       data genlevtyp /23*100/
       data genlev    /850,1000,925,800,750,700
      &                   ,650,600,1000,925,800,750
@@ -22753,11 +22797,20 @@ c      data igparm   /41,41,33,34,33,34,7,7,1,33,34,33,34,11,7,7,81/
      &                  ,100,100,100,100,100,  1,100,100,  1/
       data ig2_lev_val  /850,700,850,850,700,700,850,700,  0, 10, 10
      &                  ,500,500,401,500,200,  0,200,200,  0/
+
       data cpsig2_parm_cat /13*3/
       data cpsig2_parm_num /13*5/
-      data cpsig2_lev_typ  /13*100/
-      data cpsig2_lev_val  /900,850,800,750,700,650,600,550,500,450,400
-     &                     ,350,300/
+      data ig2_lev_11_cmc /-3,-4,-3,-3,-4,-4,-3,-4,0,0,0,-4,-4,0
+     &                     ,-4,-4,0,0,0,0/
+c      data cpsig2_lev_typ  /13*100/
+c      data cpsig2_lev_val  /900,850,800,750,700,650,600,550,500,450,400
+c     &                     ,350,300/
+      data cpsig2_lev_10  /13*100/
+      data cpsig2_lev_11  /13*0/
+      data cpsig2_lev_12  /90000,85000,80000,75000,70000,65000
+     &         ,60000,55000,50000,45000,40000
+     &           ,35000,30000/
+
       data gensig2_parm_cat /15*1,7*0,2/
       data gensig2_parm_num /0,1,1,1,1,1,1,1
      &                          ,0,0,0,0,0,0,0
@@ -22964,11 +23017,20 @@ c         choose to average something else in the future.
           endif
 
           JPDT(10) = ig2_lev_typ(ip)
-          if (JPDT(10) == 100) then   ! isobaric surface
-            JPDT(12) = ig2_lev_val(ip) * 100  !  GRIB2 levels are in Pa
+          if (inp%model == 16 ) then
+            JPDT(11) = ig2_lev_11_cmc(ip)
+            JPDT(12) = ig2_lev_val_cmc(ip)
+          elseif (inp%model == 15 ) then
+            JPDT(11) = ig2_lev_11_cmcd(ip)
+            JPDT(12) = ig2_lev_val_cmcd(ip)
           else
-            JPDT(12) = ig2_lev_val(ip) ! This is going to be either
-                                       ! mslp, SST, or 10m winds.
+            JPDT(11) = 0
+            if (JPDT(10) == 100) then   ! isobaric surface
+              JPDT(12) = ig2_lev_val(ip) * 100  !  GRIB2 levels are in Pa
+            else
+              JPDT(12) = ig2_lev_val(ip) ! This is going to be either
+     &                               ! mslp, SST, or 10m winds.
+            endif
           endif
 
           if ( verb_g2 .ge. 1 ) then
@@ -23328,18 +23390,26 @@ c       *------------------------------------------------------------*
                 JPDT(9) = ifhours(ifh)
               endif
 
-              JPDT(10) = cpsig2_lev_typ(ip)
-              if (JPDT(10) == 100) then   ! isobaric surface
-                JPDT(12) = cpsig2_lev_val(ip) * 100  ! GRIB2 levels 
-                                                     ! are in Pa
-              else
-                if (verb .ge. 3) then
-                  print *,' '
-                  print *,'ERROR in getdata: JPDT(10) array value'
-                  print *,'should only be 100 in this CPS section'
-                  print *,'for GRIB2 data.'
-                endif
-              endif
+c              JPDT(10) = cpsig2_lev_typ(ip)
+              JPDT(10) = cpsig2_lev_10(ip)
+
+      if (inp%model == 1 .or. inp%model == 10 .or. inp%model == 7
+     &  .or. inp%model == 22 .or. inp%model == 16
+     &  .or. inp%model == 15 .or. inp%model == 8) then
+              JPDT(11) = cpsig2_lev_11(ip)
+              JPDT(12) = cpsig2_lev_12(ip)
+      endif       
+c              if (JPDT(10) == 100) then   ! isobaric surface
+c                JPDT(12) = cpsig2_lev_val(ip) * 100  ! GRIB2 levels 
+c                                                     ! are in Pa
+c              else
+c                if (verb .ge. 3) then
+c                  print *,' '
+c                  print *,'ERROR in getdata: JPDT(10) array value'
+c                  print *,'should only be 100 in this CPS section'
+c                  print *,'for GRIB2 data.'
+c                endif
+c              endif
 
               if(enable_timing/=0) then
                  call date_and_time (big_ben(1),big_ben(2),big_ben(3)

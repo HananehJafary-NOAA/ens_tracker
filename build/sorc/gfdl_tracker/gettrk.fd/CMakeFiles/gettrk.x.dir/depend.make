@@ -91,42 +91,42 @@ sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/waitfor_parms.mod.stamp: sor
 sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_modules.f.o.provides.build:
 	$(CMAKE_COMMAND) -E touch sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_modules.f.o.provides.build
 sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/build: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_modules.f.o.provides.build
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: \
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: \
  /apps/prod/hpc-stack/intel-19.1.3.304/cray-mpich-8.1.4/netcdf/4.7.4/include/netcdf.inc
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/atcf.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/contours.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/def_vitals.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/error_parms.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gen_vitals.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/genesis_diags.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gfilename_info.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: /apps/ops/prod/libs/intel/19.1.3.304/g2/3.4.5/include_d/grib_mod.mod
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/grid_bounds.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/inparms.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/level_parms.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/module_waitfor.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/netcdf_parms.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: /apps/ops/prod/libs/intel/19.1.3.304/g2/3.4.5/include_d/params.mod
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/phase.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/radii.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/read_parms.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/set_max_parms.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/shear_diags.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/sst_diags.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/structure.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/tracked_parms.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/tracking_parm_prefs.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/trig_vals.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/trkrparms.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/verbose_output.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/vortex_tilt_diags.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/waitfor_parms.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o.provides.build: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/access_subroutines.mod.stamp
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/access_subroutines.mod.stamp: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/atcf.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/contours.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/def_vitals.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/error_parms.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gen_vitals.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/genesis_diags.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gfilename_info.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: /apps/ops/prod/libs/intel/19.1.3.304/g2/3.4.5/include_d/grib_mod.mod
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/grid_bounds.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/inparms.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/level_parms.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/module_waitfor.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/netcdf_parms.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: /apps/ops/prod/libs/intel/19.1.3.304/g2/3.4.5/include_d/params.mod
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/phase.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/radii.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/read_parms.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/set_max_parms.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/shear_diags.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/sst_diags.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/structure.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/tracked_parms.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/tracking_parm_prefs.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/trig_vals.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/trkrparms.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/verbose_output.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/vortex_tilt_diags.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/waitfor_parms.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o.provides.build: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/access_subroutines.mod.stamp
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/access_subroutines.mod.stamp: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o
 	$(CMAKE_COMMAND) -E cmake_copy_f90_mod sorc/gfdl_tracker/gettrk.fd/access_subroutines.mod sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/access_subroutines.mod.stamp Intel
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o.provides.build:
-	$(CMAKE_COMMAND) -E touch sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o.provides.build
-sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/build: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines.f.o.provides.build
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o.provides.build:
+	$(CMAKE_COMMAND) -E touch sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o.provides.build
+sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/build: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/gettrk_subroutines_hana2.f.o.provides.build
 sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/module_waitfor.f.o.provides.build: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/module_waitfor.mod.stamp
 sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/module_waitfor.mod.stamp: sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/module_waitfor.f.o
 	$(CMAKE_COMMAND) -E cmake_copy_f90_mod sorc/gfdl_tracker/gettrk.fd/module_waitfor.mod sorc/gfdl_tracker/gettrk.fd/CMakeFiles/gettrk.x.dir/module_waitfor.mod.stamp Intel

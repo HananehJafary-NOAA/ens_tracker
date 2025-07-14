@@ -57,6 +57,7 @@ elif [[ -d /gpfs/f6 ]]; then
   target=gaeac6
 elif [[ -d /lfs/h1 && -d /lfs/h2 ]] ; then
     target=wcoss2
+    module purge
     . $MODULESHOME/init/sh
 else
     echo WARNING: UNKNOWN PLATFORM 1>&2

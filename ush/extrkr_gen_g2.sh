@@ -75,7 +75,7 @@ qid=$$
 #export cmodel=${cmodel:-$3}
 export jobid=${jobid:-testjob}
 export SENDCOM=${SENDCOM:-NO}
-export PHASEFLAG=y
+export PHASEFLAG=n
 export WCORE_DEPTH=1.0
 #export PHASE_SCHEME=vtt
 #export PHASE_SCHEME=cps
@@ -176,7 +176,7 @@ case ${cmodel} in
        atcfname="gfso"                                     ;
        atcfout="gfso"                                      ;
        atcffreq=600                                        ;
-
+       inp_data_type='grib'
        rundescr="xxxx"                                     ;
        atcfdescr="xxxx"                                    ;
 
@@ -361,26 +361,26 @@ if [ ${PHASEFLAG} = 'y' ]; then
 
 #J.Peng----2014-10-28---------
   if [ ${cmodel} = "gfs" ]; then
-  wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV ABSV:850 ABSV:700 MSLET HGT:900 HGT:850 HGT:800 HGT:750 HGT:700 HGT:650 HGT:600 HGT:550 HGT:500 HGT:450 HGT:400 HGT:350 HGT:300 TMP:500 TMP:450 TMP:400 TMP:350 TMP:300 RH:500"
+    wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV ABSV:850 ABSV:700 MSLET HGT:900 HGT:850 HGT:800 HGT:750 HGT:700 HGT:650 HGT:600 HGT:550 HGT:500 HGT:450 HGT:400 HGT:350 HGT:300 TMP:500 TMP:450 TMP:400 TMP:350 TMP:300 RH:500"
 
   elif [ ${cmodel} = "ngps" ]; then
-   wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:400 HGT:300 TMP:500 TMP:400 TMP:300 RH:500"
+    wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:400 HGT:300 TMP:500 TMP:400 TMP:300 RH:500"
 
   elif [ ${cmodel} = "ens" ]; then
 #   wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV ABSV:850 ABSV:700 MSLET HGT:925 HGT:850 HGT:700 HGT:500 HGT:400 HGT:300 TMP:500 TMP:400 TMP:300 RH:500"
-  wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV ABSV:850 ABSV:700 MSLET HGT:900 HGT:850 HGT:800 HGT:750 HGT:700 HGT:650 HGT:600 HGT:550 HGT:500 HGT:450 HGT:400 HGT:350 HGT:300 TMP:500 TMP:450 TMP:400 TMP:350 TMP:300 RH:500"
+    wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV ABSV:850 ABSV:700 MSLET HGT:900 HGT:850 HGT:800 HGT:750 HGT:700 HGT:650 HGT:600 HGT:550 HGT:500 HGT:450 HGT:400 HGT:350 HGT:300 TMP:500 TMP:450 TMP:400 TMP:350 TMP:300 RH:500"
 
   elif [ ${cmodel} = "cens" ]; then 
-  wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:250 TMP:500 TMP:250 RH:500"
+    wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:250 TMP:500 TMP:250 RH:500"
 
   elif [ ${cmodel} = "cmc" ]; then
-  wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV ABSV:850 ABSV:700 PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:250 TMP:500 TMP:250 SPFH:500"
+    wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV ABSV:850 ABSV:700 PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:250 TMP:500 TMP:250 SPFH:500"
 
   elif [ ${cmodel} = "fens" ]; then
-  wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:250 TMP:500 TMP:250 RH:500"
+    wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:250 TMP:500 TMP:250 RH:500"
 
   fi
-  wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 U:200 V:850 V:700 V:500 V:200 10U:sfc 10V:sfc MSL:sfc GH:300 GH:400 GH:500 GH:925 T:300 T:400 T:500 R:500"
+    wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 U:200 V:850 V:700 V:500 V:200 10U:sfc 10V:sfc MSL:sfc GH:300 GH:400 GH:500 GH:925 T:300 T:400 T:500 R:500"
 
 else
   wgrib_parmlist=" HGT:850 HGT:700 UGRD:850 UGRD:700 UGRD:500 VGRD:850 VGRD:700 VGRD:500 SurfaceU SurfaceV ABSV:850 ABSV:700 MSLET "
@@ -708,7 +708,7 @@ numvitrecs=`cat ${TRKDATA}/vitals.${atcfout}.${PDY}${cyc} | wc -l`
 #-----------------------------------------------------------------
 if [ ${numvitrecs} -gt 0 ]
 then
-  export pgm=supvit
+  export pgm=supvit.x
   . prep_step
 
   # Input file
@@ -720,7 +720,7 @@ then
   msg="$pgm start for $atcfout at ${cyc}z"
   postmsg "$jlogfile" "$msg"
 
-  ${EXECens_tracker}/supvit <${TRKDATA}/suv_input.${atcfout}.${PDY}${cyc}
+  ${EXECens_tracker}/supvit.x <${TRKDATA}/suv_input.${atcfout}.${PDY}${cyc}
   suvrcc=$?
 
   if [ ${suvrcc} -eq 0 ]
@@ -935,7 +935,7 @@ num_gen_vits=0
 
 if [ ${num_gen_vits} -gt 0 ]
 then
-  export pgm=supvit_gen
+  export pgm=supvit.x
   . prep_step
 
   # Input file
@@ -947,7 +947,7 @@ then
   msg="$pgm start for $atcfout at ${cyc}z"
   postmsg "$jlogfile" "$msg"
 
-  ${EXECens_tracker}/supvit_gen <${TRKDATA}/sgv_input.${atcfout}.${PDY}${cyc}
+  ${EXECens_tracker}/supvit.x <${TRKDATA}/sgv_input.${atcfout}.${PDY}${cyc}
   sgvrcc=$?
 
   if [ ${sgvrcc} -eq 0 ]
@@ -1320,8 +1320,8 @@ then
       ${GRB2INDEX:?} ${gfs_master_file} ${gfs_master_file}.ix
       export err=$?; err_chk
 
-      g1=${gfs_master_file}
-      x1=${gfs_master_file}.ix
+#      g1=${gfs_master_file}
+#      x1=${gfs_master_file}.ix
       cat ${gfs_master_file} >>${gfs_cat_file}
     done
 
@@ -1379,11 +1379,9 @@ then
 #      ln -s -f ${TRKDATA}/${cmodel}.${PDY}${cyc}.t.f${fhour}     fort.51
 #      ${EXECens_tracker}/vint_g2.x <${namelist}
 #      rcc=$?
-
+      ffile=${gfile}
       gparm=11
 #      ffile=${TRKDATA}/${cmodel}.${PDY}${cyc}.t.f${fhour}
-      ffile=${gfile}
- 
       . prep_step
 
       # Input files
@@ -1397,7 +1395,7 @@ then
       export FORT31=${ifile}
 
       # Output file
-      export FORT51=${TRKDATA}/${cmodel}.tave.${PDY}${cyc}.f${fhour}
+      export FORT51=${TRKDATA}/${cmodel}_tave.${PDY}${cyc}.f${fhour}
 #      export FORT92=${TRKDATA}/${cmodel}.tave92.${PDY}${cyc}.f${fhour}
 
       ${EXECens_tracker}/tave.x <${namelist}
@@ -1413,7 +1411,7 @@ then
         err_exit "tave.x- ERROR AT extrkr_gen_g2.sh LINE $LINENO"
       fi
 
-      tavefile=${TRKDATA}/${cmodel}.tave.${PDY}${cyc}.f${fhour}
+      tavefile=${TRKDATA}/${cmodel}_tave.${PDY}${cyc}.f${fhour}
 #      zfile=${TRKDATA}/${cmodel}.${PDY}${cyc}.z.f${fhour}
 #      cat ${zfile} ${tavefile} >>${catfile}
       cat ${tavefile} >>${catfile}

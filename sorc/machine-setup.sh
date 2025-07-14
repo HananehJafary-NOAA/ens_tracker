@@ -56,7 +56,7 @@ elif [[ -d /gpfs/f6 ]]; then
   # We are on GAEAC6.
   target=gaeac6
 elif [[ -d /lfs/h1 && -d /lfs/h2 ]] ; then
-    target=wcoss2
+  target=wcoss2
     . $MODULESHOME/init/sh
 else
     echo WARNING: UNKNOWN PLATFORM 1>&2

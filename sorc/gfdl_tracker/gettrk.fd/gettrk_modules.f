@@ -479,6 +479,8 @@ c
                                             ! read in for Hart's CPS
         integer, parameter :: nreadgenparms=23 ! max # of parameters to
                                             ! read in for genesis parms
+        integer, parameter :: nlevs_cps=13 ! max # of parameters to
+                                            ! read in for cmc parms
       end module read_parms
 c
       module trig_vals

@@ -6,7 +6,7 @@
 #=======================================================================
 
 set(fortran_srcs
-  vint.f)
+  vint_emc.f)
 
 set(exe_name vint.x)
 set(exec_dir ${CMAKE_SOURCE_DIR}/exec)

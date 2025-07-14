@@ -6,7 +6,8 @@
 #=======================================================================
 
 set(fortran_srcs
-  supvit_modules.f supvit_main.f)
+  supvit_modules.f 
+  supvit_main.f)
 
 set(exe_name supvit.x) 
 set(exec_dir ${CMAKE_SOURCE_DIR}/exec)

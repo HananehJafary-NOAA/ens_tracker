@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/vint.x.dir/vint.f.o"
+  "CMakeFiles/vint.x.dir/vint_emc.f.o"
   "vint.x"
   "vint.x.pdb"
 )

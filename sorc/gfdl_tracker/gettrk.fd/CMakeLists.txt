@@ -8,7 +8,7 @@ set(fortran_srcs
   gettrk_modules.f 
   module_waitfor.f 
   cwaitfor.c
-  gettrk_subroutines.f
+  gettrk_subroutines_hana2.f
   gettrk_main.f)
 
 set(exe_name gettrk.x) 

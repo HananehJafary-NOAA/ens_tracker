@@ -11,14 +11,14 @@ export gfsdir=${COMINgfs}/${cyc}/atmos
 
 export trkrtype=tcgen
 export trkrebd=350.0
-export trkrwbd=105.0
-export trkrnbd=30.0
-export trkrsbd=5.0
+export trkrwbd=260.0
+export trkrnbd=40.0
+export trkrsbd=1.0
 export mslpthresh=0.0015
 export v850thresh=1.5000
 export regtype=altg
 
-export pert=p01
+export pert=p25
 export pertdir=${DATA}/${cmodel}/${pert}
 mkdir -p $pertdir
 

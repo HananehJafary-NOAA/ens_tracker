@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/tave.x.dir/tave.f.o"
+  "CMakeFiles/tave.x.dir/tave_jiayi.f.o"
   "tave.x"
   "tave.x.pdb"
 )
