@@ -75,13 +75,13 @@ qid=$$
 #export cmodel=${cmodel:-$3}
 export jobid=${jobid:-testjob}
 export SENDCOM=${SENDCOM:-NO}
-export PHASEFLAG=n
-export WCORE_DEPTH=1.0
+#export PHASEFLAG=n
+#export WCORE_DEPTH=1.0
 #export PHASE_SCHEME=vtt
 #export PHASE_SCHEME=cps
-export PHASE_SCHEME=both
-export STRUCTFLAG=n
-export IKEFLAG=n
+#export PHASE_SCHEME=both
+#export STRUCTFLAG=n
+#export IKEFLAG=n
 
 if [ ! -d $TRKDATA ]
 then
@@ -169,24 +169,63 @@ case ${cmodel} in
        gfsdir=${gfsdir:-${COMINgfs:?}/${cyc}/atmos}                     ;
        gfsgfile=gfs.t${cyc}z.pgrb2.0p25.f                  ;
        vit_incr=6
-
        fcstlen=120                                         ;
        fcsthrs=$(seq -w -s' ' 0 $vit_incr $fcstlen)        ;
        atcfnum=15                                          ;
-       atcfname="gfso"                                     ;
-       atcfout="gfso"                                      ;
+       if [ ${loopnum} -eq 8 ]; then
+         atcfname="gfsr"
+	 atcfout="gfsr"
+       else
+         atcfname="avnt"
+	 atcfout="avnt"
+       fi                                                  ;
        atcffreq=600                                        ;
-       inp_data_type='grib'
-       rundescr="xxxx"                                     ;
-       atcfdescr="xxxx"                                    ;
+       trkrwbd=260.0                                       ;
+       trkrebd=350.0                                       ;
+       trkrnbd=40.0                                        ;
+       trkrsbd=1.0                                         ;
 
        mslpthresh=0.0015                                   ;
+       use_backup_mslp_grad_check='y'                      ;
+       max_mslp_850=400.0                                  ;
        v850thresh=1.5000                                   ;
+       v850_qwc_thresh=1.0000                              ;
+       cint_grid_bound_check=0.50                          ;
+       use_backup_850_vt_check='y'                         ;
+       contour_interval=100.0                              ;
+       write_vit='n'                                       ;
+       use_land_mask='n'                                   ;
+       inp_data_type='grib'                                ;
+       gribver=2                                           ;
+       g2_jpdtn=0                                          ;
+       g2_mslp_parm_id=192                                 ;
+       g1_mslp_parm_id=130                                 ;
+       g1_sfcwind_lev_typ=105                              ;
+       g1_sfcwind_lev_val=10                               ;
+       PHASEFLAG='n'                                      ;
+       PHASE_SCHEME='both'                                ;
+       WCORE_DEPTH=1.0                                    ;
+       STRUCTFLAG='n'                                     ;
+       IKEFLAG='n'                                        ;
+       rundescr="xxxx"                                     ;
+       atcfdescr="xxxx"                                    ;
+       sstflag='y'                                         ; 
+       shear_calc_flag='y'                                ;
+       genflag='n'                                        ;
+       gen_read_rh_fields='n'                             ;
+       use_land_mask='n'                                  ;
+       read_separate_land_mask_file='n'                   ;
+       need_to_compute_rh_from_q='n'                      ;
+       smoothe_mslp_for_gen_scan='n'                      ;
+       depth_of_mslp_for_gen_scan=0.50                    ;
        modtyp='global'                                     ;
-
        file_sequence="onebig"                              ;
        lead_time_units='hours'                             ;
+       nest_type='fixed'                                   ;
        g2_jpdtn=0                                          ;
+       vortex_tilt_flag='n'                                ;
+       vortex_tilt_parm='zeta'                             ;
+       vortex_tilt_allow_thresh=1.0                        ;
        model=1                                             ;;
 
 # g2_jpdtn sets the variable that will be used as "JPDTN" for
@@ -383,8 +422,9 @@ if [ ${PHASEFLAG} = 'y' ]; then
     wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 U:200 V:850 V:700 V:500 V:200 10U:sfc 10V:sfc MSL:sfc GH:300 GH:400 GH:500 GH:925 T:300 T:400 T:500 R:500"
 
 else
-  wgrib_parmlist=" HGT:850 HGT:700 UGRD:850 UGRD:700 UGRD:500 VGRD:850 VGRD:700 VGRD:500 SurfaceU SurfaceV ABSV:850 ABSV:700 MSLET "
-  wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 V:850 V:700 V:500 10U:sfc 10V:sfc MSL:sfc"
+  wgrib_parmlist="HGT:850 HGT:700 UGRD:850 UGRD:700 UGRD:500 UGRD:400 UGRD:300 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:400 VGRD:300 VGRD:200 UGRD:10 VGRD:10 ABSV:850 ABSV:700 PRMSL MSLET TMP:surface"
+
+  wgrib_ec_hires_parmlist="GH:850 GH:700 U:850 U:700 U:500 U:400 U:300 U:200 V:850 V:700 V:500 V:400 V:300 V:200 10U:sfc 10V:sfc MSL:sfc TMP:sfc"
 fi
 
 #---------------------------------------------------------------#
@@ -1304,21 +1344,21 @@ then
       do
         case ${parm} in
           "SurfaceU")
-          grep "UGRD:10 m " gfs.ix | ${WGRIB2:?} -i $gfile -append -grib \
-            ${TRKDATA}/master.gfsgribfile.${PDY}${cyc}.f${fhour} ;;
+              grep "UGRD:10 m " gfs.ix | ${WGRIB2:?} -i $gfile -append -grib \
+                           ${TRKDATA}/master.gfsgribfile.${PDY}${cyc}.f${fhour} ;;
           "SurfaceV")
-          grep "VGRD:10 m " gfs.ix | ${WGRIB2:?} -i $gfile -append -grib \
-            ${TRKDATA}/master.gfsgribfile.${PDY}${cyc}.f${fhour} ;;
-            *)
-          grep "${parm}" gfs.ix | ${WGRIB2:?} -i $gfile -append -grib \
-            ${TRKDATA}/master.gfsgribfile.${PDY}${cyc}.f${fhour} ;;
+              grep "VGRD:10 m " gfs.ix | ${WGRIB2:?} -i $gfile -append -grib \
+                           ${TRKDATA}/master.gfsgribfile.${PDY}${cyc}.f${fhour} ;;
+                  *)
+              grep "${parm}" gfs.ix | ${WGRIB2:?} -i $gfile -append -grib \
+                           ${TRKDATA}/master.gfsgribfile.${PDY}${cyc}.f${fhour} ;;
         esac
       done
 
       gfs_master_file=${TRKDATA}/master.gfsgribfile.${PDY}${cyc}.f${fhour}
       gfs_cat_file=${TRKDATA}/gfsgribfile.${PDY}${cyc}
-      ${GRB2INDEX:?} ${gfs_master_file} ${gfs_master_file}.ix
-      export err=$?; err_chk
+#      ${GRB2INDEX:?} ${gfs_master_file} ${gfs_master_file}.ix
+#      export err=$?; err_chk
 
 #      g1=${gfs_master_file}
 #      x1=${gfs_master_file}.ix
@@ -1334,6 +1374,10 @@ then
 
     for fhour in ${fcsthrs}
     do
+      if [ ${fhour} -eq 99 ]
+      then
+        continue
+      fi
 
       set +x
       echo " "
@@ -1389,13 +1433,19 @@ then
       echo "&timein ifcsthour=${fhour},"       >${namelist}
       echo "        iparm=${gparm},"          >>${namelist}
       echo "        gribver=${gribver},"      >>${namelist}
-      echo "        g2_jpdtn=${g2_jpdtn},"    >>${namelist}
-      echo "        g2_model=${model}/"       >>${namelist}
+      echo "        g2_jpdtn=${g2_jpdtn}/"    >>${namelist}
+#      echo "        g2_model=${model}/"       >>${namelist}
       export FORT11=${ffile}
       export FORT31=${ifile}
 
+      echo "FFILE = $ffile"
+      echo "IFILE = $ifile"
+      ls -l $ffile
+      ls -l $ifile
+      echo "Contents of FFILE:"
+
       # Output file
-      export FORT51=${TRKDATA}/${cmodel}_tave.${PDY}${cyc}.f${fhour}
+      export FORT51=${TRKDATA}/${cmodel}.tave.${PDY}${cyc}.f${fhour}
 #      export FORT92=${TRKDATA}/${cmodel}.tave92.${PDY}${cyc}.f${fhour}
 
       ${EXECens_tracker}/tave.x <${namelist}
@@ -1411,7 +1461,7 @@ then
         err_exit "tave.x- ERROR AT extrkr_gen_g2.sh LINE $LINENO"
       fi
 
-      tavefile=${TRKDATA}/${cmodel}_tave.${PDY}${cyc}.f${fhour}
+      tavefile=${TRKDATA}/${cmodel}.tave.${PDY}${cyc}.f${fhour}
 #      zfile=${TRKDATA}/${cmodel}.${PDY}${cyc}.z.f${fhour}
 #      cat ${zfile} ${tavefile} >>${catfile}
       cat ${tavefile} >>${catfile}
@@ -1427,8 +1477,8 @@ then
       echo "&timein ifcsthour=${fhour},"  >${namelist}
       echo "        iparm=${gparm},"          >>${namelist}
       echo "        gribver=${gribver},"      >>${namelist}
-      echo "        g2_jpdtn=${g2_jpdtn},"    >>${namelist}
-      echo "        g2_model=${model}/"       >>${namelist}
+      echo "        g2_jpdtn=${g2_jpdtn}/"    >>${namelist}
+#      echo "        g2_model=${model}/"       >>${namelist}
       export FORT11=${ffile}
       export FORT31=${ifile}
 
@@ -2499,9 +2549,57 @@ ATCFNAME=` echo "${atcfname}" | tr '[a-z]' '[A-Z]'`
 
 export atcfymdh=${scc}${syy}${smm}${sdd}${shh}
 
+#contour_interval=100.0
+#write_vit=n
+#want_oci=.TRUE.
+
+if [ ${loopnum} -eq 8 -a ${cmodel} = 'gfs' ]; then
+# set it artificially high to effectively turn off the check and 
+# ensure it won't be triggered
+  max_mslp_850=4000.0
+else
+  max_mslp_850=400.0
+fi
+
+export use_land_mask=${use_land_mask:-no}
 contour_interval=100.0
-write_vit=y
+radii_pctile=95.0
+radii_free_pass_pctile=67.0
+radii_width_thresh=15.0
+write_vit=n
 want_oci=.TRUE.
+use_backup_mslp_grad_check=${use_backup_mslp_grad_check:-y}
+use_backup_850_vt_check=${use_backup_850_vt_check:-y}
+contint_grid_bound_check=0.50
+user_wants_to_track_zeta850=y
+user_wants_to_track_zeta700=y
+user_wants_to_track_wcirc850=y
+user_wants_to_track_wcirc700=y
+user_wants_to_track_gph850=y
+user_wants_to_track_gph700=y
+user_wants_to_track_mslp=y
+user_wants_to_track_wcircsfc=y
+user_wants_to_track_zetasfc=y
+user_wants_to_track_thick500850=n
+user_wants_to_track_thick200500=n
+user_wants_to_track_thick200850=n
+
+set +x
+echo " "
+echo "After set perts ${pert}, user_wants_to_track_zeta850= ${user_wants_to_track_zeta850}"
+echo "After set perts ${pert}, user_wants_to_track_zeta700= ${user_wants_to_track_zeta700}"
+echo "After set perts ${pert}, user_wants_to_track_wcirc850= ${user_wants_to_track_wcirc850}"
+echo "After set perts ${pert}, user_wants_to_track_wcirc700= ${user_wants_to_track_wcirc700}"
+echo "After set perts ${pert}, user_wants_to_track_gph850= ${user_wants_to_track_gph850}"
+echo "After set perts ${pert}, user_wants_to_track_gph700= ${user_wants_to_track_gph700}"
+echo "After set perts ${pert}, user_wants_to_track_mslp= ${user_wants_to_track_mslp}"
+echo "After set perts ${pert}, user_wants_to_track_wcircsfc= ${user_wants_to_track_wcircsfc}"
+echo "After set perts ${pert}, user_wants_to_track_zetasfc= ${user_wants_to_track_zetasfc}"
+echo "After set perts ${pert}, user_wants_to_track_thick500850= ${user_wants_to_track_thick500850}"
+echo "After set perts ${pert}, user_wants_to_track_thick200500= ${user_wants_to_track_thick200500}"
+echo "After set perts ${pert}, user_wants_to_track_thick200850= ${user_wants_to_track_thick200850}"
+echo " "
+set -x
 
 echo "&datein inp%bcc=${scc},inp%byy=${syy},inp%bmm=${smm},"      >${namelist}
 echo "        inp%bdd=${sdd},inp%bhh=${shh},inp%model=${model}," >>${namelist}
@@ -2517,21 +2615,38 @@ echo "      trkrinfo%northbd=${trkrnbd},"                        >>${namelist}
 echo "      trkrinfo%southbd=${trkrsbd},"                        >>${namelist}
 echo "      trkrinfo%type='${trkrtype}',"                        >>${namelist}
 echo "      trkrinfo%mslpthresh=${mslpthresh},"                  >>${namelist}
+echo "      trkrinfo%use_backup_mslp_grad_check='${use_backup_mslp_grad_check}',"  >>${namelist}
+echo "      trkrinfo%max_mslp_850=${max_mslp_850},"              >>${namelist}
 echo "      trkrinfo%v850thresh=${v850thresh},"                  >>${namelist}
+echo "      trkrinfo%v850thresh=${v850thresh},"                  >>${namelist}
+echo "      trkrinfo%v850_qwc_thresh=${v850_qwc_thresh},"        >>${namelist}
+echo "      trkrinfo%use_backup_850_vt_check='${use_backup_850_vt_check}',"  >>${namelist}
 echo "      trkrinfo%gridtype='${modtyp}',"                      >>${namelist}
+echo "      trkrinfo%enable_timing=1,"                           >>${namelist}
 echo "      trkrinfo%contint=${contour_interval},"               >>${namelist}
 echo "      trkrinfo%want_oci=${want_oci},"                      >>${namelist}
 echo "      trkrinfo%out_vit='${write_vit}',"                    >>${namelist}
+echo "      trkrinfo%use_land_mask='${use_land_mask}',"          >>${namelist}
+echo "      trkrinfo%read_separate_land_mask_file='${read_separate_land_mask_file}',"   >>${namelist}
+echo "      trkrinfo%inp_data_type='${inp_data_type}',"          >>${namelist}
 echo "      trkrinfo%gribver=${gribver},"                        >>${namelist}
-echo "      trkrinfo%g2_jpdtn=${g2_jpdtn}/"                      >>${namelist}
+echo "      trkrinfo%g2_jpdtn=${g2_jpdtn},"                      >>${namelist}
+echo "      trkrinfo%g2_mslp_parm_id=${g2_mslp_parm_id},"        >>${namelist}
+echo "      trkrinfo%g1_mslp_parm_id=${g1_mslp_parm_id},"        >>${namelist}
+echo "      trkrinfo%g1_sfcwind_lev_typ=${g1_sfcwind_lev_typ},"  >>${namelist}
+echo "      trkrinfo%g1_sfcwind_lev_val=${g1_sfcwind_lev_val}/"  >>${namelist}
 echo "&phaseinfo phaseflag='${PHASEFLAG}',"                      >>${namelist}
 echo "           phasescheme='${PHASE_SCHEME}',"                 >>${namelist}
 echo "           wcore_depth=${WCORE_DEPTH}/"                    >>${namelist}
 echo "&structinfo structflag='${STRUCTFLAG}',"                   >>${namelist}
-echo "            ikeflag='${IKEFLAG}'/"                         >>${namelist}
+echo "            ikeflag='${IKEFLAG}',"                         >>${namelist}
+echo "            radii_pctile=${radii_pctile},"                 >>${namelist}
+echo "            radii_free_pass_pctile=${radii_free_pass_pctile},"  >>${namelist}
+echo "            radii_width_thresh=${radii_width_thresh}/"     >>${namelist}
 echo "&fnameinfo  gmodname='${atcfname}',"                       >>${namelist}
 echo "            rundescr='${rundescr}',"                       >>${namelist}
 echo "            atcfdescr='${atcfdescr}'/"                     >>${namelist}
+echo "&cintinfo contint_grid_bound_check=${contint_grid_bound_check}/" >>${namelist}
 echo "&verbose verb=3/"                                          >>${namelist}
 echo "&waitinfo use_waitfor='n',"                                >>${namelist}
 echo "          wait_min_age=10,"                                >>${namelist}
@@ -2539,11 +2654,122 @@ echo "          wait_min_size=100,"                              >>${namelist}
 echo "          wait_max_wait=1800,"                             >>${namelist}
 echo "          wait_sleeptime=5,"                               >>${namelist}
 echo "          per_fcst_command=''/"                            >>${namelist}
+echo "&netcdflist netcdfinfo%num_netcdf_vars=${ncdf_num_netcdf_vars}," >>${namelist}
+echo "      netcdfinfo%netcdf_filename='${netcdffile}',"           >>${namelist}
+echo "      netcdfinfo%netcdf_lsmask_filename='${ncdf_ls_mask_filename}'," >>${namelist}
+echo "      netcdfinfo%rv850name='${ncdf_rv850name}',"             >>${namelist}
+echo "      netcdfinfo%rv700name='${ncdf_rv700name}',"             >>${namelist}
+echo "      netcdfinfo%u850name='${ncdf_u850name}',"               >>${namelist}
+echo "      netcdfinfo%v850name='${ncdf_v850name}',"               >>${namelist}
+echo "      netcdfinfo%u700name='${ncdf_u700name}',"               >>${namelist}
+echo "      netcdfinfo%v700name='${ncdf_v700name}',"               >>${namelist}
+echo "      netcdfinfo%z850name='${ncdf_z850name}',"               >>${namelist}
+echo "      netcdfinfo%z700name='${ncdf_z700name}',"               >>${namelist}
+echo "      netcdfinfo%mslpname='${ncdf_mslpname}',"               >>${namelist}
+echo "      netcdfinfo%usfcname='${ncdf_usfcname}',"               >>${namelist}
+echo "      netcdfinfo%vsfcname='${ncdf_vsfcname}',"               >>${namelist}
+echo "      netcdfinfo%u500name='${ncdf_u500name}',"               >>${namelist}
+echo "      netcdfinfo%v500name='${ncdf_v500name}',"               >>${namelist}
+echo "      netcdfinfo%u200name='${ncdf_u200name}',"               >>${namelist}
+echo "      netcdfinfo%v200name='${ncdf_v200name}',"               >>${namelist}
+echo "      netcdfinfo%tmean_300_500_name='${ncdf_tmean_300_500_name}',"  >>${namelist}
+echo "      netcdfinfo%z500name='${ncdf_z500name}',"               >>${namelist}
+echo "      netcdfinfo%z200name='${ncdf_z200name}',"               >>${namelist}
+echo "      netcdfinfo%lmaskname='${ncdf_lmaskname}',"             >>${namelist}
+echo "      netcdfinfo%z900name='${ncdf_z900name}',"               >>${namelist}
+echo "      netcdfinfo%z850name='${ncdf_z850name}',"               >>${namelist}
+echo "      netcdfinfo%z800name='${ncdf_z800name}',"               >>${namelist}
+echo "      netcdfinfo%z750name='${ncdf_z750name}',"               >>${namelist}
+echo "      netcdfinfo%z700name='${ncdf_z700name}',"               >>${namelist}
+echo "      netcdfinfo%z650name='${ncdf_z650name}',"               >>${namelist}
+echo "      netcdfinfo%z600name='${ncdf_z600name}',"               >>${namelist}
+echo "      netcdfinfo%z550name='${ncdf_z550name}',"               >>${namelist}
+echo "      netcdfinfo%z500name='${ncdf_z500name}',"               >>${namelist}
+echo "      netcdfinfo%z450name='${ncdf_z450name}',"               >>${namelist}
+echo "      netcdfinfo%z400name='${ncdf_z400name}',"               >>${namelist}
+echo "      netcdfinfo%z350name='${ncdf_z350name}',"               >>${namelist}
+echo "      netcdfinfo%z300name='${ncdf_z300name}',"               >>${namelist}
+echo "      netcdfinfo%time_name='${ncdf_time_name}',"             >>${namelist}
+echo "      netcdfinfo%lon_name='${ncdf_lon_name}',"               >>${namelist}
+echo "      netcdfinfo%lat_name='${ncdf_lat_name}',"               >>${namelist}
+echo "      netcdfinfo%sstname='${ncdf_sstname}',"                 >>${namelist}
+echo "      netcdfinfo%q850name='${ncdf_q850name}',"               >>${namelist}
+echo "      netcdfinfo%rh1000name='${ncdf_rh1000name}',"           >>${namelist}
+echo "      netcdfinfo%rh925name='${ncdf_rh925name}',"             >>${namelist}
+echo "      netcdfinfo%rh800name='${ncdf_rh800name}',"             >>${namelist}
+echo "      netcdfinfo%rh750name='${ncdf_rh750name}',"             >>${namelist}
+echo "      netcdfinfo%rh700name='${ncdf_rh700name}',"             >>${namelist}
+echo "      netcdfinfo%rh650name='${ncdf_rh650name}',"             >>${namelist}
+echo "      netcdfinfo%rh600name='${ncdf_rh600name}',"             >>${namelist}
+echo "      netcdfinfo%spfh1000name='${ncdf_spfh1000name}',"       >>${namelist}
+echo "      netcdfinfo%spfh925name='${ncdf_spfh925name}',"         >>${namelist}
+echo "      netcdfinfo%spfh800name='${ncdf_spfh800name}',"         >>${namelist}
+echo "      netcdfinfo%spfh750name='${ncdf_spfh750name}',"         >>${namelist}
+echo "      netcdfinfo%spfh700name='${ncdf_spfh700name}',"         >>${namelist}
+echo "      netcdfinfo%spfh650name='${ncdf_spfh650name}',"         >>${namelist}
+echo "      netcdfinfo%spfh600name='${ncdf_spfh600name}',"         >>${namelist}
+echo "      netcdfinfo%temp1000name='${ncdf_temp1000name}',"       >>${namelist}
+echo "      netcdfinfo%temp925name='${ncdf_temp925name}',"         >>${namelist}
+echo "      netcdfinfo%temp800name='${ncdf_temp800name}',"         >>${namelist}
+echo "      netcdfinfo%temp750name='${ncdf_temp750name}',"         >>${namelist}
+echo "      netcdfinfo%temp700name='${ncdf_temp700name}',"         >>${namelist}
+echo "      netcdfinfo%temp650name='${ncdf_temp650name}',"         >>${namelist}
+echo "      netcdfinfo%temp600name='${ncdf_temp600name}',"         >>${namelist}
+echo "      netcdfinfo%omega500name='${ncdf_omega500name}'/"       >>${namelist}
+echo "&parmpreflist user_wants_to_track_zeta850='${user_wants_to_track_zeta850}'," >>${namelist}
+echo "      user_wants_to_track_zeta700='${user_wants_to_track_zeta700}',"         >>${namelist}
+echo "      user_wants_to_track_wcirc850='${user_wants_to_track_wcirc850}',"       >>${namelist}
+echo "      user_wants_to_track_wcirc700='${user_wants_to_track_wcirc700}',"       >>${namelist}
+echo "      user_wants_to_track_gph850='${user_wants_to_track_gph850}',"           >>${namelist}
+echo "      user_wants_to_track_gph700='${user_wants_to_track_gph700}',"           >>${namelist}
+echo "      user_wants_to_track_mslp='${user_wants_to_track_mslp}',"               >>${namelist}
+echo "      user_wants_to_track_wcircsfc='${user_wants_to_track_wcircsfc}',"       >>${namelist}
+echo "      user_wants_to_track_zetasfc='${user_wants_to_track_zetasfc}',"         >>${namelist}
+echo "      user_wants_to_track_thick500850='${user_wants_to_track_thick500850}'," >>${namelist}
+echo "      user_wants_to_track_thick200500='${user_wants_to_track_thick200500}'," >>${namelist}
+echo "      user_wants_to_track_thick200850='${user_wants_to_track_thick200850}'/" >>${namelist}
+echo "&verbose verb=3,verb_g2=1/"                                >>${namelist}
+echo "&sheardiaginfo shearflag='${shear_calc_flag}'/"                  >>${namelist}
+echo "&sstdiaginfo sstflag='${sstflag}'/"                              >>${namelist}
+echo "&gendiaginfo genflag='${genflag}',"                              >>${namelist}
+echo "             gen_read_rh_fields='${gen_read_rh_fields}',"        >>${namelist}
+echo "             need_to_compute_rh_from_q='${need_to_compute_rh_from_q}',"  >>${namelist}
+echo "             smoothe_mslp_for_gen_scan='${smoothe_mslp_for_gen_scan}',"  >>${namelist}
+echo "             depth_of_mslp_for_gen_scan=${depth_of_mslp_for_gen_scan}/"  >>${namelist}
+echo "&vortextiltinfo vortex_tilt_flag='${vortex_tilt_flag}',"                 >>${namelist}
+echo "                vortex_tilt_parm='${vortex_tilt_parm}',"                 >>${namelist}
+echo "                vortex_tilt_allow_thresh=${vortex_tilt_allow_thresh}/"   >>${namelist}
 
-export pgm=gettrk
+
+export pgm=gettrk.x
 . prep_step
 
-export FORT11=${gribfile}
+cp ${namelist} namelist.gettrk
+export FORT555=namelist.gettrk
+
+if [ ${inp_data_type} = 'grib' ]; then
+  export FORT11=${gribfile}
+else
+  export FORT11=${netcdffile}
+  if [ ${read_separate_land_mask_file} = 'y' ]; then
+    FORT17=${ncdf_ls_mask_filename}
+  fi
+fi
+
+if [ -s ${TRKDATA}/vitals.upd.${atcfout}.${PDY}${cyc} ]; then
+  cp ${TRKDATA}/vitals.upd.${atcfout}.${PDY}${cyc} \
+     ${TRKDATA}/tcvit_rsmc_storms.txt
+else
+>${TRKDATA}/tcvit_rsmc_storms.txt
+fi
+
+if [ -s ${TRKDATA}/genvitals.upd.${atcfout}.${PDY}${cyc} ]; then
+  cp ${TRKDATA}/genvitals.upd.${atcfout}.${PDY}${cyc} \
+     ${TRKDATA}/tcvit_genesis_storms.txt
+else
+  >${TRKDATA}/tcvit_genesis_storms.txt
+fi
+
 export FORT12=${TRKDATA}/vitals.upd.${atcfout}.${PDY}${shh}
 export FORT14=${TRKDATA}/genvitals.upd.${cmodel}.${atcfout}.${PDY}${cyc}
 export FORT15=${FIXens_tracker}/${cmodel}.genesis_leadtimes_120
@@ -2559,6 +2785,7 @@ if [ ${trkrtype} = 'tracker' ]; then
     export FORT66=${TRKDATA}/trak.${atcfout}.atcf_gen.${stormenv}.${PDY}${cyc}
     export FORT68=${TRKDATA}/trak.${atcfout}.atcf_sink.${stormenv}.${PDY}${cyc}
     export FORT69=${TRKDATA}/trak.${atcfout}.atcf_hfip.${stormenv}.${PDY}${cyc}
+    export FORT81=${TRKDATA}/trak.${atcfout}.parmfix.${PDY}${CYL}
   else
     export FORT61=${TRKDATA}/trak.${atcfout}.all.${PDY}${cyc}
     export FORT62=${TRKDATA}/trak.${atcfout}.atcf.${PDY}${cyc}
@@ -2567,6 +2794,7 @@ if [ ${trkrtype} = 'tracker' ]; then
     export FORT66=${TRKDATA}/trak.${atcfout}.atcf_gen.${PDY}${cyc}
     export FORT68=${TRKDATA}/trak.${atcfout}.atcf_sink.${PDY}${cyc}
     export FORT69=${TRKDATA}/trak.${atcfout}.atcf_hfip.${PDY}${cyc}
+    export FORT81=${TRKDATA}/trak.${atcfout}.parmfix.${PDY}${CYL}
   fi
 else
   export FORT61=${TRKDATA}/trak.${atcfout}.all.${regtype}.${PDY}${cyc}
@@ -2576,6 +2804,7 @@ else
   export FORT66=${TRKDATA}/trak.${atcfout}.atcf_gen.${regtype}.${PDY}${cyc}
   export FORT68=${TRKDATA}/trak.${atcfout}.atcf_sink.${regtype}.${PDY}${cyc}
   export FORT69=${TRKDATA}/trak.${atcfout}.atcf_hfip.${regtype}.${PDY}${cyc}
+  export FORT81=${TRKDATA}/trak.${atcfout}.parmfix.${PDY}${CYL}
 fi
 
 if [ ${atcfname} = 'aear' ]
@@ -2627,16 +2856,16 @@ msg="$pgm start for $atcfout at ${cyc}z"
 postmsg "$jlogfile" "$msg"
 
 set +x
-echo "+++ TIMING: BEFORE gettrk  ---> `date`"
+echo "+++ TIMING: BEFORE gettrk.x  ---> `date`"
 set -x
 
 ulimit -c unlimited
 
-${EXECens_tracker}/gettrk <${namelist}
+${EXECens_tracker}/gettrk.x <${namelist}
 gettrk_rcc=$?
 
 set +x
-echo "+++ TIMING: AFTER  gettrk  ---> `date`"
+echo "+++ TIMING: AFTER  gettrk.x  ---> `date`"
 set -x
 
 #--------------------------------------------------------------#
@@ -2654,22 +2883,22 @@ if [ ${gettrk_rcc} -eq 0 ]; then
 
   if [ "$SENDCOM" = 'YES' ]; then
     cp ${TRKDATA}/trak.${atcfout}.atcfunix.${regtype}.${PDY}${cyc} ${COMOUT}/
-#    cp ${TRKDATA}/trak.${atcfout}.atcf_gen.${regtype}.${PDY}${cyc} ${COMOUT}/
+    cp ${TRKDATA}/trak.${atcfout}.atcf_gen.${regtype}.${PDY}${cyc} ${COMOUT}/
 
-    #if [ "$SENDDBN" = 'YES' ]; then
-    #  $DBNROOT/bin/dbn_alert MODEL ENS_GENESIS $job ${COMOUT}/trak.${atcfout}.atcfunix.${regtype}.${PDY}${cyc}
-    #fi
+    if [ "$SENDDBN" = 'YES' ]; then
+    $DBNROOT/bin/dbn_alert MODEL ENS_GENESIS $job ${COMOUT}/trak.${atcfout}.atcfunix.${regtype}.${PDY}${cyc}
+    fi
   fi
   msg="$pgm end for $atcfout at ${cyc}z completed normally"
   postmsg "$jlogfile" "$msg"
 else
   set +x
   echo " "
-  echo "FATAL ERROR:  An error occurred while running gettrk, "
+  echo "FATAL ERROR:  An error occurred while running gettrk.x, "
   echo "!!! which is the program that actually gets the track."
   echo "!!! Return code from gettrk = ${gettrk_rcc}"
   echo "!!! model= ${atcfout}, forecast initial time = ${PDY}${cyc}"
   echo " "
   set -x
-  err_exit "ERROR RUNNING gettrk IN 2nd step"
+  err_exit "ERROR RUNNING gettrk.x IN 2nd step"
 fi
