@@ -72,7 +72,7 @@ case ${cmodel} in
         achar="e"                                              ;;
         #COMOUT=${COM:-${COMROOT}/gens/${envir}/ecme.${PDY}/${cyc}/track}
 
-  memn) set +x; echo " "                                      ;
+  aigefs) set +x; echo " "                                      ;
         echo " ++ Input cmodel parameter = ${cmodel}...."      ;
         echo " ++ ML ensemble tracks will be averaged...."  ;
         echo " "; set -x                                       ;

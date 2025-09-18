@@ -154,11 +154,11 @@ c                              ! which we'll carry out the accum probs
      &          ,'AP18','AP19','AP20','AP21','AP22','AP23','AP24'
      &          ,'AP25','AP26','AP27','AP28','AP29','AP30'/)
 
-        character*4 :: mlperts(mlmaxmem) = (/'MP01','MP02','MP03'
-     &          ,'MP04','MP05','MP06','MP07','MP08','MP09','MP10'
-     &          ,'MP11','MP12','MP13','MP14','MP15','MP16','MP17'
-     &          ,'MP18','MP19','MP20','MP21','MP22','MP23','MP24'
-     &          ,'MP25','MP26','MP27','MP28','MP29','MP30'/)
+        character*4 :: aiperts(mlmaxmem) = (/'M001','M002','M003'
+     &          ,'M004','M005','M006','M007','M008','M009','M010'
+     &          ,'M011','M012','M013','M014','M015','M016','M017'
+     &          ,'M018','M019','M020','M021','M022','M023','M024'
+     &          ,'M025','M026','M027','M028','M029','M030'/)
 
         
         character*4 :: nrperts(nrmaxmem) = (/'GR01','GR02','GR03'
@@ -871,7 +871,7 @@ cJ.Peng-04-15-2013
 
       select case (cmodel)
         case ('ens');  maxmem = ncmaxmem; fcsthrs(:) = ncfcsthrs(:)
-        case ('memn'); maxmem = mlmaxmem; fcsthrs(:) = mlfcsthrs(:)
+        case ('aigefs'); maxmem = mlmaxmem; fcsthrs(:) = mlfcsthrs(:)
         case ('ref');  maxmem = nrmaxmem; fcsthrs(:) = nrfcsthrs(:)
 
         case ('ensb');  maxmem = n0maxmem; fcsthrs(:) = n0fcsthrs(:)
@@ -956,7 +956,7 @@ cJ.Peng-04-15-2013
                        catcf    = 'AEMN'  
                        catcf_lc = 'aemn'  
 
-        case ('memn'); perts(:) = mlperts(:)
+        case ('aigefs'); perts(:) = aiperts(:)
                        minmem   = mlminmem  
                        catcf    = 'MEMN'  
                        catcf_lc = 'memn' 

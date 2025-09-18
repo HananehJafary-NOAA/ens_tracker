@@ -587,11 +587,11 @@ if [ ${PHASEFLAG} = 'y' ]; then
 
   wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 V:850 V:700 V:500 10U:sfc 10V:sfc MSL:sfc GH:300 GH:400 GH:500 GH:925 T:300 T:400 T:500"
 else
-  if [ ${cmodel} = "agfs" ]; then
+  if [ ${cmodel} = "aigfs" ]; then
     PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|PRMSL)"
   elif [ ${cmodel} = "gdas" ]; then
     PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET)"
-  elif [ ${cmodel} = "memn" ]; then
+  elif [ ${cmodel} = "aigefs" ]; then
     PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|PRMSL)"
   else
     PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|PRMSL)"
@@ -637,8 +637,8 @@ future_str="${future_ymd} ${future_hh}00"
 
 if [ ${modtyp} = 'global' ]
 then
-  synvitdir=${COMINmlgfs:?}/${cyc}
-  synvitfile=mlgfs.t${cyc}z.syndata.tcvitals.tm00
+  synvitdir=${COMINaigfs:?}/${cyc}
+  synvitfile=aigfs.t${cyc}z.syndata.tcvitals.tm00
   synvitold_dir=${synvitdir%.*}.${old_4ymd}/${old_hh}/atmos
   synvitold_file=gfs.t${old_hh}z.syndata.tcvitals.tm00
   synvitfuture_dir=${synvitdir%.*}.${future_4ymd}/${future_hh}/atmos
@@ -1292,7 +1292,7 @@ then
       then
         set +x
         echo " "
-        echo "FATAL ERROR:  GFS File missing: ${mlgfsdir}/${mlgfsgfile}${fhour}"
+        echo "FATAL ERROR:  GFS File missing: ${aigfsdir}/${aigfsgfile}${fhour}"
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo " "
         set -x
@@ -1405,11 +1405,11 @@ then
     for fhour in ${fcsthrs}
     do
 
-      if [ ! -s ${aigefsdira}/${aigefs}.pres.f${fhour}i.grib2 -o ! -s ${aigefsdira}/${aigefs}.sfc.f${fhour}.grib2 ]
+      if [ ! -s ${aigefsdira}/${aigefs}.pres.f${fhour}.grib2 -o ! -s ${aigefsdira}/${aigefs}.sfc.f${fhour}.grib2 ]
       then
         set +x
         echo " "
-        echo "FATAL ERROR:  ENSEMBLE ${PERT} File missing: ${memndira}/${memngfilea}${fhour}"
+        echo "FATAL ERROR:  ENSEMBLE ${PERT} File missing: ${aigefsdira}/${aigefs}.pres.f${fhour}.grib2"
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo " "
         set -x
@@ -1418,7 +1418,6 @@ then
 
       gfile=${TRKDATA}/${aigefs}.f${fhour}
       cat ${ensdira}/${aigefs}.pres.f${fhour}.grib2 ${ensdira}/${aigefs}.sfc.f${fhour}.grib2 > $gfile
-#      cat ${memndira}/${memngfilea}${fhour} > $gfile
 
       ${WGRIB2:?} $gfile -match "$PARMlist" -grib ${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc}.${fhour}
 

@@ -1,5 +1,5 @@
 #!/bin/ksh
-export PS4=' + data_check_memn.sh line $LINENO: '
+export PS4=' + data_check_aigefs.sh line $LINENO: '
 set -x
 
 ####################################
@@ -32,7 +32,7 @@ while [ $ic -lt $SLEEP_LOOP_MAX ]; do
     if [ ! -s ${datdir}/${datfilea} -o ! -s ${datdir}/${datfileb} ]; then
       set +x
       echo " "
-      echo "AIGFS file missing: ${datdir}/${datfile}"
+      echo "AIGEFS file missing: ${datdir}/${datfile}"
       echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       echo " "
       set -x

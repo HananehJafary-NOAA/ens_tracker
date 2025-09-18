@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N ens_tracker_mlgefs_tc_track_%CYC%
+#PBS -N ens_tracker_aigefs_tc_track_%CYC%
 #PBS -j oe
 #PBS -A %PROJ%-%PROJENVIR%
 #PBS -q %QUEUE%
