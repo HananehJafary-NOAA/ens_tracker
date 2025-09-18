@@ -1,11 +1,11 @@
 #!/bin/bash
-#PBS -N ens_tracker_mlgefs_tc_track_%CYC%
+#PBS -N ens_tracker_mlgfs_tc_track_%CYC%
 #PBS -j oe
 #PBS -A %PROJ%-%PROJENVIR%
 #PBS -q %QUEUE%
 #PBS -S /bin/bash
-#PBS -l place=vscatter,select=3:ncpus=31:mpiprocs=31:mem=100GB
-#PBS -l walltime=00:25:00
+#PBS -l select=1:ncpus=1:mem=4GB
+#PBS -l walltime=00:10:00
 #PBS -l debug=true
 
 export model=ens_tracker
@@ -36,17 +36,16 @@ module load wgrib2/$wgrib2_ver
 
 module load prod_envir/$prod_envir_ver
 module load prod_util/$prod_util_ver
-
 module list
 
+
 # CALL executable job script here
-${PACKAGEHOME}/jobs/JMLGEFS_TC_TRACK
+${PACKAGEHOME}/jobs/JAIGFS_TC_TRACK
 
-%include <tail.h>
+%include <tail.h> 
 %manual
-
 ######################################################################
-#PURPOSE:  Executes the job that creates GEFS TC TRACK forecast 
+#PURPOSE:  Executes the job that creates GFS TC track forecasts
 ######################################################################
 
 ######################################################################

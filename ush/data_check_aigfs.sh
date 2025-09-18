@@ -11,8 +11,8 @@ export SLEEP_TIME=3600
 export SLEEP_INT=60
 SLEEP_LOOP_MAX=`expr $SLEEP_TIME / $SLEEP_INT`
 
-if [ ${cmodel} = "mgfs" ]; then
-  datdir=${mlgfsdir}
+if [ ${cmodel} = "agfs" ]; then
+  datdir=${aigfsdir}
   vit_incr=${FHOUT_CYCLONE:-6}                        
   fcstlen=${FHMAX_CYCLONE:-240}                       
   fcsthrs=$(seq -f%03g -s' ' 0 $vit_incr $fcstlen)    
@@ -24,11 +24,12 @@ while [ $ic -lt $SLEEP_LOOP_MAX ]; do
 
   ic1=0
   for fhour in ${fcsthrs}; do
-    datfile=mlgfs.t${cyc}z.pgrb2.0p25.f${fhour}
-    if [ ! -s ${datdir}/${datfile} ]; then
+    datfilea=aigfs.t${cyc}z.pres.f${fhour}.grib2
+    datfileb=aigfs.t${cyc}z.sfc.f${fhour}.grib2
+    if [ ! -s ${datdir}/${datfilea} -o ! -s ${datdir}/${datfileb} ]; then
       set +x
       echo " "
-      echo "mlGFS file missing: ${datdir}/${datfile}"
+      echo "AIGFS file missing: ${datdir}/${datfile}"
       echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       echo " "
       set -x

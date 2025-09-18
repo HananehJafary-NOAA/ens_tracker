@@ -1,5 +1,5 @@
 #!/bin/ksh
-export PS4=' + extrkr_ml.sh line $LINENO: '
+export PS4=' + extrkr_ai.sh line $LINENO: '
 
 set +x
 ##############################################################################
@@ -202,11 +202,11 @@ case ${cmodel} in
        atcfdescr='xxxx'                                     ;
        atcfout="gdas"                                      ;;
 
-  mgfs) set +x; echo " "                                    ;
-       echo " ++ operational FV3-GFS chosen"               ;
+  aigfs) set +x; echo " "                                    ;
+       echo " ++ operational AIGFS chosen"               ;
        echo " "; set -x                                    ;
-       mlgfsdir=${mlgfsdir:-${COMINmlgfs:?}/${cyc}}        ;
-       mlgfsgfile=mlgfs.t${cyc}z.pgrb2.0p25.f              ;
+       aigfsdir=${aigfsdir:-${COMINaigfs:?}/${cyc}}        ;
+       aigfsgfile=aigfs.t${cyc}z                         ;
 
        vit_incr=${FHOUT_CYCLONE:-6}                        ;
        fcstlen=${FHMAX_CYCLONE:-240}                       ;
@@ -252,19 +252,20 @@ case ${cmodel} in
   
        STRUCTFLAG='n'                                     ;
        IKEFLAG='n'                                        ;
-       atcfname="mgfs"                                     ;
+       atcfname="agfs"                                     ;
        rundescr='xxxx'                                     ;
        atcfdescr='xxxx'                                     ;
-       atcfout="mgfs"                                      ;;
+       atcfout="agfs"                                      ;;
 
-  memn) set +x; echo " "                                    ;
-       echo " ++ operational mlensemble member ${pert} chosen";
+  aigefs) set +x; echo " "                                    ;
+       echo " ++ operational aigefs member ${pert} chosen";
        echo " "; set -x                                    ;
        pert=` echo ${pert} | tr '[A-Z]' '[a-z]'`           ;
        PERT=` echo ${pert} | tr '[a-z]' '[A-Z]'`           ;
+       PERT=` echo ${PERT:0:1}${PERT:3:3} `                ;
        
-       memndira=${memndira:-${COMINmlgefs:?}}             ;
-       memngfilea=mlge${pert}.t${cyc}z.pgrb2.0p25.f          ;
+       aigefsdira=${aigefsdira:-${COMINaigefs:?}/mem$pert}            ;
+       aigefs=aigefs.t${cyc}z                              ;
        
        vit_incr=${FHOUT_CYCLONE:-6}                        ;
        fcstlen=${FHMAX_CYCLONE:-240}                       ;
@@ -308,15 +309,15 @@ case ${cmodel} in
        PHASE_SCHEME='both'                                ;
        WCORE_DEPTH=1.0                                    ;
 
-       pert_posneg=` echo "${pert}" | cut -c1-1`           ;
-       pert_num=`    echo "${pert}" | cut -c2-3`           ;
+#       pert_posneg=` echo "${pert}" | cut -c1-1`           ;
+       pert_num=`    echo "${pert}" | cut -c4-6`           ;
 
        STRUCTFLAG='n'                                     ;
        IKEFLAG='n'                                        ;
-       atcfname="m${pert_posneg}${pert_num}"               ;
+       atcfname="m${pert}"               ;
        rundescr='xxxx'                                     ;
        atcfdescr='xxxx'                                     ;
-       atcfout="m${pert_posneg}${pert_num}"                ;;
+       atcfout="m${pert}"                ;;
 
   cmc) set +x; echo " "                                    ;
        echo " ++ operational CMC chosen"                   ;
@@ -586,7 +587,7 @@ if [ ${PHASEFLAG} = 'y' ]; then
 
   wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 V:850 V:700 V:500 10U:sfc 10V:sfc MSL:sfc GH:300 GH:400 GH:500 GH:925 T:300 T:400 T:500"
 else
-  if [ ${cmodel} = "mgfs" ]; then
+  if [ ${cmodel} = "agfs" ]; then
     PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|PRMSL)"
   elif [ ${cmodel} = "gdas" ]; then
     PARMlist="(HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m a|VGRD:10 m a|ABSV:850|ABSV:700|MSLET)"
@@ -1260,7 +1261,7 @@ then
 fi
 
 # --------------------------------------------------
-#   Process mlgfs data
+#   Process aigfs data
 # --------------------------------------------------
 
 if [ ${model} -eq 1 ]
@@ -1269,14 +1270,14 @@ then
   if [ $loopnum -eq 1 ]
   then
 
-    if [ -s ${TRKDATA}/mlgfsgribfile.${PDY}${cyc} ]
+    if [ -s ${TRKDATA}/aigfsgribfile.${PDY}${cyc} ]
     then
-      rm ${TRKDATA}/mlgfsgribfile.${PDY}${cyc}
+      rm ${TRKDATA}/aigfsgribfile.${PDY}${cyc}
     fi
 
-    rm ${TRKDATA}/master.mlgfsgribfile.${PDY}${cyc}.f*
-    rm ${TRKDATA}/mlgfsgribfile.${PDY}${cyc}.f*
-    >${TRKDATA}/mlgfsgribfile.${PDY}${cyc}
+    rm ${TRKDATA}/master.aigfsgribfile.${PDY}${cyc}.f*
+    rm ${TRKDATA}/aigfsgribfile.${PDY}${cyc}.f*
+    >${TRKDATA}/aigfsgribfile.${PDY}${cyc}
 
     set +x
     echo " "
@@ -1287,7 +1288,7 @@ then
     for fhour in ${fcsthrs}
     do
   
-      if [ ! -s ${mlgfsdir:?}/${mlgfsgfile}${fhour} ]
+      if [ ! -s ${aigfsdir}/${aigfsgfile}.pres.f${fhour}.grib2 -o ! -s ${aigfsdir}/${aigfsgfile}.sfc.f${fhour}.grib2 ]
       then
         set +x
         echo " "
@@ -1295,25 +1296,26 @@ then
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo " "
         set -x
-        err_exit "MISSING GFS FILE IN extrkr_ml.sh: ${mlgfsdir}/${mlgfsgfile}${fhour}"
+        err_exit "MISSING GFS FILE IN extrkr_ai.sh: ${aigfsdir}/${aigfsgfile}${fhour}"
       fi
 
-      gfile=${mlgfsdir}/${mlgfsgfile}${fhour}
-      ${WGRIB2:?} $gfile -match "$PARMlist" -grib ${TRKDATA}/master.mlgfsgribfile.${PDY}${cyc}.f${fhour}
+      gfile=${TRKDATA}/${aigfsgfile}.f${fhour}
+      cat ${aigfsdir}/${aigfsgfile}.pres.f${fhour}.grib2 ${aigfsdir}/${aigfsgfile}.sfc.f${fhour}.grib2 > $gfile
+      ${WGRIB2:?} $gfile -match "$PARMlist" -grib ${TRKDATA}/master.aigfsgribfile.${PDY}${cyc}.f${fhour}
 
-      gfs_master_file=${TRKDATA}/master.mlgfsgribfile.${PDY}${cyc}.f${fhour}
-      gfs_cat_file=${TRKDATA}/mlgfsgribfile.${PDY}${cyc}
+      gfs_master_file=${TRKDATA}/master.aigfsgribfile.${PDY}${cyc}.f${fhour}
+      gfs_cat_file=${TRKDATA}/aigfsgribfile.${PDY}${cyc}
       cat ${gfs_master_file} >>${gfs_cat_file}
 
     done
   
-    ${GRB2INDEX:?} ${TRKDATA}/mlgfsgribfile.${PDY}${cyc} ${TRKDATA}/mlgfsixfile.${PDY}${cyc}
+    ${GRB2INDEX:?} ${TRKDATA}/aigfsgribfile.${PDY}${cyc} ${TRKDATA}/aigfsixfile.${PDY}${cyc}
     export err=$?; err_chk
 
 #   --------------------------------------------
     if [ ${PHASEFLAG} = 'y' ]; then
 
-    catfile=${TRKDATA}/mlgfs.${PDY}${cyc}.catfile
+    catfile=${TRKDATA}/aigfs.${PDY}${cyc}.catfile
     >${catfile}
 
     for fhour in ${fcsthrs}
@@ -1325,8 +1327,8 @@ then
       echo " "
       set -x
 
-      ffile=${TRKDATA}/mlgfsgribfile.${PDY}${cyc}
-      ifile=${TRKDATA}/mlgfsixfile.${PDY}${cyc}
+      ffile=${TRKDATA}/aigfsgribfile.${PDY}${cyc}
+      ifile=${TRKDATA}/aigfsixfile.${PDY}${cyc}
 
       gparm=11 
       . prep_step
@@ -1354,7 +1356,7 @@ then
         echo "rcc= $rcc      EXITING.... "
         echo " "
         set -x
-        err_exit "tave_g2.x- ERROR AT extrkr_ml.sh LINE $LINENO"
+        err_exit "tave_g2.x- ERROR AT extrkr_ai.sh LINE $LINENO"
       fi
     
       tavefile=${TRKDATA}/${cmodel}.tave.${PDY}${cyc}.f${fhour}
@@ -1371,22 +1373,22 @@ then
 
   fi
 
-  gfile=${TRKDATA}/mlgfsgribfile.${PDY}${cyc}
+  gfile=${TRKDATA}/aigfsgribfile.${PDY}${cyc}
   if [ ${PHASEFLAG} = 'y' ]; then
     cat ${catfile} >>${gfile}
   fi
 
-  ifile=${TRKDATA}/mlgfsixfile.${PDY}${cyc}
+  ifile=${TRKDATA}/aigfsixfile.${PDY}${cyc}
   ${GRB2INDEX:?} ${gfile} ${ifile}
   export err=$?; err_chk
 
-  gribfile=${TRKDATA}/mlgfsgribfile.${PDY}${cyc}
-  ixfile=${TRKDATA}/mlgfsixfile.${PDY}${cyc}
+  gribfile=${TRKDATA}/aigfsgribfile.${PDY}${cyc}
+  ixfile=${TRKDATA}/aigfsixfile.${PDY}${cyc}
 
 fi
 
 # --------------------------------------------------
-#   Process NCEP (mlgefs) Ensemble perturbation, if selected
+#   Process NCEP (aigefs) Ensemble, if selected
 # --------------------------------------------------
 
 if [ ${model} -eq 10 ]
@@ -1395,15 +1397,15 @@ then
   if [ $loopnum -eq 1 ]
   then
 
-    if [ -s ${TRKDATA}/memn${pert}gribfile.${PDY}${cyc} ]
+    if [ -s ${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc} ]
     then
-      rm ${TRKDATA}/memn${pert}gribfile.${PDY}${cyc}
+      rm ${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc}
     fi
 
     for fhour in ${fcsthrs}
     do
 
-      if [ ! -s ${memndira:?}/${memngfilea}${fhour} ]
+      if [ ! -s ${aigefsdira}/${aigefs}.pres.f${fhour}i.grib2 -o ! -s ${aigefsdira}/${aigefs}.sfc.f${fhour}.grib2 ]
       then
         set +x
         echo " "
@@ -1411,25 +1413,25 @@ then
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo " "
         set -x
-        err_exit "FAILED ${jobid} - MISSING GEFS FILE IN TRACKER SCRIPT - ABNORMAL EXIT"
+        err_exit "FAILED ${jobid} - MISSING AIGEFS FILE IN TRACKER SCRIPT - ABNORMAL EXIT"
       fi
 
-      gfile=${TRKDATA}/${memngfilea}${fhour}
-#      cat ${ensdira}/${ensgfilea}${fhour} ${ensdirb}/${ensgfileb}${fhour} > $gfile
-      cat ${memndira}/${memngfilea}${fhour} > $gfile
+      gfile=${TRKDATA}/${aigefs}.f${fhour}
+      cat ${ensdira}/${aigefs}.pres.f${fhour}.grib2 ${ensdira}/${aigefs}.sfc.f${fhour}.grib2 > $gfile
+#      cat ${memndira}/${memngfilea}${fhour} > $gfile
 
-      ${WGRIB2:?} $gfile -match "$PARMlist" -grib ${TRKDATA}/memn${pert}gribfile.${PDY}${cyc}.${fhour}
+      ${WGRIB2:?} $gfile -match "$PARMlist" -grib ${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc}.${fhour}
 
-      cat ${TRKDATA}/memn${pert}gribfile.${PDY}${cyc}.${fhour} >> ${TRKDATA}/memn${pert}gribfile.${PDY}${cyc}
+      cat ${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc}.${fhour} >> ${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc}
     done
 
-    ${GRB2INDEX:?} ${TRKDATA}/memn${pert}gribfile.${PDY}${cyc} ${TRKDATA}/memn${pert}ixfile.${PDY}${cyc}
+    ${GRB2INDEX:?} ${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc} ${TRKDATA}/aigefs${pert}ixfile.${PDY}${cyc}
     export err=$?; err_chk
 
 #   --------------------------------------------
 
     if [ ${PHASEFLAG} = 'y' ]; then
-      catfile=${TRKDATA}/memn${pert}.${PDY}${cyc}.catfile
+      catfile=${TRKDATA}/aigefs${pert}.${PDY}${cyc}.catfile
        >${catfile}
 
       for fhour in ${fcsthrs}
@@ -1441,8 +1443,8 @@ then
         echo " "
         set -x
 
-        ffile=${TRKDATA}/memn${pert}gribfile.${PDY}${cyc}
-        ifile=${TRKDATA}/memn${pert}ixfile.${PDY}${cyc}
+        ffile=${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc}
+        ifile=${TRKDATA}/aigefs${pert}ixfile.${PDY}${cyc}
 
         gparm=11
         . prep_step
@@ -1458,7 +1460,7 @@ then
         export FORT31=${ifile}
 
       # Output file
-        export FORT51=${TRKDATA}/${cmodel}_${pert}.tave.${PDY}${cyc}.f${fhour}
+        export FORT51=${TRKDATA}/${cmodel}_m${pert}.tave.${PDY}${cyc}.f${fhour}
 
         ${EXECens_tracker}/tave_g2.x <${namelist}
         rcc=$?
@@ -1470,10 +1472,10 @@ then
           echo "rcc= $rcc      EXITING.... "
           echo " "
           set -x
-          err_exit "tave_g2.x- ERROR AT extrkr_ml.sh LINE $LINENO"          
+          err_exit "tave_g2.x- ERROR AT extrkr_ai.sh LINE $LINENO"          
         fi
 
-        tavefile=${TRKDATA}/${cmodel}_${pert}.tave.${PDY}${cyc}.f${fhour}
+        tavefile=${TRKDATA}/${cmodel}_m${pert}.tave.${PDY}${cyc}.f${fhour}
         cat ${tavefile} >>${catfile}
 
         set +x
@@ -1486,17 +1488,17 @@ then
     fi 
   fi
 
-  gfile=${TRKDATA}/memn${pert}gribfile.${PDY}${cyc}
+  gfile=${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc}
   if [ ${PHASEFLAG} = 'y' ]; then
     cat ${catfile} >>${gfile}
   fi
 
-  ifile=${TRKDATA}/memn${pert}ixfile.${PDY}${cyc}
+  ifile=${TRKDATA}/aigefs${pert}ixfile.${PDY}${cyc}
   ${GRB2INDEX:?} ${gfile} ${ifile}
   export err=$?; err_chk
 
-  gribfile=${TRKDATA}/memn${pert}gribfile.${PDY}${cyc}
-  ixfile=${TRKDATA}/memn${pert}ixfile.${PDY}${cyc}
+  gribfile=${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc}
+  ixfile=${TRKDATA}/aigefs${pert}ixfile.${PDY}${cyc}
 
 fi
 
@@ -2601,12 +2603,12 @@ then
         mkdir -p $COMOUTatcf/${at}${NO}${syyyy}
       fi
       cat atcfunix_file.$mct >>$COMOUTatcf/${at}${NO}${syyyy}/ncep_a${at}${NO}${syyyy}.dat
-      if [ ${cmodel} = 'mgfs' ]; then
-        cat atcfunix_file.$mct | sed s:mgfs:MGFS:g > mgfs_atcfunix_file.$mct
-        cat mgfs_atcfunix_file.$mct >>$COMOUTatcf/${at}${NO}${syyyy}/ncep_a${at}${NO}${syyyy}.dat
+      if [ ${cmodel} = 'agfs' ]; then
+        cat atcfunix_file.$mct | sed s:agfs:AGFS:g > agfs_atcfunix_file.$mct
+        cat agfs_atcfunix_file.$mct >>$COMOUTatcf/${at}${NO}${syyyy}/ncep_a${at}${NO}${syyyy}.dat
 
         cat atcfunix_file.$mct >>$COMOUTatcf/${at}${NO}${syyyy}/a${at}${NO}${syyyy}.dat
-        cat mgfs_atcfunix_file.$mct >>$COMOUTatcf/${at}${NO}${syyyy}/a${at}${NO}${syyyy}.dat
+        cat agfs_atcfunix_file.$mct >>$COMOUTatcf/${at}${NO}${syyyy}/a${at}${NO}${syyyy}.dat
       fi
 
       set +x
