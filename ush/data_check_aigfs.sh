@@ -1,5 +1,5 @@
 #!/bin/ksh
-export PS4=' + data_check_mgfs.sh line $LINENO: '
+export PS4=' + data_check_aigfs.sh line $LINENO: '
 set -x
 
 ####################################
@@ -11,7 +11,7 @@ export SLEEP_TIME=3600
 export SLEEP_INT=60
 SLEEP_LOOP_MAX=`expr $SLEEP_TIME / $SLEEP_INT`
 
-if [ ${cmodel} = "agfs" ]; then
+if [ ${cmodel} = "aigfs" ]; then
   datdir=${aigfsdir}
   vit_incr=${FHOUT_CYCLONE:-6}                        
   fcstlen=${FHMAX_CYCLONE:-240}                       
