@@ -138,7 +138,6 @@ gltrkdir=${gltrkdir:-${COMOUThur:?}}
 wgrib_parmlist=" HGT:850 HGT:700 UGRD:850 UGRD:700 UGRD:500 VGRD:850 VGRD:700 VGRD:500 SurfaceU SurfaceV ABSV:850 ABSV:700 PRMSL:MSL "
 wgrib_egrep_parmlist="HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m |VGRD:10 m |ABSV:850|ABSV:700|PRMSL:MSL"
 wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 V:850 V:700 V:500 10U:sfc 10V:sfc MSL:sfc "
-#wgrib_uk_hires_parmlist=' HGT:850 HGT:700 UGRD:850 UGRD:700 UGRD:500 VGRD:850 VGRD:700 VGRD:500 UGRD:10 m VGRD:10 m ABSV:850 ABSV:700 PRMSL:MSL '
 wgrib_uk_hires_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 PRMSL:MSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:400 HGT:300 TMP:500 TMP:400 TMP:300 RH:500 SurfaceU SurfaceV"
 #----------------------------------------------------------------#
 #
@@ -311,32 +310,32 @@ d6ahead_ymd=` echo ${d6ahead_ymdh} | cut -c3-8`
 d6ahead_hh=`  echo ${d6ahead_ymdh} | cut -c9-10`
 d6ahead_str="${d6ahead_ymd} ${d6ahead_hh}00"
 
-#if [ ${modtyp} = 'global' ]
-#then
-#  synvitdir=${COMROOT}/gfs/prod/gfs.${PDY}
-#  synvitdir=${COMINgfs:?}/${cyc}/atmos
-#  synvitfile=gfs.t${cyc}z.syndata.tcvitals.tm00
-#  synvit6ago_dir=${COMROOT}/gfs/prod/gfs.${d6ago_4ymd}
-#  synvit6ago_dir=${synvitdir%.*}.${d6ago_4ymd}/${d6ago_hh}
-#  synvit6ago_file=gfs.t${d6ago_hh}z.syndata.tcvitals.tm00
-#  synvit6ahead_dir=${COMROOT}/gfs/prod/gfs.${d6ahead_4ymd}
-#  synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}/${d6ahead_hh}
-#  synvit6ahead_file=gfs.t${d6ahead_hh}z.syndata.tcvitals.tm00
-#else
-#  synvitdir=${COMINnam:?}
-#  synvitfile=nam.t${cyc}z.syndata.tcvitals.tm00
-#  synvit6ago_dir=${synvitdir%.*}.${d6ago_4ymd}
-#  synvit6ago_file=nam.t${d6ago_hh}z.syndata.tcvitals.tm00
-#  synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}
-#  synvit6ahead_file=nam.t${d6ahead_hh}z.syndata.tcvitals.tm00
+if [ ${modtyp} = 'global' ]
+then
+  synvitdir=${COMROOT}/gfs/prod/gfs.${PDY}
+  synvitdir=${COMINgfs:?}/${cyc}/atmos
+  synvitfile=gfs.t${cyc}z.syndata.tcvitals.tm00
+  synvit6ago_dir=${COMROOT}/gfs/prod/gfs.${d6ago_4ymd}
+  synvit6ago_dir=${synvitdir%.*}.${d6ago_4ymd}/${d6ago_hh}
+  synvit6ago_file=gfs.t${d6ago_hh}z.syndata.tcvitals.tm00
+  synvit6ahead_dir=${COMROOT}/gfs/prod/gfs.${d6ahead_4ymd}
+  synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}/${d6ahead_hh}
+  synvit6ahead_file=gfs.t${d6ahead_hh}z.syndata.tcvitals.tm00
+else
+  synvitdir=${COMINnam:?}
+  synvitfile=nam.t${cyc}z.syndata.tcvitals.tm00
+  synvit6ago_dir=${synvitdir%.*}.${d6ago_4ymd}
+  synvit6ago_file=nam.t${d6ago_hh}z.syndata.tcvitals.tm00
+  synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}
+  synvit6ahead_file=nam.t${d6ahead_hh}z.syndata.tcvitals.tm00
 
-#  synvitdir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${PDY}
-#  synvitfile=sref.t${cyc}z.syndata.tcvitals.tm00
-#  synvit6ago_dir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${d6ago_4ymd}
-#  synvit6ago_file=sref.t${d6ago_hh}z.syndata.tcvitals.tm00
-#  synvit6ahead_dir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${d6ahead_4ymd}
-#  synvit6ahead_file=sref.t${d6ahead_hh}z.syndata.tcvitals.tm00
-#fi
+  synvitdir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${PDY}
+  synvitfile=sref.t${cyc}z.syndata.tcvitals.tm00
+  synvit6ago_dir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${d6ago_4ymd}
+  synvit6ago_file=sref.t${d6ago_hh}z.syndata.tcvitals.tm00
+  synvit6ahead_dir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${d6ahead_4ymd}
+  synvit6ahead_file=sref.t${d6ahead_hh}z.syndata.tcvitals.tm00
+fi
 
 set +x
 echo " "
