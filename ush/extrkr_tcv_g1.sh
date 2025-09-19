@@ -203,13 +203,13 @@ case ${cmodel} in
        echo " ++ operational UKMET global model chosen" ;
        echo " "; set -x                                    ;
        ukmetdir=${ukmetdir:-${COMINukmet:?}}               ;
-       ukmetgfile=pgbf                                     ;
-       ukmetgfileb=.ukm.${PDY}${cyc}                       ;
-
+#       ukmetgfile=pgbf                                     ;
+#       ukmetgfileb=.ukm.${PDY}${cyc}                       ;
+       ukmetgfileb=${cmodel}.t${cyc}z.0p25.f               ;
        vit_incr=6
        fcstlen=6                                           ;
 #       fcsthrs=$(seq -f%03g -s' ' 0 $vit_incr $fcstlen)    ;
-       fcsthrs=" 00 06"                                    ;
+       fcsthrs=" 000 006"                                    ;
        atcfnum=17                                          ;
        atcfname="ukx "                                     ;
        atcfout="ukx"                                       ;
@@ -230,9 +230,10 @@ esac
 
 if [ ${PHASEFLAG} = 'y' ]; then
 
-wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:250 TMP:500 TMP:250 RH:500"
-wgrib_uk_hires_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 UGRD:sfc VGRD:sfc PRMSL:MSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:400 HGT:300 TMP:500 TMP:400 TMP:300 RH:500"
-wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 U:200 V:850 V:700 V:500 V:200 10U:sfc 10V:sfc MSL:sfc GH:300 GH:400 GH:500 GH:925 T:300 T:400 T:500 R:500"
+  wgrib_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 SurfaceU SurfaceV PRMSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:250 TMP:500 TMP:250 RH:500"
+#wgrib_uk_hires_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 UGRD:sfc VGRD:sfc PRMSL:MSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:400 HGT:300 TMP:500 TMP:400 TMP:300 RH:500"
+  wgrib_uk_hires_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 PRMSL:MSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:400 HGT:300 TMP:500 TMP:400 TMP:300 RH:500 SurfaceU SurfaceV"
+  wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 U:200 V:850 V:700 V:500 V:200 10U:sfc 10V:sfc MSL:sfc GH:300 GH:400 GH:500 GH:925 T:300 T:400 T:500 R:500"
 
 else
   wgrib_parmlist=" HGT:850 HGT:700 UGRD:850 UGRD:700 UGRD:500 VGRD:850 VGRD:700 VGRD:500 SurfaceU SurfaceV ABSV:850 ABSV:700 PRMSL "
@@ -281,23 +282,17 @@ future_str="${future_ymd} ${future_hh}00"
 
 if [ ${modtyp} = 'global' ]
 then
-#  synvitdir=${COMROOT}/gfs/prod/gfs.${PDY}
   synvitdir=${COMINgfs:?}/${cyc}/atmos
   synvitfile=gfs.t${cyc}z.syndata.tcvitals.tm00
-#  synvitold_dir=${COMROOT}/gfs/prod/gfs.${old_4ymd}
-  synvitold_dir=${synvitdir%.*}.${old_4ymd}/${old_hh}
+  synvitold_dir=${synvitdir%.*}.${old_4ymd}/${old_hh}/atmos
   synvitold_file=gfs.t${old_hh}z.syndata.tcvitals.tm00
-#  synvitfuture_dir=${COMROOT}/gfs/prod/gfs.${future_4ymd}
-  synvitfuture_dir=${synvitdir%.*}.${future_4ymd}/${future_hh}
+  synvitfuture_dir=${synvitdir%.*}.${future_4ymd}/${future_hh}/atmos
   synvitfuture_file=gfs.t${future_hh}z.syndata.tcvitals.tm00
 else
-#  synvitdir=${COMROOT}/nam/prod/nam.${PDY}
   synvitdir=${COMINnam:?}
   synvitfile=nam.t${cyc}z.syndata.tcvitals.tm00
-#  synvitold_dir=${COMROOT}/nam/prod/nam.${old_4ymd}
   synvitold_dir=${synvitdir%.*}.${old_4ymd}
   synvitold_file=nam.t${old_hh}z.syndata.tcvitals.tm00
-#  synvitfuture_dir=${COMROOT}/nam/prod/nam.${future_4ymd}
   synvitfuture_dir=${synvitdir%.*}.${future_4ymd}
   synvitfuture_file=nam.t${future_hh}z.syndata.tcvitals.tm00
 fi
@@ -872,9 +867,9 @@ then
       fmmddhh=` ${NDATE:?} ${fhr} ${PDY}${cyc} | cut -c5- `
       #ec_hires_orig=ecens_DCD${immddhh}00${fmmddhh}001 # Original
       if [ ${fmmddhh} -eq ${immddhh} ]; then
-        ec_hires_orig=U1D${immddhh}00${fmmddhh}011
+        ec_hires_orig=U1D${immddhh}00${fmmddhh}01${ECMWF_FILE_EXT}
       else
-        ec_hires_orig=U1D${immddhh}00${fmmddhh}001
+        ec_hires_orig=U1D${immddhh}00${fmmddhh}00${ECMWF_FILE_EXT}
       fi
       ecfile=${ecmwfdir}/${ec_hires_orig}
 
@@ -1095,7 +1090,8 @@ then
     for fhour in ${fcsthrs}
     do
 
-      ukfile=${ukmetdir}/${ukmetgfile}${fhour}${ukmetgfileb}      
+#      ukfile=${ukmetdir}/${ukmetgfile}${fhour}${ukmetgfileb}      
+      ukfile=${ukmetdir}/${ukmetgfileb}${fhour}.grib
 
       let attempts=1
       while [ $attempts -le 30 ]; do
@@ -1115,8 +1111,17 @@ then
 
       for parm in ${wgrib_uk_hires_parmlist}
       do
-        grep "${parm}" ukmet.ix | ${WGRIB:?} -s $ukfile -i -grib -append \
-	                              -o ${DATA}/ukmetgribfile.${PDY}${cyc}
+        case ${parm} in
+          "SurfaceU")
+           grep "UGRD:10 m above" ukmet.ix | ${WGRIB:?} -s $ukfile -i -grib -append \
+                                    -o ${DATA}/ukmetgribfile.${PDY}${cyc} ;;
+           "SurfaceV")
+           grep "VGRD:10 m above" ukmet.ix | ${WGRIB:?} -s $ukfile -i -grib -append \
+                                    -o ${DATA}/ukmetgribfile.${PDY}${cyc} ;;
+                     *)
+           grep "${parm}" ukmet.ix | ${WGRIB:?} -s $ukfile -i -grib -append \
+                                    -o ${DATA}/ukmetgribfile.${PDY}${cyc} ;;
+        esac
       done
     done  
 
@@ -1130,6 +1135,13 @@ then
 
     ${GRBINDEX:?} ${DATA}/ukmetgribfile.${PDY}${cyc} ${DATA}/ukmetixfile.${PDY}${cyc}
     export err=$?; err_chk
+
+#    grid="255 0 360 181 -90000 0000 128 90000 359000 1000 1000 64"
+#    export gfile=ukmetgribfile.1x1degree
+#    $COPYGB -g"${grid}" -a ${DATA}/ukmetgribfile.${PDY}${cyc} ${DATA}/ukmetixfile.${PDY}${cyc} ${gfile}
+#    cp ${gfile} ${DATA}/ukmetgribfile.${PDY}${cyc}
+#    ${GRBINDEX:?} ${DATA}/ukmetgribfile.${PDY}${cyc} ${DATA}/ukmetixfile.${PDY}${cyc}
+#    export err=$?; err_chk
 
     catfile=${DATA}/${cmodel}.${PDY}${cyc}.catfile
     >${catfile}

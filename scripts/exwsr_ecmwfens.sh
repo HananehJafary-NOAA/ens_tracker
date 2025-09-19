@@ -91,7 +91,7 @@ echo "The time just before copying begins is: `date`"
   # the time at which the forecast is valid.
 
   #ifil=ecens_DCE${imdh}00${vmdh}001
-  ifil=DCE${imdh}00${vmdh}001
+  ifil=DCE${imdh}00${vmdh}00${ECMWF_FILE_EXT}
 
 #---J.Peng----2010-12-13--------------------------------------
 #  ifile=${dcom}/$PDY/wgrbbul/$ifil

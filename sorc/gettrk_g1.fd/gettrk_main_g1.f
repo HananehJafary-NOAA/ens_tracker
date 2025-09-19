@@ -4917,7 +4917,10 @@ c              data values for ec_igparm, ec_iglevtyp and ec_iglev.
 
       data igparm   /41,41,33,34,33,34,7,7,2,33,34,33,34/
       data iglevtyp /100,100,100,100,100,100,100,100,102,100,100,0,0/
+c      data iglevtyp /100,100,100,100,100,100,100,100,102,100,100
+c     &              ,105,105/
       data iglev    /850,700,850,850,700,700,850,700,0,500,500,0,0/
+c      data iglev    /850,700,850,850,700,700,850,700,0,500,500,10,10/
 
       data ec_igparm   /999,999,131,132,131,132,156,156,151,131,132
      &                 ,165,166/
@@ -4952,10 +4955,10 @@ c                (20) NCEP Ensemble RELOCATION
         iglev(12)    = 10
         iglev(13)    = 10
       else if (inp%model == 3) then    ! UKMET: "surface" winds
-        iglevtyp(12) = 1
-        iglevtyp(13) = 1
-        iglev(12)    = 0
-        iglev(13)    = 0
+        iglevtyp(12) = 105
+        iglevtyp(13) = 105
+        iglev(12)    = 10
+        iglev(13)    = 10
       else if (inp%model == 4) then    ! ECMWF hi-res: "surface" winds
         ec_iglevtyp(12) = 1    
         ec_iglevtyp(13) = 1   

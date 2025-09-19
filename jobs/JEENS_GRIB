@@ -6,7 +6,6 @@ set -x
 ####################################
 # obtain unique process id (pid) and make temp directory
 ####################################
-export jobid=${jobid:-$job.o$$}
 export DATA=${DATA:-${DATAROOT:?}/${jobid}}
 mkdir -p $DATA
 cd $DATA
@@ -15,8 +14,9 @@ export cycle=t${cyc}z
 ####################################
 # File To Log Msgs
 ####################################
-export jlogfile=${jlogfile:-${DATA}/jlogfile.${jobid}}
+#export jlogfile=${jlogfile:-${DATA}/jlogfile.${jobid}}
 
+export ECMWF_FILE_EXT=${ECMWF_FILE_EXT:-1}
 ####################################
 # Specify NET and RUN Name and model
 ####################################
@@ -51,11 +51,12 @@ export SCRIPTSens_tracker=${SCRIPTSens_tracker:-$HOMEens_tracker/scripts}
 # Run setpdy and initialize PDY variables
 ##############################
 setpdy.sh
+. ./PDY
 
 ##############################################
 # Define COM directories
 ##############################################
-export DCOM=${DCOM:-/lfs/h1/ops/canned/dcom/${PDY}/wgrbbul/ecmwf}
+export DCOM=${DCOM:-/lfs/h1/ops/prod/dcom/${PDY}/wgrbbul/ecmwf}
 export COMOUT=${COMOUT:-$(compath.py -o ${NET}/${ens_tracker_ver})/${RUN}.${PDY}/${cyc}/pgrba}
 mkdir -m 775 -p $COMOUT
 

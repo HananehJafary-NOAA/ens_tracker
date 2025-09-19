@@ -52,9 +52,9 @@ elif [ ${cmodel} = "ecmwf" ]; then
   fmmddhh=` ${NDATE:?} ${leadhour} ${PDY}${cyc} | cut -c5- `
   #datfile=ecens_DCD${immddhh}00${fmmddhh}001 # Original
   if [ ${fmmddhh} -eq ${immddhh} ]; then
-    datfile=U1D${immddhh}00${fmmddhh}011
+    datfile=U1D${immddhh}00${fmmddhh}01${ECMWF_FILE_EXT}
   else
-    datfile=U1D${immddhh}00${fmmddhh}001
+    datfile=U1D${immddhh}00${fmmddhh}00${ECMWF_FILE_EXT}
   fi
 
 elif [ ${cmodel} = "eens" ]; then
@@ -67,7 +67,7 @@ elif [ ${cmodel} = "eens" ]; then
   vymdh=` ${NDATE:?} ${leadhour} ${ymdh}`
   vmdh=`  echo ${vymdh} | cut -c5-10`
   #datfile=ecens_DCE${imdh}00${vmdh}001
-  datfile=DCE${imdh}00${vmdh}001
+  datfile=DCE${imdh}00${vmdh}00${ECMWF_FILE_EXT}
 
 elif [ ${cmodel} = "ukmet" ]; then
   datdir=${ukmetdcom}

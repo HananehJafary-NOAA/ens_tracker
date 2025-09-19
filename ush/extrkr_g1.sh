@@ -138,8 +138,8 @@ gltrkdir=${gltrkdir:-${COMOUThur:?}}
 wgrib_parmlist=" HGT:850 HGT:700 UGRD:850 UGRD:700 UGRD:500 VGRD:850 VGRD:700 VGRD:500 SurfaceU SurfaceV ABSV:850 ABSV:700 PRMSL:MSL "
 wgrib_egrep_parmlist="HGT:850|HGT:700|UGRD:850|UGRD:700|UGRD:500|VGRD:850|VGRD:700|VGRD:500|UGRD:10 m |VGRD:10 m |ABSV:850|ABSV:700|PRMSL:MSL"
 wgrib_ec_hires_parmlist=" GH:850 GH:700 U:850 U:700 U:500 V:850 V:700 V:500 10U:sfc 10V:sfc MSL:sfc "
-wgrib_uk_hires_parmlist=' HGT:850 HGT:700 UGRD:850 UGRD:700 UGRD:500 VGRD:850 VGRD:700 VGRD:500 UGRD:sfc VGRD:sfc ABSV:850 ABSV:700 PRMSL:MSL '
-
+#wgrib_uk_hires_parmlist=' HGT:850 HGT:700 UGRD:850 UGRD:700 UGRD:500 VGRD:850 VGRD:700 VGRD:500 UGRD:10 m VGRD:10 m ABSV:850 ABSV:700 PRMSL:MSL '
+wgrib_uk_hires_parmlist="UGRD:850 UGRD:700 UGRD:500 UGRD:200 VGRD:850 VGRD:700 VGRD:500 VGRD:200 PRMSL:MSL HGT:925 HGT:850 HGT:700 HGT:500 HGT:400 HGT:300 TMP:500 TMP:400 TMP:300 RH:500 SurfaceU SurfaceV"
 #----------------------------------------------------------------#
 #
 #    --- Define data directories and data file names ---
@@ -167,12 +167,13 @@ case ${cmodel} in
        echo " ++ operational high-res UKMET chosen"        ;
        echo " "; set -x                                    ;
        ukmetdir=${ukmetdir:-${COMINukmet:?}}                     ;
-       ukmetgfile=pgbf                                     ;
-       ukmetgfileb=.ukm.${PDY}${cyc}                       ;
-
-       fcstlen=120                                         ;
-#       fcsthrs=$(seq -f%02g -s' ' 0 6 $fcstlen)            ;
-       fcsthrs=' 00 12 24 36 48 60 72 84 96 108 120'       ;
+#       ukmetgfile=pgbf                                     ;
+#       ukmetgfileb=.ukm.${PDY}${cyc}                       ;
+       ukmetgfile=${COMINukmet}                            ;
+       ukmetgfileb=${cmodel}.t${cyc}z.0p25.f               ;
+       fcstlen=144                                         ;
+       fcsthrs=$(seq -f%03g -s' ' 0 6 $fcstlen)            ;
+#       fcsthrs=' 00 12 24 36 48 60 72 84 96 108 120 132 144' ;
        atcfnum=17                                          ;
        atcfname="ukx "                                     ;
        atcfout="ukx"                                       ;
@@ -310,24 +311,24 @@ d6ahead_ymd=` echo ${d6ahead_ymdh} | cut -c3-8`
 d6ahead_hh=`  echo ${d6ahead_ymdh} | cut -c9-10`
 d6ahead_str="${d6ahead_ymd} ${d6ahead_hh}00"
 
-if [ ${modtyp} = 'global' ]
-then
+#if [ ${modtyp} = 'global' ]
+#then
 #  synvitdir=${COMROOT}/gfs/prod/gfs.${PDY}
-  synvitdir=${COMINgfs:?}/${cyc}/atmos
-  synvitfile=gfs.t${cyc}z.syndata.tcvitals.tm00
+#  synvitdir=${COMINgfs:?}/${cyc}/atmos
+#  synvitfile=gfs.t${cyc}z.syndata.tcvitals.tm00
 #  synvit6ago_dir=${COMROOT}/gfs/prod/gfs.${d6ago_4ymd}
-  synvit6ago_dir=${synvitdir%.*}.${d6ago_4ymd}/${d6ago_hh}
-  synvit6ago_file=gfs.t${d6ago_hh}z.syndata.tcvitals.tm00
+#  synvit6ago_dir=${synvitdir%.*}.${d6ago_4ymd}/${d6ago_hh}
+#  synvit6ago_file=gfs.t${d6ago_hh}z.syndata.tcvitals.tm00
 #  synvit6ahead_dir=${COMROOT}/gfs/prod/gfs.${d6ahead_4ymd}
-  synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}/${d6ahead_hh}
-  synvit6ahead_file=gfs.t${d6ahead_hh}z.syndata.tcvitals.tm00
-else
-  synvitdir=${COMINnam:?}
-  synvitfile=nam.t${cyc}z.syndata.tcvitals.tm00
-  synvit6ago_dir=${synvitdir%.*}.${d6ago_4ymd}
-  synvit6ago_file=nam.t${d6ago_hh}z.syndata.tcvitals.tm00
-  synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}
-  synvit6ahead_file=nam.t${d6ahead_hh}z.syndata.tcvitals.tm00
+#  synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}/${d6ahead_hh}
+#  synvit6ahead_file=gfs.t${d6ahead_hh}z.syndata.tcvitals.tm00
+#else
+#  synvitdir=${COMINnam:?}
+#  synvitfile=nam.t${cyc}z.syndata.tcvitals.tm00
+#  synvit6ago_dir=${synvitdir%.*}.${d6ago_4ymd}
+#  synvit6ago_file=nam.t${d6ago_hh}z.syndata.tcvitals.tm00
+#  synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}
+#  synvit6ahead_file=nam.t${d6ahead_hh}z.syndata.tcvitals.tm00
 
 #  synvitdir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${PDY}
 #  synvitfile=sref.t${cyc}z.syndata.tcvitals.tm00
@@ -335,7 +336,7 @@ else
 #  synvit6ago_file=sref.t${d6ago_hh}z.syndata.tcvitals.tm00
 #  synvit6ahead_dir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${d6ahead_4ymd}
 #  synvit6ahead_file=sref.t${d6ahead_hh}z.syndata.tcvitals.tm00
-fi
+#fi
 
 set +x
 echo " "
@@ -656,9 +657,9 @@ then
     fmmddhh=` ${NDATE:?} ${fhr} ${PDY}${cyc} | cut -c5- `
     #ec_hires_orig=ecens_DCD${immddhh}00${fmmddhh}001 # Original
     if [ ${fmmddhh} -eq ${immddhh} ]; then
-      ec_hires_orig=U1D${immddhh}00${fmmddhh}011
+      ec_hires_orig=U1D${immddhh}00${fmmddhh}01${ECMWF_FILE_EXT}
     else
-      ec_hires_orig=U1D${immddhh}00${fmmddhh}001
+      ec_hires_orig=U1D${immddhh}00${fmmddhh}00${ECMWF_FILE_EXT}
     fi
 
     ecfile=${ecmwfdir}/${ec_hires_orig}
@@ -900,7 +901,7 @@ then
 
   for fhour in ${fcsthrs}
   do
-    ukfile=${ukmetdir}/${ukmetgfile}${fhour}${ukmetgfileb}
+    ukfile=${ukmetgfile}/${ukmetgfileb}${fhour}.grib
     
     let attempts=1
     while [ $attempts -le 30 ]; do
@@ -920,10 +921,18 @@ then
 
     for parm in ${wgrib_uk_hires_parmlist}
     do
-      grep "${parm}" ukmet.ix | ${WGRIB:?} -s $ukfile -i -grib -append \
-                              -o ${DATA}/ukmetgribfile.${PDY}${cyc}
+      case ${parm} in
+        "SurfaceU")
+         grep "UGRD:10 m above" ukmet.ix | ${WGRIB:?} -s $ukfile -i -grib -append \
+                                    -o ${DATA}/ukmetgribfile.${PDY}${cyc} ;;
+         "SurfaceV")
+         grep "VGRD:10 m above" ukmet.ix | ${WGRIB:?} -s $ukfile -i -grib -append \
+                                    -o ${DATA}/ukmetgribfile.${PDY}${cyc} ;;
+                     *)
+         grep "${parm}" ukmet.ix | ${WGRIB:?} -s $ukfile -i -grib -append \
+                                    -o ${DATA}/ukmetgribfile.${PDY}${cyc} ;;
+      esac
     done
-
   done
 
   ${GRBINDEX:?} ${DATA}/ukmetgribfile.${PDY}${cyc} ${DATA}/ukmetixfile.${PDY}${cyc}
@@ -1121,6 +1130,14 @@ then
       echo "+++ Adding records to  TPC ATCFUNIX directory: $COMOUTatcf/${at}${NO}${syyyy}/ncep_${at}${NO}${syyyy}"
       echo " "
       set -x
+      if [ "$SENDDBN" = 'YES' ]
+      then
+	   if [ "$pert" = 'p01' ]
+	   then
+	     #sleep 60 
+             $DBNROOT/bin/dbn_alert MODEL NHC_ATCF_ENS_TRACKER $job $COMOUTatcf/${at}${NO}${syyyy}/ncep_a${at}${NO}${syyyy}.dat
+           fi
+      fi
     done
   fi
 fi

@@ -268,6 +268,10 @@ then
       if [ $at = 'al' -o $at = 'ep' ]; then
         let nhcct=nhcct+1
       fi
+    if [ "$SENDDBN" = 'YES' ]
+    then
+      $DBNROOT/bin/dbn_alert MODEL NHC_ATCF_ENS_TRACKER $job $COMOUTatcf/${at}${NO}${syyyy}/ncep_a${at}${NO}${syyyy}.dat
+    fi
     done
   fi
 

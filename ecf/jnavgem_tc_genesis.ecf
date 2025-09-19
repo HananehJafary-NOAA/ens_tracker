@@ -5,15 +5,15 @@
 #PBS -q %QUEUE%
 #PBS -S /bin/bash
 #PBS -l select=1:ncpus=1:mem=4GB
-#PBS -l walltime=00:30:00
+#PBS -l walltime=00:10:00
 #PBS -l debug=true
 
 export model=ens_tracker
 %include <head.h>
 %include <envir-p1.h>
 #
-export PACKAGEHOME=%PACKAGEHOME%
 export cyc=%CYC%
+export DCOM_STATUS="data of opportunity"
 
 module load PrgEnv-intel/$PrgEnv_intel_ver
 module load intel/$intel_ver
@@ -37,12 +37,7 @@ module load wgrib2/$wgrib2_ver
 module list
 
 # CALL executable job script here
-${PACKAGEHOME}/jobs/JNAVGEM_TC_GENESIS
-
-if [ $? -ne 0 ]; then
-  ecflow_client --abort
-  exit
-fi
+${HOMEens_tracker}/jobs/JNAVGEM_TC_GENESIS
 
 %include <tail.h>
 %manual
