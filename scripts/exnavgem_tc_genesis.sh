@@ -59,11 +59,9 @@ ${USHens_tracker}/sort_tracks.gen.sh  >${TRKDATA}/sort.${regtype}.${atcfout}.${y
 export err=$?; err_chk
 
 if [ -s "missing_ngps.txt" ]; then
-   mail.py -s "Missing NAVGEM data in $job" --html <<ENDMSG
+   mail.py -s "Missing NAVGEM data in $job" <<ENDMSG
 One or more Navy Global Environmental Model files are missing, including
-<ul>
 $(sort -u missing_ngps.txt | awk '$0="<li>"$0"</li>"')
-</ul>
 
 $0 could not process all expected data.
 ENDMSG

@@ -13861,9 +13861,8 @@ cJ.Peng---2012-04-18----------------------------------------------
 
 
 c     This next bit is needed because we need to read the near-surface
-c     winds, and while several models provide us with 10m winds, the
-c     UKMET gives us surface winds, while nogaps gives us 10m winds.
-c     For GFDL, we have 35m winds.
+c     winds, and while several models provide us with 10m winds, the 
+c     nogaps gives us 10m winds. For GFDL, we have 35m winds.
 
 c     Model numbers used: (1) AVN, (2) MRF, (3) UKMET, (4) ECMWF,
 c                (5) NGM, (6) Early Eta, (7) NOGAPS, (8) GDAS,
@@ -13886,11 +13885,11 @@ c                (21) UKMET hi-res (from NHC)
         iglevtyp(11) = 105
         iglev(10)    = 10
         iglev(11)    = 10
-      else if (inp%model == 3) then    ! UKMET: "surface" winds
-        iglevtyp(10) = 1
-        iglevtyp(11) = 1
-        iglev(10)    = 0
-        iglev(11)    = 0 
+      else if (inp%model == 3) then    ! UKMET: "10m winds" winds
+        iglevtyp(10) = 105             ! height in meter
+        iglevtyp(11) = 105
+        iglev(10)    = 10              ! 10 meter above the ground
+        iglev(11)    = 10            
       else if (inp%model == 4) then    ! ECMWF hi-res: "surface" winds
         ec_iglevtyp(10) = 1
         ec_iglevtyp(11) = 1

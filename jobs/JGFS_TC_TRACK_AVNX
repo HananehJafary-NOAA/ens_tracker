@@ -6,7 +6,6 @@ set -x
 ####################################
 # obtain unique process id (pid) and make temp directory
 ####################################
-export jobid=${jobid:-$job.o$$}
 export DATA=${DATA:-${DATAROOT:?}/${jobid}}
 mkdir -p $DATA
 cd $DATA
@@ -15,8 +14,9 @@ export cycle=t${cyc}z
 ####################################
 # File To Log Msgs
 ####################################
-export jlogfile=${jlogfile:-${DATA}/jlogfile.${jobid}}
+#export jlogfile=${jlogfile:-${DATA}/jlogfile.${jobid}}
 
+export ECMWF_FILE_EXT=${ECMWF_FILE_EXT:-1}
 ####################################
 # Specify NET and RUN Name and model
 ####################################
@@ -50,7 +50,7 @@ export USHens_tracker=${USHens_tracker:-$HOMEens_tracker/ush}
 # Run setpdy and initialize PDY variables
 ##############################
 setpdy.sh
-
+. ./PDY
 ##############################################
 # Define COM directories
 ##############################################

@@ -656,9 +656,9 @@ then
     fmmddhh=` ${NDATE:?} ${fhr} ${PDY}${cyc} | cut -c5- `
     #ec_hires_orig=ecens_DCD${immddhh}00${fmmddhh}001 # Original
     if [ ${fmmddhh} -eq ${immddhh} ]; then
-      ec_hires_orig=U1D${immddhh}00${fmmddhh}011
+      ec_hires_orig=U1D${immddhh}00${fmmddhh}01${ECMWF_FILE_EXT}
     else
-      ec_hires_orig=U1D${immddhh}00${fmmddhh}001
+      ec_hires_orig=U1D${immddhh}00${fmmddhh}00${ECMWF_FILE_EXT}
     fi
 
     ecfile=${ecmwfdir}/${ec_hires_orig}
@@ -1121,6 +1121,10 @@ then
       echo "+++ Adding records to  TPC ATCFUNIX directory: $COMOUTatcf/${at}${NO}${syyyy}/ncep_${at}${NO}${syyyy}"
       echo " "
       set -x
+    if [ "$SENDDBN" = 'YES' ]
+    then
+      $DBNROOT/bin/dbn_alert MODEL NHC_ATCF_ENS_TRACKER $job $COMOUTatcf/${at}${NO}${syyyy}/ncep_a${at}${NO}${syyyy}.dat
+    fi
     done
   fi
 fi

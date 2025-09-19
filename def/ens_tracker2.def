@@ -1,0 +1,75 @@
+
+# ecflow_client --replace /para/primary/12/ens_tracker/v1.3/fens/jfens_tc_track /lfs/h1/ops/para/packages/ens_tracker.v1.3.5/def/ens_tracker2.def --host=decflow01 --port=14142
+
+suite para
+family primary
+family 12
+  family ens_tracker
+    defstatus complete
+    edit PACKAGEHOME '/lfs/h1/ops/%ENVIR%/packages/ens_tracker.%ens_tracker_ver%'
+    edit PROJ 'ENSTRACK'
+    family v1.3
+      family gfs
+        task jgfs_tc_track_avnx
+          time 16:45
+        task jgfs_tc_track_avno
+          time 16:45
+        task jgfs_tc_genesis
+          time 16:20
+        task jgfs_fsu_genesis
+          time 16:45
+      endfamily
+      family gefs
+        task jgefs_tc_track
+          time 17:30
+        task jgefs_tc_genesis
+          time 17:30
+      endfamily
+      family fens
+        task jnavgem_tc_track
+          time 06:30
+        task jnavgem_tc_genesis
+          time 06:58
+        task jfens_tc_track
+          time 18:45
+        task jfens_tc_genesis
+          time 18:14
+      endfamily
+      family cmce
+        task jcmc_tc_track
+          trigger ../gfs/jgfs_tc_track_avnx == complete
+          time 06:00
+        task jcmc_tc_genesis
+          time 06:00
+        task jcens_tc_track
+          trigger ../gfs/jgfs_tc_track_avnx == complete
+          time 06:05
+        task jcens_tc_genesis
+          trigger jcmc_tc_genesis == complete
+          time 06:05
+      endfamily
+      family ecme
+        task jecmwf_tc_track
+          time 07:00
+        task jecmwf_tc_genesis
+          time 06:30
+        task jeens_grib
+          time 07:46
+        task jeens_tc_track
+          trigger jeens_grib == complete
+        task jeens_tc_genesis
+          trigger jeens_grib == complete
+      endfamily
+      family ukmet
+        task jukmet_grib
+          time 04:35
+        task jukmet_tc_track
+          trigger jukmet_grib == complete
+        task jukmet_tc_genesis
+          trigger jukmet_grib == complete
+      endfamily
+    endfamily
+  endfamily
+endfamily
+endfamily 
+endsuite 

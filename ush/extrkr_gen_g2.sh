@@ -427,23 +427,17 @@ future_str="${future_ymd} ${future_hh}00"
 
 if [ ${modtyp} = 'global' ]
 then
-#  synvitdir=${COMROOT}/gfs/prod/gfs.${PDY}
   synvitdir=${COMINgfs:?}/${cyc}/atmos
   synvitfile=gfs.t${cyc}z.syndata.tcvitals.tm00
-#  synvitold_dir=${COMROOT}/gfs/prod/gfs.${old_4ymd}
-  synvitold_dir=${synvitdir%.*}.${old_4ymd}/${old_hh}
+  synvitold_dir=${synvitdir%.*}.${old_4ymd}/${old_hh}/atmos
   synvitold_file=gfs.t${old_hh}z.syndata.tcvitals.tm00
-#  synvitfuture_dir=${COMROOT}/gfs/prod/gfs.${future_4ymd}
-  synvitfuture_dir=${synvitdir%.*}.${future_4ymd}/${future_hh}
+  synvitfuture_dir=${synvitdir%.*}.${future_4ymd}/${future_hh}/atmos
   synvitfuture_file=gfs.t${future_hh}z.syndata.tcvitals.tm00
 else
-#  synvitdir=${COMROOT}/nam/prod/nam.${PDY}
   synvitdir=${COMINnam:?}
   synvitfile=nam.t${cyc}z.syndata.tcvitals.tm00
-#  synvitold_dir=${COMROOT}/nam/prod/nam.${old_4ymd}
   synvitold_dir=${synvitdir%.*}.${old_4ymd}
   synvitold_file=nam.t${old_hh}z.syndata.tcvitals.tm00
-#  synvitfuture_dir=${COMROOT}/nam/prod/nam.${future_4ymd}
   synvitfuture_dir=${synvitdir%.*}.${future_4ymd}
   synvitfuture_file=nam.t${future_hh}z.syndata.tcvitals.tm00
 fi
@@ -1023,16 +1017,31 @@ then
     
       fensfile=${fensdir}/${fensgfile}${fhour}${gensgfile}
 
+#if the first set of pert files c00 and fhour 00, wait 40 minutes, after wait 1 minute per pert....... total run time ~1 hr, 10 mins less than 1:10 wall time
+#if not data of opp wait 40 minutes
+if [ $fhour -eq 000 ] && [ "$DCOM_STATUS" = "data of opportunity" ]; then
+   sleepamt="sleep 2400"
+elif [ "$DCOM_STATUS" = "data of opportunity" ]; then
+   sleepamt="sleep 60"
+else
+   sleepamt="sleep 2400"
+fi
+
       let attempts=1
-      while [ $attempts -le 40 ]; do
+      while [ $attempts -le 2 ]; do
+
         if [ -s $fensfile ]; then
           break
         else
-          sleep 60
-          let attempts=attempts+1
-        fi
+          if [ $attempts -eq  1 ]; then
+             $sleepamt
+             let attempts=attempts+1
+	  else
+	     let attempts=attempts+1
+	  fi
+	 fi 
       done
-      if [ $attempts -gt 40 ] && [ ! -s $fensfile ]; then
+      if [ $attempts -gt 2 ] && [ ! -s $fensfile ]; then
         if [ "$DCOM_STATUS" = "data of opportunity" ]; then
           echo "$fensfile" >> ${DATA}/missing_fens.txt
           exit

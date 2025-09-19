@@ -19,14 +19,6 @@ export wgrib2_ver=2.0.8
 export python_ver=3.8.6
 export cray_pals_ver=1.0.17
 
-export gfs_ver=v16.2
-export gefs_ver=v12.2.0
-
-export PDY=20210824
-export DATAFS=h1
-export KEEPDATA=YES
-export COMPATH=/lfs/h1/ops/canned/com/ens_tracker:/lfs/h1/ops/canned/com/gfs:/lfs/h1/ops/canned/com/gefs
-export COMROOT=/lfs/h1/ops/para/com
-export DCOMROOT=/lfs/h1/ops/canned/dcom
-export SENDDBN=NO
+export gfs_ver=v16.3
+export gefs_ver=v12.3.1
 

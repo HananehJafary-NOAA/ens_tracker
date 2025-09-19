@@ -637,23 +637,17 @@ future_str="${future_ymd} ${future_hh}00"
 
 if [ ${modtyp} = 'global' ]
 then
-#  synvitdir=${COMROOT}/gfs/prod/gfs.${PDY}
   synvitdir=${COMINgfs:?}/${cyc}/atmos
   synvitfile=gfs.t${cyc}z.syndata.tcvitals.tm00
-#  synvitold_dir=${COMROOT}/gfs/prod/gfs.${old_4ymd}
-  synvitold_dir=${synvitdir%.*}.${old_4ymd}/${old_hh}
+  synvitold_dir=${synvitdir%.*}.${old_4ymd}/${old_hh}/atmos
   synvitold_file=gfs.t${old_hh}z.syndata.tcvitals.tm00
-#  synvitfuture_dir=${COMROOT}/gfs/prod/gfs.${future_4ymd}
-  synvitfuture_dir=${synvitdir%.*}.${future_4ymd}/${future_hh}
+  synvitfuture_dir=${synvitdir%.*}.${future_4ymd}/${future_hh}/atmos
   synvitfuture_file=gfs.t${future_hh}z.syndata.tcvitals.tm00
 else
-#  synvitdir=${COMROOT}/nam/prod/nam.${PDY}
   synvitdir=${COMINnam:?}
   synvitfile=nam.t${cyc}z.syndata.tcvitals.tm00
-#  synvitold_dir=${COMROOT}/nam/prod/nam.${old_4ymd}
   synvitold_dir=${synvitdir%.*}.${old_4ymd}
   synvitold_file=nam.t${old_hh}z.syndata.tcvitals.tm00
-#  synvitfuture_dir=${COMROOT}/nam/prod/nam.${future_4ymd}
   synvitfuture_dir=${synvitdir%.*}.${future_4ymd}
   synvitfuture_file=nam.t${future_hh}z.syndata.tcvitals.tm00
 fi
@@ -2620,6 +2614,10 @@ then
       echo "+++ Adding records to  TPC ATCFUNIX directory: $COMOUTatcf/${at}${NO}${syyyy}/ncep_${at}${NO}${syyyy}"
       echo " "
       set -x
+    if [ "$SENDDBN" = 'YES' ]
+    then
+      $DBNROOT/bin/dbn_alert MODEL NHC_ATCF_ENS_TRACKER $job $COMOUTatcf/${at}${NO}${syyyy}/ncep_a${at}${NO}${syyyy}.dat
+    fi
     done
   fi
 fi

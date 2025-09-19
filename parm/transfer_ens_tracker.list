@@ -23,30 +23,30 @@
 # directory are included, so if no exclude patterns match that file, it will be
 # transferred.
 
-com/ens_tracker/_ENVIR_/gfs._PDY_/
+_COMROOT_/ens_tracker/_SHORTVER_/gfs._PDY_/
 B 54000
 
-com/ens_tracker/_ENVIR_/gefs._PDY_/
+_COMROOT_/ens_tracker/_SHORTVER_/gefs._PDY_/
 B 54000
 
-com/ens_tracker/_ENVIR_/cmce._PDY_/
+_COMROOT_/ens_tracker/_SHORTVER_/cmce._PDY_/
 B 54000
 
-com/ens_tracker/_ENVIR_/fens._PDY_/
+_COMROOT_/ens_tracker/_SHORTVER_/fens._PDY_/
 B 54000
 
-com/ens_tracker/_ENVIR_/ecme._PDY_/
+_COMROOT_/ens_tracker/_SHORTVER_/ecme._PDY_/
 B 54000
 
-com/ens_tracker/_ENVIR_/ukmet._PDY_/
+_COMROOT_/ens_tracker/_SHORTVER_/ukmet._PDY_/
 B 54000
 
-com/ens_tracker/_ENVIR_/gefs._PDYm1_/
+_COMROOT_/ens_tracker/_SHORTVER_/gefs._PDYm1_/
 B 54000
 
-com/ens_tracker/_ENVIR_/atcf/
+_COMROOT_/ens_tracker/_SHORTVER_/atcf/
 B 54000
 
-com/ens_tracker/_ENVIR_/global/
+_COMROOT_/ens_tracker/_SHORTVER_/global/
 B 54000
 

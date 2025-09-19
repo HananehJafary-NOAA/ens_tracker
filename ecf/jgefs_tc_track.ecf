@@ -4,15 +4,14 @@
 #PBS -A %PROJ%-%PROJENVIR%
 #PBS -q %QUEUE%
 #PBS -S /bin/bash
-#PBS -l select=1:ncpus=31:mem=100GB
-#PBS -l walltime=00:30:00
+#PBS -l place=vscatter,select=3:ncpus=31:mpiprocs=31:mem=100GB
+#PBS -l walltime=00:25:00
 #PBS -l debug=true
 
 export model=ens_tracker
 %include <head.h>
 %include <envir-p1.h>
 #
-export PACKAGEHOME=%PACKAGEHOME%
 export cyc=%CYC%
 
 module load PrgEnv-intel/$PrgEnv_intel_ver
@@ -38,12 +37,8 @@ module load wgrib2/$wgrib2_ver
 module list
 
 # CALL executable job script here
-${PACKAGEHOME}/jobs/JGEFS_TC_TRACK
+${HOMEens_tracker}/jobs/JGEFS_TC_TRACK
 
-if [ $? -ne 0 ]; then
-  ecflow_client --abort
-  exit
-fi
 
 %include <tail.h>
 %manual
