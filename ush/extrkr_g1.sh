@@ -312,13 +312,13 @@ d6ahead_str="${d6ahead_ymd} ${d6ahead_hh}00"
 
 if [ ${modtyp} = 'global' ]
 then
-  synvitdir=${COMROOT}/gfs/prod/gfs.${PDY}
+#  synvitdir=${COMROOT}/gfs/prod/gfs.${PDY}
   synvitdir=${COMINgfs:?}/${cyc}/atmos
   synvitfile=gfs.t${cyc}z.syndata.tcvitals.tm00
-  synvit6ago_dir=${COMROOT}/gfs/prod/gfs.${d6ago_4ymd}
+#  synvit6ago_dir=${COMROOT}/gfs/prod/gfs.${d6ago_4ymd}
   synvit6ago_dir=${synvitdir%.*}.${d6ago_4ymd}/${d6ago_hh}
   synvit6ago_file=gfs.t${d6ago_hh}z.syndata.tcvitals.tm00
-  synvit6ahead_dir=${COMROOT}/gfs/prod/gfs.${d6ahead_4ymd}
+#  synvit6ahead_dir=${COMROOT}/gfs/prod/gfs.${d6ahead_4ymd}
   synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}/${d6ahead_hh}
   synvit6ahead_file=gfs.t${d6ahead_hh}z.syndata.tcvitals.tm00
 else
@@ -329,12 +329,12 @@ else
   synvit6ahead_dir=${synvitdir%.*}.${d6ahead_4ymd}
   synvit6ahead_file=nam.t${d6ahead_hh}z.syndata.tcvitals.tm00
 
-  synvitdir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${PDY}
-  synvitfile=sref.t${cyc}z.syndata.tcvitals.tm00
-  synvit6ago_dir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${d6ago_4ymd}
-  synvit6ago_file=sref.t${d6ago_hh}z.syndata.tcvitals.tm00
-  synvit6ahead_dir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${d6ahead_4ymd}
-  synvit6ahead_file=sref.t${d6ahead_hh}z.syndata.tcvitals.tm00
+#  synvitdir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${PDY}
+#  synvitfile=sref.t${cyc}z.syndata.tcvitals.tm00
+#  synvit6ago_dir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${d6ago_4ymd}
+#  synvit6ago_file=sref.t${d6ago_hh}z.syndata.tcvitals.tm00
+#  synvit6ahead_dir=/ensemble/save/Jiayi.Peng/sref_tcvital/sref.${d6ahead_4ymd}
+#  synvit6ahead_file=sref.t${d6ahead_hh}z.syndata.tcvitals.tm00
 fi
 
 set +x
