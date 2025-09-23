@@ -128,7 +128,7 @@ echo "TIMING: Time before any of the track-averaging stuff is `date`"
 
 >trak.allperts.atcfunix.${amodel}.${ymdh}
 
-for tfile in `ls -1 ${COMOUT}/${achar}[np]*.t${cyc}z.cyclone.trackatcfunix`
+for tfile in `ls -1 ${COMOUT}/${achar}*.t${cyc}z.cyclone.trackatcfunix`
 do
   cat $tfile >>trak.allperts.atcfunix.${amodel}.${ymdh}
 done

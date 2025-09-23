@@ -16,8 +16,8 @@ set -x
 loopnum=$1
 cmodel=$2
 ymdh=$3
-pert=$4
-TRKDATA=$5
+TRKDATA=$4
+pert=$5
 
 USE_OPER_VITALS=YES
 # USE_OPER_VITALS=NO
@@ -637,8 +637,14 @@ future_str="${future_ymd} ${future_hh}00"
 
 if [ ${modtyp} = 'global' ]
 then
-  synvitdir=${COMINaigfs:?}/${cyc}
-  synvitfile=aigfs.t${cyc}z.syndata.tcvitals.tm00
+
+  if [ $cmodel = 'aigfs' ];then
+    synvitdir=${COMINaigfs:?}/${cyc}
+    synvitfile=aigfs.t${cyc}z.syndata.tcvitals.tm00
+  elif [ $cmodel = 'aigefs' ];then
+    synvitdir=${COMINaigefs:?}/${cyc}/mem${pert}
+    synvitfile=aigefs.t${cyc}z.syndata.tcvitals.tm00
+  fi
   synvitold_dir=${synvitdir%.*}.${old_4ymd}/${old_hh}/atmos
   synvitold_file=gfs.t${old_hh}z.syndata.tcvitals.tm00
   synvitfuture_dir=${synvitdir%.*}.${future_4ymd}/${future_hh}/atmos
@@ -1417,7 +1423,7 @@ then
       fi
 
       gfile=${TRKDATA}/${aigefs}.f${fhour}
-      cat ${ensdira}/${aigefs}.pres.f${fhour}.grib2 ${ensdira}/${aigefs}.sfc.f${fhour}.grib2 > $gfile
+      cat ${aigefsdira}/${aigefs}.pres.f${fhour}.grib2 ${aigefsdira}/${aigefs}.sfc.f${fhour}.grib2 > $gfile
 
       ${WGRIB2:?} $gfile -match "$PARMlist" -grib ${TRKDATA}/aigefs${pert}gribfile.${PDY}${cyc}.${fhour}
 

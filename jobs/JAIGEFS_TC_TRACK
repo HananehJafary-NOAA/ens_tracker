@@ -56,7 +56,7 @@ setpdy.sh
 export JYYYY=`echo ${PDY} | cut -c1-4`
 export COMINgfs=${COMINgfs:-$(compath.py $envir/com/gfs/${gfs_ver})/gfs.${PDY}}
 export COMINsyn=${COMINsyn:-$(compath.py $envir/com/gfs/${gfs_ver})/syndat}
-export COMINaigefs=${COMINaigefs:-$(compath.py $envir/com/aigefs/${aigefs_ver})/aigefs.${PDY}/${cyc}}/model
+export COMINaigefs=${COMINaigefs:-$(compath.py $envir/com/aigefs/${aigefs_ver})/aigefs.${PDY}/${cyc}/model}
 
 export COMOUT=${COMOUT:-$(compath.py -o ${NET}/${ens_tracker_ver})/${RUN}.${PDY}/${cyc}/tctrack}
 export COMOUThur=${COMOUThur:-$(compath.py -o ${NET}/${ens_tracker_ver})/global}
@@ -78,13 +78,12 @@ export ensdira=${COMINaigefs}
 export ensdirb=${COMINaigefs}
 
 mkdir ${DATA}/${cmodel}
-cd ${DATA}/${cmodel}
 
 export pertstring="000 001 002 003 004 005 006 007 008 009 010
                        011 012 013 014 015 016 017 018 019 020
                        021 022 023 024 025 026 027 028 029 030"
 
->trkr.cmdfile
+# check data
 for pert in ${pertstring}; do
 
   pertdir=${DATA}/${cmodel}/mem${pert}
@@ -97,9 +96,18 @@ for pert in ${pertstring}; do
   if [ $? -eq 6 ]; then exit; fi
   #------------------------------------------------
 
+done
+
+#create mpmd file
+cd ${DATA}/${cmodel}
+
+>trkr.cmdfile
+for pert in ${pertstring}; do
+
   ##-----------generate hurricane track-------------
+  pertdir=${DATA}/${cmodel}/mem${pert}
   outfile=${pertdir}/trkr.${cmodel}.m${pert}.${ymdh}.out
-  echo "${USHens_tracker}/extrkr_ai.sh ${loopnum} ${cmodel} ${ymdh} ${pert} ${pertdir} 2>&1 >${outfile}" >>trkr.cmdfile
+  echo "${USHens_tracker}/extrkr_ai.sh ${loopnum} ${cmodel} ${ymdh} ${pertdir} ${pert} 2>&1 >${outfile}" >> trkr.cmdfile
 
 done
 

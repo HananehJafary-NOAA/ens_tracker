@@ -75,7 +75,7 @@ export ymdh=${PDY}${cyc}
 
 export aigfsdir=${COMINaigfs}/${cyc}
 export pert=""
-pertdir=${DATA}/${cmodel}/${pert}
+pertdir=${DATA}/${cmodel}
 mkdir -p $pertdir
 
 #-----------input data checking -----------------
@@ -84,7 +84,7 @@ ${USHens_tracker}/data_check_aigfs.sh
 if [ $? -eq 6 ]; then exit; fi
 #------------------------------------------------
 
-${USHens_tracker}/extrkr_ai.sh ${loopnum} ${cmodel} ${ymdh} ${pert} ${pertdir} #2>&1 >${outfile}  
+${USHens_tracker}/extrkr_ai.sh ${loopnum} ${cmodel} ${ymdh} ${pertdir} ${pert} #2>&1 >${outfile}
 
 export err=$?; err_chk
 
