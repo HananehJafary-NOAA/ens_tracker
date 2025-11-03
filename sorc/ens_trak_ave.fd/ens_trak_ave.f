@@ -25,6 +25,7 @@ c          integer       atx_nw_quad     ! Wind radius in NW quad (nm)
 
       module maxparms
         integer, parameter :: ncmaxmem = 30 ! max # ncep ensemble perts
+        integer, parameter :: aimaxmem = 30 ! max # ml ncep ensemble perts
         integer, parameter :: nrmaxmem = 10 ! max # Tom ensemble perts
         integer, parameter :: n0maxmem = 20 ! max # ncep_bc ensemble perts
         integer, parameter :: h0maxmem = 20 ! max # hwrf ensemble
@@ -78,6 +79,7 @@ cJ.Peng-------2010-10-29------------2010-11-02-----------------
 
         integer, parameter :: ncminmem = 12 ! min # of ncep ensemble 
                          ! perts needed at a given fcst hr to get a mean
+        integer, parameter :: aiminmem = 12 ! min # of ml ncep ensemble
         integer, parameter :: nrminmem =  4 ! min # of Tom ensemble
         integer, parameter :: n0minmem =  8 ! min # of ncep_bc ensemble
         integer, parameter :: h0minmem =  8 ! min # of hwrf ensemble
@@ -152,6 +154,13 @@ c                              ! which we'll carry out the accum probs
      &          ,'AP18','AP19','AP20','AP21','AP22','AP23','AP24'
      &          ,'AP25','AP26','AP27','AP28','AP29','AP30'/)
 
+        character*4 :: aiperts(aimaxmem) = (/'M001','M002','M003'
+     &          ,'M004','M005','M006','M007','M008','M009','M010'
+     &          ,'M011','M012','M013','M014','M015','M016','M017'
+     &          ,'M018','M019','M020','M021','M022','M023','M024'
+     &          ,'M025','M026','M027','M028','M029','M030'/)
+
+        
         character*4 :: nrperts(nrmaxmem) = (/'GR01','GR02','GR03'
      &          ,'GR04','GR05','GR06','GR07','GR08','GR09','GR10'
      &          /)
@@ -449,6 +458,13 @@ cJ.Peng-------2010-11-02-------------------------------------------
      &          ,'NMN3','NMP1','NMP2','NMP3'/)
 
         integer  :: ncfcsthrs(maxtimes) = (/0,6,12,18,24,30,36,42,48,54
+     &               ,60,66,72,78,84,90,96,102,108,114,120,126,132,138
+     &               ,144,150,156,162,168,174,180,186,192,198,204,210
+     &               ,216,222,228,234,240,999,999,999,999,999,999,999
+     &               ,999,999,999,999,999,999,999,999,999,999,999,999
+     &               ,999,999,999,999,999/)
+
+        integer  :: aifcsthrs(maxtimes) = (/0,6,12,18,24,30,36,42,48,54
      &               ,60,66,72,78,84,90,96,102,108,114,120,126,132,138
      &               ,144,150,156,162,168,174,180,186,192,198,204,210
      &               ,216,222,228,234,240,999,999,999,999,999,999,999
@@ -855,6 +871,7 @@ cJ.Peng-04-15-2013
 
       select case (cmodel)
         case ('ens');  maxmem = ncmaxmem; fcsthrs(:) = ncfcsthrs(:)
+        case ('aigef'); maxmem = aimaxmem; fcsthrs(:) = aifcsthrs(:)
         case ('ref');  maxmem = nrmaxmem; fcsthrs(:) = nrfcsthrs(:)
 
         case ('ensb');  maxmem = n0maxmem; fcsthrs(:) = n0fcsthrs(:)
@@ -938,6 +955,11 @@ cJ.Peng-04-15-2013
                        minmem   = ncminmem  
                        catcf    = 'AEMN'  
                        catcf_lc = 'aemn'  
+
+        case ('aigef'); perts(:) = aiperts(:)
+                       minmem   = aiminmem  
+                       catcf    = 'MEMN'  
+                       catcf_lc = 'memn' 
 
         case ('ref');  perts(:) = nrperts(:)
                        minmem   = nrminmem
