@@ -1,24 +1,18 @@
 #!/bin/bash
-#PBS -N ens_tracker_aigfs_tc_track
+#PBS -N ens_tracker_aigfs_tc_%CYC%
 #PBS -j oe
-#PBS -A ENSTRACK-DEV
-#PBS -q dev
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -q %QUEUE%
 #PBS -S /bin/bash
 #PBS -l select=1:ncpus=1:mem=4GB
 #PBS -l walltime=00:10:00
 #PBS -l debug=true
 
 export model=ens_tracker
-export cyc=00
-export envir=prod
-export job=aigfs_avno_${cyc}
-export COMROOT=/lfs/h2/emc/ptmp/hananeh.jafary/com
-export DATAROOT=/lfs/h2/emc/ptmp/hananeh.jafary
-export KEEPDATA=YES
-export PACKAGEHOME=/lfs/h2/emc/ens/noscrub/hananeh.jafary/aigfs/ens_tracker
-
-module reset
-source /lfs/h2/emc/ens/noscrub/hananeh.jafary/aigfs/ens_tracker/versions/run.ver
+%include <head.h>
+%include <envir-p1.h>
+#
+export cyc=%CYC%
 
 module load PrgEnv-intel/$PrgEnv_intel_ver
 module load intel/$intel_ver

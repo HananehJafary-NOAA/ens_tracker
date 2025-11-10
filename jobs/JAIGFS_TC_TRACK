@@ -49,14 +49,12 @@ export USHens_tracker=${USHens_tracker:-$HOMEens_tracker/ush}
 ##############################
 # Run setpdy and initialize PDY variables
 ##############################
-#setpdy.sh
-#. ./PDY
-export PDY=20251030
+setpdy.sh
+. ./PDY
 ##############################################
 # Define COM directories
 ##############################################
-#export COMINaigfs=${COMINaigfs:-$(compath.py $envir/com/aigfs/${aigfs_ver})/aigfs.${PDY}}
-export COMINaigfs=/lfs/h1/ops/prod/com/aigfs/v1.0/aigfs.${PDY}/${cyc}/model/atmos/grib2
+export COMINaigfs=${COMINaigfs:-$(compath.py $envir/com/aigfs/${aigfs_ver})/aigfs.${PDY}/${cyc}/model/atmos/grib2}
 export COMINsyn=${COMINsyn:-$(compath.py $envir/com/gfs/${gfs_ver})/syndat}
 
 export COMOUT=${COMOUT:-$(compath.py -o ${NET}/${ens_tracker_ver})/${RUN}.${PDY}/${cyc}/tctrack}

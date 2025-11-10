@@ -15,7 +15,7 @@ memb=$(printf "%03d" "$1")
 pert="mem"$memb
 
 if [ ${cmodel} = "aigefs" ]; then
-  datdir=${COMINaigefs}/$pert
+  datdir=${COMINaigefs}/$pert/model/atmos/grib2
   vit_incr=${FHOUT_CYCLONE:-6}                        
   fcstlen=${FHMAX_CYCLONE:-240}                       
   fcsthrs=$(seq -f%03g -s' ' 0 $vit_incr $fcstlen)    

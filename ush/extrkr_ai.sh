@@ -264,7 +264,7 @@ case ${cmodel} in
        PERT=` echo ${pert} | tr '[a-z]' '[A-Z]'`           ;
        PERT=` echo ${PERT:0:1}${PERT:3:3} `                ;
        
-       aigefsdira=${aigefsdira:-${COMINaigefs:?}/mem$pert}            ;
+       aigefsdira=${aigefsdira:-${COMINaigefs:?}/mem$pert}/model/atmos/grib2;
        aigefs=aigefs.t${cyc}z                              ;
        
        vit_incr=${FHOUT_CYCLONE:-6}                        ;
@@ -639,10 +639,10 @@ if [ ${modtyp} = 'global' ]
 then
 
   if [ $cmodel = 'aigfs' ];then
-    synvitdir=${COMINaigfs:?}/${cyc}
+    synvitdir=${COMINaigfs:?}/${cyc}/model/atmos/grib2
     synvitfile=aigfs.t${cyc}z.syndata.tcvitals.tm00
   elif [ $cmodel = 'aigefs' ];then
-    synvitdir=${COMINaigefs:?}/${cyc}/mem${pert}
+    synvitdir=${COMINaigefs:?}/${cyc}/mem${pert}/model/atmos/grib2
     synvitfile=aigefs.t${cyc}z.syndata.tcvitals.tm00
   fi
   synvitold_dir=${synvitdir%.*}.${old_4ymd}/${old_hh}/atmos

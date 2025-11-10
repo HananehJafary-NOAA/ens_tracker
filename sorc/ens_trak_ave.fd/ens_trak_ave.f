@@ -25,7 +25,7 @@ c          integer       atx_nw_quad     ! Wind radius in NW quad (nm)
 
       module maxparms
         integer, parameter :: ncmaxmem = 30 ! max # ncep ensemble perts
-        integer, parameter :: aimaxmem = 30 ! max # ml ncep ensemble perts
+        integer, parameter :: aimaxmem = 31 ! max # ml ncep ensemble perts
         integer, parameter :: nrmaxmem = 10 ! max # Tom ensemble perts
         integer, parameter :: n0maxmem = 20 ! max # ncep_bc ensemble perts
         integer, parameter :: h0maxmem = 20 ! max # hwrf ensemble
@@ -154,7 +154,7 @@ c                              ! which we'll carry out the accum probs
      &          ,'AP18','AP19','AP20','AP21','AP22','AP23','AP24'
      &          ,'AP25','AP26','AP27','AP28','AP29','AP30'/)
 
-        character*4 :: aiperts(aimaxmem) = (/'M001','M002','M003'
+        character*4 :: aiperts(aimaxmem) = (/'M000','M001','M002','M003'
      &          ,'M004','M005','M006','M007','M008','M009','M010'
      &          ,'M011','M012','M013','M014','M015','M016','M017'
      &          ,'M018','M019','M020','M021','M022','M023','M024'
