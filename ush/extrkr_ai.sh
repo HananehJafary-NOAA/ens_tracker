@@ -314,10 +314,10 @@ case ${cmodel} in
 
        STRUCTFLAG='n'                                     ;
        IKEFLAG='n'                                        ;
-       atcfname="m${pert}"               ;
+       atcfname="a${pert}"               ;
        rundescr='xxxx'                                     ;
        atcfdescr='xxxx'                                     ;
-       atcfout="m${pert}"                ;;
+       atcfout="a${pert}"                ;;
 
   cmc) set +x; echo " "                                    ;
        echo " ++ operational CMC chosen"                   ;

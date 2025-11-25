@@ -50,7 +50,7 @@ export USHens_tracker=${USHens_tracker:-$HOMEens_tracker/ush}
 ##############################
 #setpdy.sh
 #. ./PDY
-export PDY=20251107
+export PDY=20251124
 ##############################################
 # Define COM directories
 ##############################################
@@ -60,9 +60,13 @@ export COMINsyn=${COMINsyn:-$(compath.py $envir/com/gfs/${gfs_ver})/syndat}
 #export COMINaigefs=${COMINaigefs:-$(compath.py $envir/com/aigefs/${aigefs_ver})/aigefs.${PDY}/${cyc}/model}
 
 export COMINaigefs=/lfs/h1/ops/prod/com/aigefs/v1.0/aigefs.${PDY}/${cyc}
-export COMOUT=${COMOUT:-$(compath.py -o ${NET}/${ens_tracker_ver})/${RUN}.${PDY}/${cyc}/tctrack}
-export COMOUThur=${COMOUThur:-$(compath.py -o ${NET}/${ens_tracker_ver})/global}
-export COMOUTatcf=${COMOUTatcf:-$(compath.py -o ${NET}/${ens_tracker_ver})/atcf}
+#export COMOUT=${COMOUT:-$(compath.py -o ${NET}/${ens_tracker_ver})/${RUN}.${PDY}/${cyc}/tctrack}
+#export COMOUThur=${COMOUThur:-$(compath.py -o ${NET}/${ens_tracker_ver})/global}
+#export COMOUTatcf=${COMOUTatcf:-$(compath.py -o ${NET}/${ens_tracker_ver})/atcf}
+export COMOUT=/lfs/h2/emc/ptmp/hananeh.jafary/${RUN}/tctrack
+export COMOUThur=/lfs/h2/emc/ptmp/hananeh.jafary/${RUN}/global
+export COMOUTatcf=/lfs/h2/emc/ptmp/hananeh.jafary/${RUN}/atcf
+
 mkdir -m 775 -p $COMOUT $COMOUThur $COMOUTatcf
 
 msg="HAS BEGUN on `hostname`"
@@ -122,12 +126,12 @@ export err=$?; err_chk
 
 #if [ ${SENDCOM} = 'NO' ]; then
 #  for pert in ${pertstring}; do
-#    pertdir=${DATA}/${cmodel}/${pert}
+#    pertdir=${DATA}/${cmodel}/mem${pert}
 #    cp ${pertdir}/trak.a${pert}.atcfunix.${PDY}${cyc} ${COMOUT}/a${pert}.t${cyc}z.cyclone.trackatcfunix
 #  done
 #fi
 
-cd $DATA
+#cd $DATA
 #rm -rf ${DATA}/${cmodel}
 
 ${USHens_tracker}/ens_trak_ave.sh
