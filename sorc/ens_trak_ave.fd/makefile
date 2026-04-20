@@ -2,7 +2,7 @@ SHELL=  /bin/sh
 #COMP=   ifort
 COMP= ftn
 #FFLAGS= -O2 -check bounds -check format -xHost -fpe0
-FFLAGS= -O3 -g -traceback -convert big_endian
+FFLAGS= -O3 -g -traceback
 
 ens_trak_ave:      ens_trak_ave.f
 	@echo " "

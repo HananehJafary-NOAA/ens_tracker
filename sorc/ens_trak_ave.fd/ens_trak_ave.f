@@ -25,6 +25,8 @@ c          integer       atx_nw_quad     ! Wind radius in NW quad (nm)
 
       module maxparms
         integer, parameter :: ncmaxmem = 30 ! max # ncep ensemble perts
+        integer, parameter :: aimaxmem = 31 ! max # AI ncep ensemble perts
+        integer, parameter :: ahmaxmem = 62 ! max # AH ncep ensemble perts
         integer, parameter :: nrmaxmem = 10 ! max # Tom ensemble perts
         integer, parameter :: n0maxmem = 20 ! max # ncep_bc ensemble perts
         integer, parameter :: h0maxmem = 20 ! max # hwrf ensemble
@@ -78,6 +80,8 @@ cJ.Peng-------2010-10-29------------2010-11-02-----------------
 
         integer, parameter :: ncminmem = 12 ! min # of ncep ensemble 
                          ! perts needed at a given fcst hr to get a mean
+        integer, parameter :: aiminmem = 12 ! min # of ai ncep ensemble
+        integer, parameter :: ahminmem = 24 ! min # of ah ncep ensemble
         integer, parameter :: nrminmem =  4 ! min # of Tom ensemble
         integer, parameter :: n0minmem =  8 ! min # of ncep_bc ensemble
         integer, parameter :: h0minmem =  8 ! min # of hwrf ensemble
@@ -151,6 +155,24 @@ c                              ! which we'll carry out the accum probs
      &          ,'AP11','AP12','AP13','AP14','AP15','AP16','AP17'
      &          ,'AP18','AP19','AP20','AP21','AP22','AP23','AP24'
      &          ,'AP25','AP26','AP27','AP28','AP29','AP30'/)
+
+        character*4 :: aiperts(aimaxmem) = (/'A000','A001','A002'
+     &          ,'A003','A004','A005','A006','A007','A008','A009'
+     &          ,'A010','A011','A012','A013','A014','A015','A016'
+     &          ,'A017','A018','A019','A020','A021','A022','A023'
+     &          ,'A024','A025','A026','A027','A028','A029','A030'
+     &           /)
+
+        character*4 :: ahperts(ahmaxmem) = (/'AP01','AP02','AP03'
+     &          ,'AP04','AP05','AP06','AP07','AP08','AP09','AP10'
+     &          ,'AP11','AP12','AP13','AP14','AP15','AP16','AP17'
+     &          ,'AP18','AP19','AP20','AP21','AP22','AP23','AP24'
+     &          ,'AP25','AP26','AP27','AP28','AP29','AP30','AC00'
+     &          ,'A000','A001','A002','A003'
+     &          ,'A004','A005','A006','A007','A008','A009','A010'
+     &          ,'A011','A012','A013','A014','A015','A016','A017'
+     &          ,'A018','A019','A020','A021','A022','A023','A024'
+     &          ,'A025','A026','A027','A028','A029','A030'/)
 
         character*4 :: nrperts(nrmaxmem) = (/'GR01','GR02','GR03'
      &          ,'GR04','GR05','GR06','GR07','GR08','GR09','GR10'
@@ -449,6 +471,20 @@ cJ.Peng-------2010-11-02-------------------------------------------
      &          ,'NMN3','NMP1','NMP2','NMP3'/)
 
         integer  :: ncfcsthrs(maxtimes) = (/0,6,12,18,24,30,36,42,48,54
+     &               ,60,66,72,78,84,90,96,102,108,114,120,126,132,138
+     &               ,144,150,156,162,168,174,180,186,192,198,204,210
+     &               ,216,222,228,234,240,999,999,999,999,999,999,999
+     &               ,999,999,999,999,999,999,999,999,999,999,999,999
+     &               ,999,999,999,999,999/)
+
+        integer  :: aifcsthrs(maxtimes) = (/0,6,12,18,24,30,36,42,48,54
+     &               ,60,66,72,78,84,90,96,102,108,114,120,126,132,138
+     &               ,144,150,156,162,168,174,180,186,192,198,204,210
+     &               ,216,222,228,234,240,999,999,999,999,999,999,999
+     &               ,999,999,999,999,999,999,999,999,999,999,999,999
+     &               ,999,999,999,999,999/)
+
+        integer  :: ahfcsthrs(maxtimes) = (/0,6,12,18,24,30,36,42,48,54
      &               ,60,66,72,78,84,90,96,102,108,114,120,126,132,138
      &               ,144,150,156,162,168,174,180,186,192,198,204,210
      &               ,216,222,228,234,240,999,999,999,999,999,999,999
@@ -840,7 +876,7 @@ cJ.Peng-04-15-2013
       character*1 :: modeflag = 'y'
       character*4 :: stormarr(maxstorms)
       character*4 :: catcf,catcf_lc
-      character*5 :: cmodel
+      character*6 :: cmodel
 c
       pi = 4. * atan(1.)   ! Both pi and dtr were declared in module
       dtr = pi/180.0       ! trig_vals, but were not yet defined.
@@ -852,9 +888,11 @@ cJ.Peng-04-15-2013
       xspread = -999.0
 
       call read_nlists (dthresh,cmodel)
-
+      print *,'cmodel= ',cmodel
       select case (cmodel)
         case ('ens');  maxmem = ncmaxmem; fcsthrs(:) = ncfcsthrs(:)
+        case ('aigefs'); maxmem = aimaxmem; fcsthrs(:) = aifcsthrs(:)
+        case ('hgefs'); maxmem = ahmaxmem; fcsthrs(:) = ahfcsthrs(:)
         case ('ref');  maxmem = nrmaxmem; fcsthrs(:) = nrfcsthrs(:)
 
         case ('ensb');  maxmem = n0maxmem; fcsthrs(:) = n0fcsthrs(:)
@@ -938,6 +976,16 @@ cJ.Peng-04-15-2013
                        minmem   = ncminmem  
                        catcf    = 'AEMN'  
                        catcf_lc = 'aemn'  
+
+        case ('aigefs'); perts(:) = aiperts(:)
+                       minmem   = aiminmem  
+                       catcf    = 'AIMN'  
+                       catcf_lc = 'aimn'
+
+        case ('hgefs'); perts(:) = ahperts(:)
+                       minmem   = ahminmem  
+                       catcf    = 'AHMN'  
+                       catcf_lc = 'ahmn' 
 
         case ('ref');  perts(:) = nrperts(:)
                        minmem   = nrminmem
@@ -1124,9 +1172,13 @@ cJ.Peng-------2010-11-02-----------------------------
                        catcf    = 'SFMN'  
                        catcf_lc = 'sfmn'  
       end select
- 
-      fcst_interval = fcsthrs(2) - fcsthrs(1)
 
+      print *,'fcsthrs(2)= ',fcsthrs(2)
+      print *,'fcsthrs(1)= ',fcsthrs(1) 
+      fcst_interval = fcsthrs(2) - fcsthrs(1)
+      print *,'fcst_interval= ',fcst_interval
+
+c      fcst_interval =6
 cJ.Peng-04-15-2013
       call read_atcfunix (traklat,traklon,tcvmx,tcpce,
      & saverec,stormarr,maxmem,fcst_interval,perts)
@@ -3171,7 +3223,7 @@ c     created in the shell script.  Namelist datain currently contains
 c     just the value of the dthresh parameter.
 c
       real      dthresh
-      character*5 :: cmodel
+      character*6 :: cmodel
 c
       namelist/datain/dthresh,cmodel
 c

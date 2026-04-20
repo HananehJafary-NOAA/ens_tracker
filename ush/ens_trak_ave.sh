@@ -54,7 +54,7 @@ cd $DATA
 
 case ${cmodel} in
 
-   ens) set +x; echo " "                                       ;
+  ens) set +x; echo " "                                       ;
         echo " ++ Input cmodel parameter = ${cmodel}...."      ;
         echo " ++ NCEP ensemble tracks will be averaged...."   ;
         echo " "; set -x                                       ;
@@ -63,7 +63,7 @@ case ${cmodel} in
         achar="a"                                              ;;
         #COMOUT=${COM:-${COMROOT}/gens/${envir}/gefs.${PDY}/${cyc}/track}
  
-   eens) set +x; echo " "                                      ;
+  eens) set +x; echo " "                                      ;
         echo " ++ Input cmodel parameter = ${cmodel}...."      ;
         echo " ++ ECMWF ensemble tracks will be averaged...."  ;
         echo " "; set -x                                       ;
@@ -71,7 +71,23 @@ case ${cmodel} in
         amodel="eemn"                                          ;
         achar="e"                                              ;;
         #COMOUT=${COM:-${COMROOT}/gens/${envir}/ecme.${PDY}/${cyc}/track}
- 
+
+  aigefs) set +x; echo " "                                      ;
+        echo " ++ Input cmodel parameter = ${cmodel}...."      ;
+        echo " ++ AI ensemble tracks will be averaged...."  ;
+        echo " "; set -x                                       ;
+        AMODEL="AIMN"                                          ;
+        amodel="aimn"                                          ;
+        achar="a"                                              ;;
+
+  hgefs) set +x; echo " "                                      ;
+        echo " ++ Input cmodel parameter = ${cmodel}...."      ;
+        echo " ++ ML ensemble tracks will be averaged...."  ;
+        echo " "; set -x                                       ;
+        AMODEL="AHMN"                                          ;
+        amodel="ahmn"                                          ;
+        achar="a"                                              ;;
+
   cens) set +x; echo " "                                       ;
         echo " ++ Input cmodel parameter = ${cmodel}...."      ;
         echo " ++ CMC ensemble tracks will be averaged...."    ;
@@ -82,8 +98,8 @@ case ${cmodel} in
         #COMOUT=${COM:-${COMROOT}/gens/prod/cmce.${PDY}/${cyc}/track}
 
   fens) set +x; echo " "                                       ;
-	    echo " ++ Input cmodel parameter = ${cmodel}...."      ;
-	    echo " ++ FNMOC ensemble tracks will be averaged...."  ;
+	echo " ++ Input cmodel parameter = ${cmodel}...."      ;
+	echo " ++ FNMOC ensemble tracks will be averaged...."  ;
         echo " "; set -x                                       ;
 #           AMODEL="FEMN"                                          ;
 #	    amodel="femn"                                          ;
@@ -102,7 +118,7 @@ case ${cmodel} in
         achar="s"                                              ;;
         #COMOUT=${COM:-${COMROOT}/sref/${envir}/sref.${PDY}/${cyc}/track}
 
-     *) set +x; echo " "                                       ;
+  *) set +x; echo " "                                       ;
         echo "FATAL ERROR:  INPUT CMODEL PARAMETER IS NOT RECOGNIZED.";
         echo " !! Input cmodel parameter = ${cmodel}...."      ;
         echo " "                                               ;
@@ -120,10 +136,28 @@ echo "TIMING: Time before any of the track-averaging stuff is `date`"
 
 >trak.allperts.atcfunix.${amodel}.${ymdh}
 
-for tfile in `ls -1 ${COMOUT}/${achar}[np]*.t${cyc}z.cyclone.trackatcfunix`
-do
+
+if [ ${cmodel} = 'hgefs' ]; then
+  set +f
+  for dir in "${COMINgefs}" "${COMINaigefs}"; do
+    for prefix in a ap ac mp mc; do
+      for tfile in "${dir}/${prefix}"+([0-9]).t"${cyc}"z.cyclone.trackatcfunix; do
+        [ -f "${tfile}" ] || continue
+        cat "${tfile}" >>trak.allperts.atcfunix.${amodel}.${ymdh}
+      done
+    done
+  done
+elif [ "${cmodel}" = 'aigefs' ]; then
+  for tfile in `ls -1 ${COMOUT}/a0*.t${cyc}z.cyclone.trackatcfunix`
+  do
   cat $tfile >>trak.allperts.atcfunix.${amodel}.${ymdh}
-done
+  done
+else
+  for tfile in `ls -1 ${COMOUT}/${achar}[np]*.t${cyc}z.cyclone.trackatcfunix`
+  do
+  cat $tfile >>trak.allperts.atcfunix.${amodel}.${ymdh}
+  done	
+fi
 
 numrecs=` cat trak.allperts.atcfunix.${amodel}.${ymdh} | wc -l`
 if [ ${numrecs} -eq 0 ]; then
