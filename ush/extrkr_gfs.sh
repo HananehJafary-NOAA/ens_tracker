@@ -206,7 +206,7 @@ case ${cmodel} in
        echo " ++ operational FV3-GFS chosen"               ;
        echo " "; set -x                                    ;
        gfsdir=${gfsdir:-${COMINgfs:?}/${cyc}/atmos}                     ;
-       gfsgfile=gfs.t${cyc}z.pgrb2.0p25.f                  ;
+       gfsgfile=gfs.t${cyc}z.pres_a.0p25.f                  ;
 
        vit_incr=${FHOUT_CYCLONE:-6}                        ;
        fcstlen=${FHMAX_CYCLONE:-240}                       ;
@@ -1288,18 +1288,18 @@ then
     for fhour in ${fcsthrs}
     do
   
-      if [ ! -s ${gfsdir:?}/${gfsgfile}${fhour} ]
+      if [ ! -s ${gfsdir:?}/${gfsgfile}${fhour}.grib2 ]
       then
         set +x
         echo " "
-        echo "FATAL ERROR:  GFS File missing: ${gfsdir}/${gfsgfile}${fhour}"
+        echo "FATAL ERROR:  GFS File missing: ${gfsdir}/${gfsgfile}${fhour}.grib2"
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo " "
         set -x
-        err_exit "MISSING GFS FILE IN extrkr_g2.sh: ${gfsdir}/${gfsgfile}${fhour}"
+        err_exit "MISSING GFS FILE IN extrkr_g2.sh: ${gfsdir}/${gfsgfile}${fhour}.grib2"
       fi
 
-      gfile=${gfsdir}/${gfsgfile}${fhour}
+      gfile=${gfsdir}/${gfsgfile}${fhour}.grib2
       ${WGRIB2:?} $gfile -match "$PARMlist" -grib ${TRKDATA}/master.gfsgribfile.${PDY}${cyc}.f${fhour}
 
       gfs_master_file=${TRKDATA}/master.gfsgribfile.${PDY}${cyc}.f${fhour}
