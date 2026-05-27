@@ -166,8 +166,8 @@ case ${cmodel} in
        echo " ++ operational GFS chosen"                   ;
        echo " "; set -x                                    ;
 #       gfsdir=${gfsdir:-${COMROOT}/gfs/prod/gfs.${PDY}}   ;
-       gfsdir=${gfsdir:-${COMINgfs:?}/${cyc}/atmos}                     ;
-       gfsgfile=gfs.t${cyc}z.pgrb2.0p25.f                  ;
+       gfsdir=${gfsdir:-${COMINgfs:?}/${cyc}/atmos}         ;
+       gfsgfile=gfs.t${cyc}z.pres_a.0p25.f                  ;
        vit_incr=6
        fcstlen=6                                           ;
        fcsthrs=$(seq -f%03g -s' ' 0 $vit_incr $fcstlen)    ;
@@ -885,18 +885,18 @@ then
     for fhour in ${fcsthrs}
     do
   
-      if [ ! -s ${gfsdir}/${gfsgfile}${fhour} ]
+      if [ ! -s ${gfsdir}/${gfsgfile}${fhour}.grib2 ]
       then
         set +x
         echo " "
-        echo "FATAL ERROR:  GFS File missing: ${gfsdir}/${gfsgfile}${fhour}"
+        echo "FATAL ERROR:  GFS File missing: ${gfsdir}/${gfsgfile}${fhour}.grib2"
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo " "
         set -x
         err_exit "FAILED ${jobid} - MISSING GFS FILE IN TRACKER SCRIPT - ABNORMAL EXIT"
       fi
 
-      gfile=${gfsdir}/${gfsgfile}${fhour}
+      gfile=${gfsdir}/${gfsgfile}${fhour}.grib2
       ${WGRIB2:?} -s $gfile >gfs.ix
       export err=$?; err_chk
   

@@ -1,18 +1,32 @@
 #!/bin/bash
-#PBS -N ens_tracker_gfs_tc_genesis_%CYC%
+#PBS -N ens_tracker_gfs_tc_genesis
 #PBS -j oe
-#PBS -A %PROJ%-%PROJENVIR%
-#PBS -q %QUEUE%
+#PBS -A ENSTRACK-DEV
+##PBS -q dev
 #PBS -S /bin/bash
-#PBS -l select=1:ncpus=1:mem=4GB
+#PBS -l select=1:ncpus=1:mem=8GB
 #PBS -l walltime=00:25:00
 #PBS -l debug=true
 
-export model=ens_tracker
-%include <head.h>
-%include <envir-p1.h>
+#export model=ens_tracker
+#%include <head.h>
+#%include <envir-p1.h>
 #
-export cyc=%CYC%
+#export cyc=%CYC%
+
+module reset
+export target=wcoss2
+module use /lfs/h2/emc/ens/noscrub/hananeh.jafary/ens_package_08042025/modulefiles
+module load ${target}.lua
+module list
+
+export cyc=00
+export model=ens_tracker
+export envir=prod
+export KEEPDATA=YES
+export job=gfs_genesis_${cyc}
+export COMROOT=/lfs/h2/emc/ptmp/hananeh.jafary/com
+export DATAROOT=/lfs/h2/emc/ptmp/hananeh.jafary
 
 module load PrgEnv-intel/$PrgEnv_intel_ver
 module load intel/$intel_ver
@@ -35,8 +49,12 @@ module load wgrib2/$wgrib2_ver
 
 module list
 
+export PACKAGEHOME=/lfs/h2/emc/ens/noscrub/hananeh.jafary/gfsv17/ens_tracker.v1.3.11
 # CALL executable job script here
-${HOMEens_tracker}/jobs/JGFS_TC_GENESIS
+${PACKAGEHOME}/dev/jobs/JGFS_TC_GENESIS
+
+# CALL executable job script here
+#${HOMEens_tracker}/jobs/JGFS_TC_GENESIS
 
 
 %include <tail.h>

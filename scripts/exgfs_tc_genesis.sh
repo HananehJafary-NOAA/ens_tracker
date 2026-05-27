@@ -1,11 +1,12 @@
 #!/bin/ksh
 set -x
 
+export res=0p25
 export cmodel=gfs
 export loopnum=1
 export ymdh=${PDY}${cyc}
 
-export gfsdir=${COMINgfs}/${cyc}/atmos
+export gfsdir=${COMINgfs}/${cyc}/products/atmos/grib2/${res}
 
 #---- first run to get GFS genesis vital at time=00 06 12 18Z -----------
 

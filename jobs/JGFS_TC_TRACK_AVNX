@@ -73,8 +73,9 @@ env
 export cmodel=gfs
 export loopnum=1
 export ymdh=${PDY}${cyc}
+export res=0p25
 
-export gfsdir=${COMINgfs}/${cyc}/atmos
+export gfsdir=${COMINgfs}/${cyc}/products/atmos/grib2/${res}
 
 export pert="p01"
 pertdir=${DATA}/${cmodel}/${pert}

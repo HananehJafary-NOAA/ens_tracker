@@ -153,7 +153,7 @@ case ${cmodel} in
        echo " "; set -x                                    ;
 #       gfsdir=${gfsdir:-${COMROOT}/gfs/prod/gfs.${PDY}}    ;
        gfsdir=${gfsdir:-${COMINgfs:?}/${cyc}/atmos}                     ;
-       gfsgfile=gfs.t${cyc}z.pgrb2.0p25.f                  ;
+       gfsgfile=gfs.t${cyc}z.pres_a.0p25.f                  ;
 
        vit_incr=6                                          ;
        fcstlen=240                                         ;
@@ -910,20 +910,20 @@ then
     for fhour in ${fcsthrs}
     do
   
-      if [ ! -s ${gfsdir:?}/${gfsgfile}${fhour} ]
+      if [ ! -s ${gfsdir:?}/${gfsgfile}${fhour}.grib2 ]
       then
         set +x
         echo " "
         echo "FATAL ERROR:  GFS file is missing"
         echo "!!! Check for the existence of this file:"
-        echo "!!!    GFS File: ${gfsdir}/${gfsgfile}${fhour}"
+        echo "!!!    GFS File: ${gfsdir}/${gfsgfile}${fhour}.grib2"
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo " "
         set -x
-        err_exit "FAILED ${jobid} - MISSING GFS FILE ${gfsdir}/${gfsgfile}${fhour} IN TRACKER SCRIPT - ABNORMAL EXIT"
+        err_exit "FAILED ${jobid} - MISSING GFS FILE ${gfsdir}/${gfsgfile}${fhour}.grib2 IN TRACKER SCRIPT - ABNORMAL EXIT"
       fi
 
-      gfile=${gfsdir}/${gfsgfile}${fhour}
+      gfile=${gfsdir}/${gfsgfile}${fhour}.grib2
       ${WGRIB2:?} -s $gfile >gfs.ix
       export err=$?; err_chk
 
