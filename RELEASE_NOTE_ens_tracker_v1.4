@@ -1,4 +1,31 @@
-Release Note:  ens_tracker.v1.4.0 (2026/04/30)
+Release Note:  ens_tracker.v1.3.11 (2026/06/01)
+
+This update is related to the GFSv17 upgrade. There were no major changes, aside from updates to the `com` path and file naming conventions. The files listed below were modified as part of this upgrade.
+
+1. jobs/JGFS_TC_TRACK_AVNO
+Updated GFS com directory and defined a new variable. 
+2. jobs/JGFS_TC_TRACK_AVNX
+Updated GFS com directory and defined a new variable.
+3. scripts/exgfs_tc_genesis.sh
+Updated GFS com directory and defined a new variable.
+4. ush/data_check.sh
+Changed GFS filename
+5. ush/data_check_gfs.sh
+Changed GFS filename
+6. ush/extrkr_g2.sh
+Adjusted a few lines to reflect the new GFS filename.
+7. ush/extrkr_gen_g2.sh
+Adjusted a few lines to reflect the new GFS filename.
+8. ush/extrkr_gfs.sh
+Adjusted a few lines to reflect the new GFS filename.
+9. ush/extrkr_tcv_g2.sh
+Adjusted a few lines to reflect the new GFS filename.
+10. versions/run.ver
+Updated GFS version number. 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Release Note:  ens_tracker.v1.3.10 (2026/04/30)
 This update is to prepare the package for the new ECMWF data. Previously, ECMWF ensemble member runs used DCE files that included both perturbed and control members. In the updated dataset, control members are no longer included. As a result, any references to the control member (C00) have been removed from the EENS workflow. Control member runs are now handled separately within the ECMWF deterministic runs.
 
 The update is included in the following files:
